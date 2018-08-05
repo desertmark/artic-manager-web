@@ -30,8 +30,8 @@ module.exports = {
          * css-loader requires style-loader in order to work. loader is a shorthand for the use property, when only one loader is being utilized.
          */
         {
-          test: /\.css$/,
-          use: [ 'style-loader', 'css-loader' ]
+          test: /\.scss$/,
+          use: [ 'style-loader', 'css-loader', 'sass-loader' ]
         }]
     },
 
