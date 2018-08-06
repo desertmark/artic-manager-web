@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
 
 class LoginFormComponent extends Component{
+
   render(){
     return(
       <div id="login-form-component">
@@ -31,6 +33,17 @@ class LoginFormComponent extends Component{
   }
 }
 
-export default reduxForm({
-  form: 'loginForm',
-})(LoginFormComponent);
+export default connect(
+  // mapStateToProps
+  state => ({
+    initialValues: {
+      email:'',
+      password:'',
+      rememberme:false,
+    }
+  }),
+  // mapDispatchToProps
+  null
+  )(reduxForm({
+    form: 'loginForm',
+  })(LoginFormComponent))
