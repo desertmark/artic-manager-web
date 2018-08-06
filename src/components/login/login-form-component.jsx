@@ -1,33 +1,36 @@
 import React, { Component } from "react";
+import { Field, reduxForm } from 'redux-form'
 
 class LoginFormComponent extends Component{
   render(){
     return(
       <div id="login-form-component">
-        <form>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="inputEmail4">Email</label>
-              <input type="email" class="form-control" id="inputEmail4" placeholder="Email" />
+        <form onSubmit={this.props.handleSubmit}>
+          <div className="form-row">
+            <div className="form-group col-md-6">
+              <label>Email</label>
+              <Field name="email" component="input" type="email" className="form-control" placeholder="Email" />
             </div>
-            <div class="form-group col-md-6">
-              <label for="inputPassword4">Password</label>
-              <input type="password" class="form-control" id="inputPassword4" placeholder="Password" />
+            <div className="form-group col-md-6">
+              <label>Password</label>
+              <Field name="password" component="input" type="password" className="form-control" placeholder="Password" />
             </div>
           </div>
-          <div class="form-group">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="gridCheck" />
-              <label class="form-check-label" for="gridCheck">
+          <div className="form-group">
+            <div className="form-check">
+              <Field name="remeberme" component="input" className="form-check-input" type="checkbox" />
+              <label className="form-check-label">
                 Remeber me?
               </label>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary">Sign in</button>
+          <button type="submit" className="btn btn-primary">Sign in</button>
         </form>
       </div>
     );
   }
 }
 
-export default LoginFormComponent;
+export default reduxForm({
+  form: 'loginForm',
+})(LoginFormComponent);
