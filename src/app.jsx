@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import {hot} from "react-hot-loader";
-import "./App.scss";
+import React, { Component } from 'react';
+import {hot} from 'react-hot-loader';
+import './App.scss';
 
 import HeaderComponent from './components/header/header-component';
 
