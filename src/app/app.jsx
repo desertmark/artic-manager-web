@@ -10,6 +10,7 @@ import ProgressBarComponent from '../components/progress-bar/progress-bar-compon
 import HomePageComponent from '../pages/home-page/home-page-component';
 import ContactPageComponent from '../pages/contact-page/contact-page-component';
 import LoginPageComponent from '../pages/login-page/login-page-component';
+import DebugPageComponent from '../pages/debug-page/debug-page-component';
 
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
 
@@ -30,6 +31,7 @@ class App extends Component{
             <Route exact path='/' component={HomePageComponent}/>
             <Route exact path='/contact' component={ContactPageComponent}/>
             <Route exact path='/login' component={LoginPageComponent}/>
+            { ENV_NAME !== 'Production' && <Route exact path='/debug' component={DebugPageComponent}></Route> } 
           </Switch>
         </div>
       </BrowserRouter>

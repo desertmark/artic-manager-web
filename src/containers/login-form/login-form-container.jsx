@@ -17,8 +17,6 @@ class LoginFormContainer extends Component{
       <div>
         <LoginFormComponent onSubmit={this.login}></LoginFormComponent>
         <pre>{this.props.isLoading}</pre>
-        <pre>{JSON.stringify(this.props.session)}</pre>
-        <pre>{JSON.stringify(this.props.error)}</pre>
       </div>
     );
   }
