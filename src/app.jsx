@@ -4,7 +4,9 @@ import {hot} from 'react-hot-loader';
 import './App.scss';
 
 import HeaderComponent from './components/header/header-component';
+import ProgressBarComponent from './components/progress-bar/progress-bar-component';
 
+// routes
 import HomePageComponent from './pages/home-page/home-page-component';
 import ContactPageComponent from './pages/contact-page/contact-page-component';
 import LoginPageComponent from './pages/login-page/login-page-component';
@@ -21,9 +23,9 @@ class App extends Component{
   render(){
     return(
       <BrowserRouter>
-        <div className="App">
-          {this.props.showSpinner && <h1>SPINNER_PLACEOLDER</h1> }
+        <div className="App"> 
           <HeaderComponent></HeaderComponent>
+          {this.props.showSpinner && <ProgressBarComponent></ProgressBarComponent> }
           <Switch>
             <Route exact path='/' component={HomePageComponent}/>
             <Route exact path='/contact' component={ContactPageComponent}/>

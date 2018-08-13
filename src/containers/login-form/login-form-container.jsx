@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators  } from 'redux';
 import { connect } from 'react-redux';
-import { login } from './login-container-actions';
+import { login } from '../../redux/auth/auth-container-actions';
 import LoginFormComponent from '../../components/login/login-form-component';
 
 class LoginFormContainer extends Component{
@@ -26,9 +26,8 @@ class LoginFormContainer extends Component{
 
 export default connect(
   state => ({
-    isLoading: state.loginReducer.isLoading,
-    session: state.loginReducer.session,
-    error: state.loginReducer.error
+    session: state.authReducer.session,
+    error: state.authReducer.error
   }), // mapStateToProps
   dispatch => bindActionCreators({login},dispatch) // mapDispatchToProps
 )(LoginFormContainer)

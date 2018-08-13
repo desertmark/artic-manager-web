@@ -1,5 +1,5 @@
-import authService from '../../services/auth-service';
-import { LOGIN_REQUEST } from './login-constants-container';
+import authService from './auth-service';
+import { LOGIN_REQUEST } from './auth-constants-container';
 
 // ActionCreator
 export function login(values) {

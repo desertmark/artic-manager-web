@@ -2,12 +2,12 @@ import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
 // custom reducers
-import { loginReducer } from './containers/login-form/login-container-reducer';
+import { authReducer } from './redux/auth/auth-container-reducer';
 import { appReducer } from './app-reducer';
 const rootReducer = combineReducers({
     appReducer,
     form: formReducer, // redux form
-    loginReducer
+    authReducer
 });
 
 export default rootReducer;

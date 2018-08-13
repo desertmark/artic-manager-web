@@ -2,9 +2,9 @@ import {
     LOGIN_REQUEST_PENDING,
     LOGIN_REQUEST_FULFILLED,
     LOGIN_REQUEST_REJECTED,
-} from './login-constants-container';
+} from './auth-constants-container';
 
-export function loginReducer (currentState, action) {
+export function authReducer (currentState, action) {
 	currentState = currentState || {
   	isLoading: false,
     session: null,
