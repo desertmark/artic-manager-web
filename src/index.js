@@ -7,7 +7,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 // React
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './app';
+import App from './app/app';
 
 // Redux
 import { createStore, applyMiddleware } from 'redux';
