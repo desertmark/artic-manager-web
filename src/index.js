@@ -16,8 +16,20 @@ import { Provider } from 'react-redux';
 import reducer from './reducer';
 // middlewares
 import ReduxThunk from 'redux-thunk';
+import promiseMiddleware from 'redux-promise-middleware';
 
-const store = createStore(reducer, applyMiddleware(ReduxThunk));
+const spinnerMiddleware = store => next => action => {
+  if(action.meta && action.meta.showSpinner === true) {
+    store.dispatch({type: 'SHOW_SPINNER'});
+    action.meta.promise.finally(() => {
+      store.dispatch({type:'HIDE_SPINNER'});
+    });
+  }
+  next(action);
+}
+
+
+const store = createStore(reducer, applyMiddleware(ReduxThunk, promiseMiddleware(), spinnerMiddleware));
 
 ReactDOM.render(
   <Provider store={store} >

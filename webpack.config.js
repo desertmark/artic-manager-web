@@ -2,6 +2,8 @@
 const path = require("path");
 const webpack = require("webpack");
 
+const env = require('./config/index.js');
+
 module.exports = {
     entry: "./src/index.js",
     mode: "development",
@@ -71,6 +73,12 @@ module.exports = {
      * All we do for that in terms of this file is instantiate a new instance of the plugin in the plugins property and make sure that we set hotOnly to true in devServer. 
      * We still need to set up one more thing in React before HMR works, though.
      */
-    plugins: [ new webpack.HotModuleReplacementPlugin() ]
+    plugins: [ 
+      new webpack.HotModuleReplacementPlugin(),
+      new webpack.DefinePlugin({
+        API_URL: JSON.stringify(env.API_URL),
+        ENV_NAME: JSON.stringify(env.name)
+      })
+    ]
     
 }

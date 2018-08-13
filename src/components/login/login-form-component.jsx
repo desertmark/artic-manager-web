@@ -9,11 +9,13 @@ class LoginFormComponent extends Component{
       <div id="login-form-component">
         <form onSubmit={this.props.handleSubmit}>
           <div className="form-row">
-            <div className="form-group col-md-6">
-              <label>Email</label>
-              <Field name="email" component="input" type="email" className="form-control" placeholder="Email" />
+            <div className="form-group col-lg-6">
+              <label>User Name</label>
+              <Field name="email" component="input" type="text" className="form-control" placeholder="User Name" />
             </div>
-            <div className="form-group col-md-6">
+          </div>
+          <div className="form-row">
+            <div className="form-group col-lg-6">
               <label>Password</label>
               <Field name="password" component="input" type="password" className="form-control" placeholder="Password" />
             </div>

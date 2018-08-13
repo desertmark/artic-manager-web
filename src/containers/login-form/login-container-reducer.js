@@ -1,7 +1,7 @@
 import {
-    LOGIN_REQUEST,
-    LOGIN_REQUEST_SUCCESS,
-    LOGIN_REQUEST_FAILURE,
+    LOGIN_REQUEST_PENDING,
+    LOGIN_REQUEST_FULFILLED,
+    LOGIN_REQUEST_REJECTED,
 } from './login-constants-container';
 
 export function loginReducer (currentState, action) {
@@ -11,12 +11,12 @@ export function loginReducer (currentState, action) {
     error: null
   }; // Initial State
   switch (action.type) {
-    case LOGIN_REQUEST:
+    case LOGIN_REQUEST_PENDING:
         return Object.assign({}, currentState, {isLoading: true});
-    case LOGIN_REQUEST_SUCCESS:
-        return Object.assign({}, currentState, {isLoading: false, session: action.session});
-    case LOGIN_REQUEST_FAILURE:
-        return Object.assign({}, currentState, {isLoading: false, error: action.error});
+    case LOGIN_REQUEST_FULFILLED:
+        return Object.assign({}, currentState, {isLoading: false, session: action.payload});
+    case LOGIN_REQUEST_REJECTED:
+        return Object.assign({}, currentState, {isLoading: false, error: action.payload});
     default:
     	return currentState; // Always return the state
   }

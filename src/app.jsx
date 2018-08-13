@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {hot} from 'react-hot-loader';
 import './App.scss';
 
@@ -11,10 +12,17 @@ import LoginPageComponent from './pages/login-page/login-page-component';
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
 
 class App extends Component{
+  componentWillMount() {
+    console.log({
+      ENV_NAME: ENV_NAME,
+      API_URL: API_URL,
+    });
+  }
   render(){
     return(
       <BrowserRouter>
         <div className="App">
+          {this.props.showSpinner && <h1>SPINNER_PLACEOLDER</h1> }
           <HeaderComponent></HeaderComponent>
           <Switch>
             <Route exact path='/' component={HomePageComponent}/>
@@ -26,5 +34,8 @@ class App extends Component{
     );
   }
 }
-
-export default hot(module)(App);
+const connectedApp = connect(
+  state => ({showSpinner: state.appReducer.showSpinner}),
+  null
+)(App)
+export default hot(module)(connectedApp);
