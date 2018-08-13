@@ -16,6 +16,11 @@ import reducer from './reducer';
 // middlewares
 import ReduxThunk from 'redux-thunk';
 import promiseMiddleware from 'redux-promise-middleware';
+import {createLogger} from 'redux-logger'
+
+const logger = createLogger({
+  predicate: (getState, action) => !action.type.startsWith('@@redux-form')
+})
 
 const spinnerMiddleware = store => next => action => {
   if(action.meta && action.meta.showSpinner === true) {
@@ -28,7 +33,7 @@ const spinnerMiddleware = store => next => action => {
 }
 
 
-const store = createStore(reducer, applyMiddleware(ReduxThunk, promiseMiddleware(), spinnerMiddleware));
+const store = createStore(reducer, applyMiddleware(ReduxThunk, logger, promiseMiddleware(), spinnerMiddleware));
 
 ReactDOM.render(
   <Provider store={store} >

@@ -13,6 +13,16 @@ function login(values) {
     });
 }
 
+function storeSession(session) {
+    localStorage.setItem('session', JSON.stringify(session));
+}
+
+function getLocalStorageSession() {
+    return JSON.parse(localStorage.getItem('session') || "{}");
+}
+
 export default {
-    login
+    login,
+    storeSession,
+    getLocalStorageSession
 }
