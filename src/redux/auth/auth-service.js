@@ -13,16 +13,38 @@ function login(values) {
     });
 }
 
+function logout() {
+    clearLocalSession();
+    return axios({
+        url: `${API_URL}/auth/logout`,
+        method:'GET',
+    })
+    .catch(error => {
+        console.log('Error login out:', error);
+        throw error.response.data;
+    });
+}
+
 function storeSession(session) {
+    axios.defaults.headers.common['Authorization'] = session.token;
     localStorage.setItem('session', JSON.stringify(session));
 }
 
 function getLocalStorageSession() {
-    return JSON.parse(localStorage.getItem('session') || "{}");
+    const session = JSON.parse(localStorage.getItem('session') || "{}");
+    if(session) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${session.token}`;
+    }
+    return session;
+}
+
+function clearLocalSession() {
+    localStorage.setItem('session', null);
 }
 
 export default {
     login,
+    logout,
     storeSession,
     getLocalStorageSession
 }

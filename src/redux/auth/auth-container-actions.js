@@ -1,5 +1,5 @@
 import authService from './auth-service';
-import { LOGIN_REQUEST, STORE_SESSION, GET_LOCAL_SESSION } from './auth-constants-container';
+import { LOGIN_REQUEST, LOGOUT_REQUEST, STORE_SESSION, GET_LOCAL_SESSION } from './auth-constants-container';
 
 // ActionCreators
 
@@ -16,6 +16,20 @@ export function login(values) {
         })
         .then(({action, value}) => {
             dispatch(storeSession(value));
+        });
+    }
+}
+
+export function logout() {
+    return dispatch => {
+        const promise = authService.logout();
+        dispatch({
+            type: LOGOUT_REQUEST,
+            payload: promise,
+            meta: {
+                showSpinner: true,
+                promise
+            }
         });
     }
 }

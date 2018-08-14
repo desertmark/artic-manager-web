@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 class HeaderComponent extends Component{
+  constructor() {
+    super();
+    this.logout = this.logout.bind(this);
+  }
+
+  logout() {
+    this.props.onLogout();
+  }
   render(){
     return(
       <div id="header-component-component">
@@ -20,6 +28,9 @@ class HeaderComponent extends Component{
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to='/login'>Login</Link>
+              </li>
+              <li className="nav-item">
+                <button className="btn btn-link nav-link" onClick={this.logout}>Logout</button>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to='/debug'>Debug</Link>

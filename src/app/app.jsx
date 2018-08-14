@@ -7,7 +7,8 @@ import HeaderComponent from '../components/header/header-component';
 import ProgressBarComponent from '../components/progress-bar/progress-bar-component';
 
 import { bindActionCreators } from 'redux';
-import {getLocalStorageSession} from '../redux/auth/auth-container-actions';
+import { getLocalStorageSession, logout } from '../redux/auth/auth-container-actions';
+import { appInit } from './app-actions';
 
 // routes
 import HomePageComponent from '../pages/home-page/home-page-component';
@@ -15,24 +16,37 @@ import ContactPageComponent from '../pages/contact-page/contact-page-component';
 import LoginPageComponent from '../pages/login-page/login-page-component';
 import DebugPageComponent from '../pages/debug-page/debug-page-component';
 
-import { Switch, Route, BrowserRouter } from 'react-router-dom'
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 class App extends Component{
+  constructor() {
+    super();
+    this.logEnv = this.logEnv.bind(this);
+    this.logout = this.logout.bind(this);
+  }
+
   logEnv() {
     console.log({
       ENV_NAME: ENV_NAME,
       API_URL: API_URL,
     });
   }
+
   componentWillMount() {
     this.logEnv();
+    this.props.appInit();
     this.props.getLocalStorageSession();
   }
+
+  logout() {
+    this.props.logout();
+  }
+
   render(){
     return(
       <BrowserRouter>
         <div className="App"> 
-          <HeaderComponent></HeaderComponent>
+          <HeaderComponent onLogout={this.logout}></HeaderComponent>
           {this.props.showSpinner && <ProgressBarComponent></ProgressBarComponent> }
           <Switch>
             <Route exact path='/' component={HomePageComponent}/>
@@ -47,6 +61,6 @@ class App extends Component{
 }
 const connectedApp = connect(
   state => ({showSpinner: state.appReducer.showSpinner}),
-  dispatch => bindActionCreators({getLocalStorageSession}, dispatch)
+  dispatch => bindActionCreators({getLocalStorageSession, appInit, logout}, dispatch)
 )(App)
 export default hot(module)(connectedApp);
