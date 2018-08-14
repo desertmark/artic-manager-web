@@ -26,7 +26,7 @@ function logout() {
 }
 
 function storeSession(session) {
-    axios.defaults.headers.common['Authorization'] = session.token;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${session.token}`;
     localStorage.setItem('session', JSON.stringify(session));
 }
 

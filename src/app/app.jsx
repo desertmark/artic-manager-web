@@ -46,7 +46,10 @@ class App extends Component{
     return(
       <BrowserRouter>
         <div className="App"> 
-          <HeaderComponent onLogout={this.logout}></HeaderComponent>
+          <HeaderComponent
+            isAuthenticated={this.props.isAuthenticated} 
+            onLogout={this.logout}>
+          </HeaderComponent>
           {this.props.showSpinner && <ProgressBarComponent></ProgressBarComponent> }
           <Switch>
             <Route exact path='/' component={HomePageComponent}/>
@@ -60,7 +63,10 @@ class App extends Component{
   }
 }
 const connectedApp = connect(
-  state => ({showSpinner: state.appReducer.showSpinner}),
+  state => ({
+    showSpinner: state.appReducer.showSpinner,
+    isAuthenticated: state.authReducer.isAuthenticated
+  }),
   dispatch => bindActionCreators({getLocalStorageSession, appInit, logout}, dispatch)
 )(App)
 export default hot(module)(connectedApp);

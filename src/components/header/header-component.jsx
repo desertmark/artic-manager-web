@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+
+
+
+const LoginLogout = ({isAuthenticated, onLogout}) => (
+  <li className="nav-item">
+    {isAuthenticated ? <button className="btn btn-danger btn-sm" onClick={onLogout}>Log out</button> : <Link className="btn btn-secondary btn-sm" to='/login'>Log in</Link> }
+  </li>
+);
 class HeaderComponent extends Component{
   constructor() {
     super();
@@ -27,16 +35,12 @@ class HeaderComponent extends Component{
                 <Link className="nav-link" to='/contact'>Contact</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to='/login'>Login</Link>
-              </li>
-              <li className="nav-item">
-                <button className="btn btn-link nav-link" onClick={this.logout}>Logout</button>
-              </li>
-              <li className="nav-item">
                 <Link className="nav-link" to='/debug'>Debug</Link>
               </li>
             </ul>
           </div>
+
+          <LoginLogout isAuthenticated={this.props.isAuthenticated} onLogout={this.logout}></LoginLogout>
         </nav>
       </div>
     );
