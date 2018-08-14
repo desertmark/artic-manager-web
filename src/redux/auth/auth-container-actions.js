@@ -6,7 +6,7 @@ import { LOGIN_REQUEST, LOGOUT_REQUEST, STORE_SESSION, GET_LOCAL_SESSION } from 
 export function login(values) {
     return dispatch => {
         const promise = authService.login(values);
-        dispatch({
+        return dispatch({
             type: LOGIN_REQUEST, 
             payload: promise, 
             meta: {
@@ -15,7 +15,7 @@ export function login(values) {
             }
         })
         .then(({action, value}) => {
-            dispatch(storeSession(value));
+            return dispatch(storeSession(value));
         });
     }
 }

@@ -10,7 +10,9 @@ class LoginFormContainer extends Component{
     this.login = this.login.bind(this);
   }
   login(values) {
-    this.props.login(values);
+    this.props.login(values).then(() => {
+      this.props.onLoginCompleted();
+    });
   }
   render(){
     return(
