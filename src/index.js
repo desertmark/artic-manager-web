@@ -19,6 +19,7 @@ import promiseMiddleware from 'redux-promise-middleware';
 import { createLogger } from 'redux-logger'
 import { spinnerMiddleware } from './redux/middlewares/spinner-middleware';
 import { getCurrentUserMiddleware } from './redux/middlewares/user-middleware';
+import { detectExpiredSessionMiddleware } from './redux/middlewares/auth-middleware';
 
 const logger = createLogger({
   predicate: (getState, action) => !action.type.startsWith('@@redux-form')
@@ -28,7 +29,8 @@ const middlewares = applyMiddleware(
   logger, 
   promiseMiddleware(), 
   spinnerMiddleware, 
-  getCurrentUserMiddleware
+  getCurrentUserMiddleware,
+  detectExpiredSessionMiddleware
 );
 
 const store = createStore(reducer, middlewares);

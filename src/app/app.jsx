@@ -59,10 +59,7 @@ class App extends Component{
     return(
       <BrowserRouter>
         <div className="App"> 
-          <HeaderComponent
-            isAuthenticated={this.props.isAuthenticated} 
-            onLogout={this.logout}>
-          </HeaderComponent>
+          <HeaderComponent></HeaderComponent>
           {this.props.showSpinner && <ProgressBarComponent></ProgressBarComponent> }
           <Switch>
             <Route exact path='/' component={HomePageComponent}/>

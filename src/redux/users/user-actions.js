@@ -1,5 +1,5 @@
 import userService from './user-service';
-import { GET_CURRENT_USER } from './user-constants';
+import { GET_CURRENT_USER, CLEAR_CURRENT_USER } from './user-constants';
 
 export function getCurrentUser() {
     return (dispatch, getState) => {
@@ -13,4 +13,8 @@ export function getCurrentUser() {
             }
         });
     }
+}
+
+export function clearCurrentUser() {
+    return {type: CLEAR_CURRENT_USER };
 }

@@ -48,5 +48,6 @@ export default {
     login,
     logout,
     storeSession,
-    getLocalStorageSession
+    getLocalStorageSession,
+    clearLocalSession
 }

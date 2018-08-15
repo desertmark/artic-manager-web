@@ -9,6 +9,10 @@ function getUser(userId) {
     return axios({
         url: `${API_URL}/users/${userId}`,
         method: 'GET'
+    })
+    .then(res => res.data)
+    .catch(error => {
+        throw error.response
     });
 }
 

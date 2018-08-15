@@ -9,6 +9,8 @@ import {
 
     STORE_SESSION,
     GET_LOCAL_SESSION,
+    CLEAR_SESSION,
+    CLEAR_LOCAL_SESSION
 } from './auth-constants-container';
 
 const defaultState = {
@@ -24,9 +26,9 @@ export function authReducer (currentState = defaultState, action) {
     case LOGIN_REQUEST_PENDING:
         return Object.assign({}, currentState, {isLoading: true});
     case LOGIN_REQUEST_FULFILLED:
-        return Object.assign({}, currentState, {isLoading: false, session: action.payload});
+        return Object.assign({}, currentState, {isLoading: false, session: action.payload, error: null});
     case LOGIN_REQUEST_REJECTED:
-        return Object.assign({}, currentState, {isLoading: false, error: action.payload});
+        return Object.assign({}, currentState, {isLoading: false, error: action.payload, session: null});
 
     // LOGOUT
     case LOGOUT_REQUEST_PENDING:
@@ -44,6 +46,12 @@ export function authReducer (currentState = defaultState, action) {
             isAuthenticated: action.payload ? true : false,
             session: action.payload || null
         });
+    case CLEAR_LOCAL_SESSION: 
+        return Object.assign({}, currentState, {
+            isAuthenticated: false,
+            session: null,
+            error: null
+        }); 
     default:
     	return currentState; // Always return the state
   }

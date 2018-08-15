@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-
+import LoginLogoutContainer from '../../containers/login/login-logout-container';
 
 
 const LoginLogout = ({isAuthenticated, onLogout}) => (
@@ -10,14 +10,6 @@ const LoginLogout = ({isAuthenticated, onLogout}) => (
   </div>
 );
 class HeaderComponent extends Component{
-  constructor() {
-    super();
-    this.logout = this.logout.bind(this);
-  }
-
-  logout() {
-    this.props.onLogout();
-  }
   render(){
     return(
       <div id="header-component-component">
@@ -26,7 +18,7 @@ class HeaderComponent extends Component{
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
+          <div className="collapse navbar-collapse justify-content-stretch" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
                 <Link className="nav-link" to='/'>Home</Link>
@@ -38,9 +30,9 @@ class HeaderComponent extends Component{
                 <Link className="nav-link" to='/debug'>Debug</Link>
               </li>
             </ul>
+            <LoginLogoutContainer></LoginLogoutContainer>
           </div>
-
-          <LoginLogout isAuthenticated={this.props.isAuthenticated} onLogout={this.logout}></LoginLogout>
+          {/* <LoginLogout isAuthenticated={this.props.isAuthenticated} onLogout={this.logout}></LoginLogout> */}
         </nav>
       </div>
     );

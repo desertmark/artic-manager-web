@@ -1,6 +1,6 @@
 import authService from './auth-service';
-import { LOGIN_REQUEST, LOGOUT_REQUEST, STORE_SESSION, GET_LOCAL_SESSION } from './auth-constants-container';
-import { CLEAR_CURRENT_USER } from '../users/user-constants';
+import { LOGIN_REQUEST, LOGOUT_REQUEST, STORE_SESSION, GET_LOCAL_SESSION, CLEAR_LOCAL_SESSION } from './auth-constants-container';
+import { clearCurrentUser } from '../users/user-actions';
 
 // ActionCreators
 
@@ -33,7 +33,7 @@ export function logout() {
             }
         })
         .then(() => {
-            return dispatch({type: CLEAR_CURRENT_USER });
+            return dispatch(clearCurrentUser());
         });
     }
 }
@@ -50,5 +50,12 @@ export function getLocalStorageSession() {
     return {
         type: GET_LOCAL_SESSION,
         payload: session,
+    }
+}
+
+export function clearLocalSession() {
+    authService.clearLocalSession();
+    return {
+        type: CLEAR_LOCAL_SESSION
     }
 }

@@ -14,11 +14,11 @@ export function userReducer(currentState = defaultState, action) {
         case GET_CURRENT_USER_PENDING:
             return Object.assign({}, currentState);
         case GET_CURRENT_USER_FULFILLED:
-            return Object.assign({}, currentState, {currentUser: action.payload});
+            return Object.assign({}, currentState, {currentUser: action.payload, error: null});
         case GET_CURRENT_USER_REJECTED:
-            return Object.assign({}, currentState, {error: action.payload});
+            return Object.assign({}, currentState, {error: action.payload, currentUser: null});
         case CLEAR_CURRENT_USER:
-            return Object.assign({}, currentState, {currentUser: null});
+            return Object.assign({}, currentState, {currentUser: null, error: null});
         default:
             return currentState;
     }

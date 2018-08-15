@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LoginFormContainer from '../../containers/login-form/login-form-container';
+import LoginFormContainer from '../../containers/login/login-form-container';
 import {withRouter} from 'react-router';
 
 class LoginPageComponent extends Component{
