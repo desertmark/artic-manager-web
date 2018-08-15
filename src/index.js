@@ -18,12 +18,20 @@ import ReduxThunk from 'redux-thunk';
 import promiseMiddleware from 'redux-promise-middleware';
 import { createLogger } from 'redux-logger'
 import { spinnerMiddleware } from './redux/middlewares/spinner-middleware';
+import { getCurrentUserMiddleware } from './redux/middlewares/user-middleware';
 
 const logger = createLogger({
   predicate: (getState, action) => !action.type.startsWith('@@redux-form')
 })
+const middlewares = applyMiddleware(
+  ReduxThunk, 
+  logger, 
+  promiseMiddleware(), 
+  spinnerMiddleware, 
+  getCurrentUserMiddleware
+);
 
-const store = createStore(reducer, applyMiddleware(ReduxThunk, logger, promiseMiddleware(), spinnerMiddleware));
+const store = createStore(reducer, middlewares);
 
 ReactDOM.render(
   <Provider store={store} >

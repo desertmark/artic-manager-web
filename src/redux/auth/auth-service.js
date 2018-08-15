@@ -6,7 +6,9 @@ function login(values) {
         method: 'POST',
         data: values
     })
-    .then(res => res.data)
+    .then(res => {
+        return res.data;
+    })
     .catch(error => {
         console.log('Error loging in:', error);
         throw error.response.data;

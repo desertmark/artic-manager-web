@@ -67,8 +67,8 @@ class App extends Component{
           <Switch>
             <Route exact path='/' component={HomePageComponent}/>
             <Route exact path='/contact' component={ContactPageComponent}/>
-            <LoginRoute isAuthenticated={this.props.isAuthenticated} component={LoginPageComponent}/>
             { ENV_NAME !== 'Production' && <Route exact path='/debug' component={DebugPageComponent}></Route> } 
+            <LoginRoute isAuthenticated={this.props.isAuthenticated} component={LoginPageComponent}/>
           </Switch>
         </div>
       </BrowserRouter>

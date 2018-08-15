@@ -1,5 +1,6 @@
 import authService from './auth-service';
 import { LOGIN_REQUEST, LOGOUT_REQUEST, STORE_SESSION, GET_LOCAL_SESSION } from './auth-constants-container';
+import { CLEAR_CURRENT_USER } from '../users/user-constants';
 
 // ActionCreators
 
@@ -30,6 +31,9 @@ export function logout() {
                 showSpinner: true,
                 promise
             }
+        })
+        .then(() => {
+            return dispatch({type: CLEAR_CURRENT_USER });
         });
     }
 }

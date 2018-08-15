@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 
 
 const LoginLogout = ({isAuthenticated, onLogout}) => (
-  <li className="nav-item">
+  <div className="nav-item">
     {isAuthenticated ? <button className="btn btn-danger btn-sm" onClick={onLogout}>Log out</button> : <Link className="btn btn-secondary btn-sm" to='/login'>Log in</Link> }
-  </li>
+  </div>
 );
 class HeaderComponent extends Component{
   constructor() {

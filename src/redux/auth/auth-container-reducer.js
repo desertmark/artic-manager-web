@@ -11,13 +11,14 @@ import {
     GET_LOCAL_SESSION,
 } from './auth-constants-container';
 
-export function authReducer (currentState, action) {
-	currentState = currentState || {
-  	isLoading: false,
-    session: null,
-    error: null,
-    isAuthenticated: false,
-  }; // Initial State
+const defaultState = {
+    isLoading: false,
+  session: null,
+  error: null,
+  isAuthenticated: false,
+}; // Initial State
+
+export function authReducer (currentState = defaultState, action) {
   switch (action.type) {
     // LOGIN
     case LOGIN_REQUEST_PENDING:
