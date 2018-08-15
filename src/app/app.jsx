@@ -17,14 +17,13 @@ import LoginPageComponent from '../pages/login-page/login-page-component';
 import DebugPageComponent from '../pages/debug-page/debug-page-component';
 
 import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
+import ProfilePageComponent from '../pages/profile-page/profile-page-component';
 
-const LoginRoute = (props) => (
+const AuthRoute = (props) => (
   <Route
-    exact 
-    path='/login'
     render = {
       () =>
-        !props.isAuthenticated ? 
+        props.show ?
         (<props.component {...props} />) : 
         (<Redirect to={{pathname: '/',state: { from: props.location }}}/>)
       }
@@ -64,8 +63,9 @@ class App extends Component{
           <Switch>
             <Route exact path='/' component={HomePageComponent}/>
             <Route exact path='/contact' component={ContactPageComponent}/>
+            <AuthRoute exact path='/profile' show={this.props.isAuthenticated}component={ProfilePageComponent}/>
+            <AuthRoute exact path='/login' show={!this.props.isAuthenticated} component={LoginPageComponent}/>
             { ENV_NAME !== 'Production' && <Route exact path='/debug' component={DebugPageComponent}></Route> } 
-            <LoginRoute isAuthenticated={this.props.isAuthenticated} component={LoginPageComponent}/>
           </Switch>
         </div>
       </BrowserRouter>

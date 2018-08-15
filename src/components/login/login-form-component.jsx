@@ -10,20 +10,20 @@ class LoginFormComponent extends Component{
         <form onSubmit={this.props.handleSubmit}>
           <div className="form-row">
             <div className="form-group col-lg-6">
-              <label>User Name</label>
+              <label className="text-secondary" >User Name</label>
               <Field name="email" component="input" type="text" className="form-control" placeholder="User Name" />
             </div>
           </div>
           <div className="form-row">
             <div className="form-group col-lg-6">
-              <label>Password</label>
+              <label className="text-secondary" >Password</label>
               <Field name="password" component="input" type="password" className="form-control" placeholder="Password" />
             </div>
           </div>
           <div className="form-group">
             <div className="form-check">
               <Field name="remeberme" component="input" className="form-check-input" type="checkbox" />
-              <label className="form-check-label">
+              <label className="text-secondary form-check-label">
                 Remeber me?
               </label>
             </div>

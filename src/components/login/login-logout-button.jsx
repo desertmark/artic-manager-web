@@ -8,11 +8,11 @@ class LoginLogoutButton extends Component {
             <div className="nav-link">
                 {isAuthenticated ? 
                     <button 
-                        className="btn btn-danger btn-sm" 
+                        className="btn btn-outline-danger btn-sm" 
                         onClick={onLogout}>Log out
                     </button> : 
                     <Link 
-                        className="btn btn-secondary btn-sm" 
+                        className="btn btn-outline-info btn-sm" 
                         to='/login'>Log in
                     </Link>
                 }

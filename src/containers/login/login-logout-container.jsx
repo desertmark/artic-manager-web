@@ -10,7 +10,7 @@ class LoginLogoutContainer extends Component {
     const {currentUser, isAuthenticated, logout} = this.props;
     let fullName = currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : '';
     return(
-      <ul class="navbar-nav ml-auto">
+      <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           {this.props.isAuthenticated && 
             <a className="nav-link text-secondary">{fullName}</a>
