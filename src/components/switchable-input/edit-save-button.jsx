@@ -17,17 +17,19 @@ export class EditSaveButton extends Component {
 
     render() {
         const { edit } = this.state;
+        let props = Object.assign({}, this.props)
+        delete props.onModeChange
         let text;
         let type;
         if(edit) {
             text = 'Save';
-            type = 'submit';
+            type = 'button';
         } else {
             text = 'Edit';
-            type = 'button';
+            type = 'submit';
         }
         return (
-            <button type={type} onClick={this.onClick} >{text}</button>
+            <button type={type} onClick={this.onClick} {...props} >{text}</button>
         )
     }
 }

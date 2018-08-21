@@ -18,3 +18,17 @@ export function getCurrentUser() {
 export function clearCurrentUser() {
     return {type: CLEAR_CURRENT_USER };
 }
+
+export function updateUser(userId, values) {
+    return (dispatch, getState) => {
+        const promise = userService.getCurrentUser(userId, values);
+        return dispatch({
+            type: PUT_CURRENT_USER,
+            payload: promise,
+            meta: {
+                showSpinner: true,
+                promise
+            }
+        });
+    }
+}
