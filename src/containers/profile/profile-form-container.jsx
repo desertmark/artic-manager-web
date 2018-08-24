@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators  } from 'redux';
 import { connect } from 'react-redux';
-// import { saveProfile } from '../../redux/profile/profile-actions';
+import { updateUser } from '../../redux/users/user-actions';
 import ProfileFormComponent from '../../components/profile/profile-form-component';
 
 class ProfileFormContainer extends Component{
@@ -10,7 +10,7 @@ class ProfileFormContainer extends Component{
     this.save = this.save.bind(this);
   }
   save(values) {
-    console.log(values);
+    this.props.updateUser(this.props.currentUser._id, values);
   }
   render(){
     return(
@@ -32,5 +32,5 @@ export default connect(
     currentUser: state.userReducer.currentUser,    
     isLoading: state.appReducer.showSpinner
   }), // mapStateToProps
-  null, // dispatch => bindActionCreators({saveProfile},dispatch) // mapDispatchToProps
+  dispatch => bindActionCreators({updateUser},dispatch) // mapDispatchToProps
 )(ProfileFormContainer)

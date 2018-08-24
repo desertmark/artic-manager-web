@@ -21,7 +21,7 @@ export function clearCurrentUser() {
 
 export function updateUser(userId, values) {
     return (dispatch, getState) => {
-        const promise = userService.getCurrentUser(userId, values);
+        const promise = userService.updateUser(userId, values);
         return dispatch({
             type: PUT_CURRENT_USER,
             payload: promise,
