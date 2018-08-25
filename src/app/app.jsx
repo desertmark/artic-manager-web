@@ -15,9 +15,11 @@ import HomePageComponent from '../pages/home-page/home-page-component';
 import ContactPageComponent from '../pages/contact-page/contact-page-component';
 import LoginPageComponent from '../pages/login-page/login-page-component';
 import DebugPageComponent from '../pages/debug-page/debug-page-component';
+import ProfilePageComponent from '../pages/profile-page/profile-page-component';
+import ManagePageComponent from '../pages/manage-page/manage-page-component';
 
 import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
-import ProfilePageComponent from '../pages/profile-page/profile-page-component';
+
 
 const AuthRoute = (props) => (
   <Route
@@ -65,6 +67,7 @@ class App extends Component{
             <Route exact path='/contact' component={ContactPageComponent}/>
             <AuthRoute exact path='/profile' show={this.props.isAuthenticated}component={ProfilePageComponent}/>
             <AuthRoute exact path='/login' show={!this.props.isAuthenticated} component={LoginPageComponent}/>
+            <AuthRoute exact path='/manage' show={this.props.isAuthenticated} component={ManagePageComponent}/>
             { ENV_NAME !== 'Production' && <Route exact path='/debug' component={DebugPageComponent}></Route> } 
           </Switch>
         </div>
