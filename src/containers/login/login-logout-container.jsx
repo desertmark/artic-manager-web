@@ -4,6 +4,7 @@ import LoginLogoutButton from '../../components/login/login-logout-button';
 
 import { bindActionCreators  } from 'redux';
 import { logout } from '../../redux/auth/auth-container-actions';
+import DropdownComponent from '../../components/dropdown/dropdown-component';
 
 class LoginLogoutContainer extends Component {
   render(){
@@ -12,8 +13,12 @@ class LoginLogoutContainer extends Component {
     return(
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
-          {this.props.isAuthenticated && 
-            <a className="nav-link text-secondary">{fullName}</a>
+          {this.props.isAuthenticated &&
+            <DropdownComponent text={fullName} options={[{
+              link: '/manage',
+              text: 'Manage',
+              icon: 'fa-cog'
+            }]}></DropdownComponent>
           }
         </li>
         <li className="nav-item">
