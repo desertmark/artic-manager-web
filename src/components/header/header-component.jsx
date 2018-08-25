@@ -3,13 +3,22 @@ import { Link } from 'react-router-dom';
 
 import LoginLogoutContainer from '../../containers/login/login-logout-container';
 
+class HeaderComponent extends Component {
 
-const LoginLogout = ({isAuthenticated, onLogout}) => (
-  <div className="nav-item">
-    {isAuthenticated ? <button className="btn btn-danger btn-sm" onClick={onLogout}>Log out</button> : <Link className="btn btn-secondary btn-sm" to='/login'>Log in</Link> }
-  </div>
-);
-class HeaderComponent extends Component{
+  constructor() {
+    super();
+    this.authRoutes = this.authRoutes.bind(this);
+  }
+
+  authRoutes() {
+    if(this.props.showAuthRoutes) {
+      return (
+        <li className="nav-item">
+          <Link className="nav-link" to='/profile'>Profile</Link>
+        </li>
+      )
+    }
+  }
   render(){
     return(
       <div id="header-component-component">
@@ -26,16 +35,13 @@ class HeaderComponent extends Component{
               <li className="nav-item">
                 <Link className="nav-link" to='/contact'>Contact</Link>
               </li>
-              <li className="nav-item">
-                <Link className="nav-link" to='/profile'>Profile</Link>
-              </li>
+              {this.authRoutes()}
               <li className="nav-item">
                 <Link className="nav-link" to='/debug'>Debug</Link>
               </li>
             </ul>
             <LoginLogoutContainer></LoginLogoutContainer>
           </div>
-          {/* <LoginLogout isAuthenticated={this.props.isAuthenticated} onLogout={this.logout}></LoginLogout> */}
         </nav>
       </div>
     );
