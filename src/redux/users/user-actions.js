@@ -1,5 +1,5 @@
 import userService from './user-service';
-import { GET_CURRENT_USER, CLEAR_CURRENT_USER, PUT_USER } from './user-constants';
+import { GET_CURRENT_USER, CLEAR_CURRENT_USER, PUT_USER, GET_USERS } from './user-constants';
 
 export function getCurrentUser() {
     return (dispatch, getState) => {
@@ -24,6 +24,20 @@ export function updateUser(userId, values) {
         const promise = userService.updateUser(userId, values);
         return dispatch({
             type: PUT_USER,
+            payload: promise,
+            meta: {
+                showSpinner: true,
+                promise
+            }
+        });
+    }
+}
+
+export function getUsers() {
+    return (dispatch, getState) => {
+        const promise = userService.getUsers();
+        return dispatch({
+            type: GET_USERS,
             payload: promise,
             meta: {
                 showSpinner: true,

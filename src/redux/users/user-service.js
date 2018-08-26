@@ -16,6 +16,17 @@ function getUser(userId) {
     });
 }
 
+function getUsers() {
+    return axios({
+        url: `${API_URL}/users/`,
+        method: 'GET'
+    })
+    .then(res => res.data)
+    .catch(error => {
+        throw error.response
+    });
+}
+
 function updateUser(userId, values) {
     return axios({
         url: `${API_URL}/users/${userId}`,
@@ -31,5 +42,6 @@ function updateUser(userId, values) {
 export default {
     getCurrentUser,
     getUser,
+    getUsers,
     updateUser
 }
