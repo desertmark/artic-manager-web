@@ -44,7 +44,7 @@ class UsersTableContainer extends Component{
                 <button key="1" type="button" data-dismiss="modal" className="btn btn-default">Cancel</button>
               ]}  
             >
-              <ProfileFormComponent></ProfileFormComponent>
+              <ProfileFormComponent edit={true} buttonsPosition="end" hideCancel={true}></ProfileFormComponent>
             </ModalComponent>
         </div>
     );

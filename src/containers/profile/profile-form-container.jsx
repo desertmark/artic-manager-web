@@ -13,17 +13,19 @@ class ProfileFormContainer extends Component{
     this.props.updateUser(this.props.currentUser._id, values);
   }
   render(){
+    const { firstName, lastName, email, role } = this.props.currentUser;
     return(
-      <div>
+      <div className="col-lg-6">
         {this.props.currentUser &&
-          <ProfileFormComponent 
-              onSubmit={this.save}
-              profile={this.props.currentUser}
+          <ProfileFormComponent
+            onSubmit={this.save}
+            profile={this.props.currentUser}
+            initialValues={{ firstName, lastName, email, role }}
           >
           </ProfileFormComponent>
         }
       </div>
-    );  
+    );
   }
 }
 

@@ -7,18 +7,23 @@ export class EditSaveButton extends Component {
         this.state = {
           edit: false
         }
-      }
+    }
+
+    // componentWillMount() {
+    //     this.setState({edit: this.props.edit || false});
+    // }
 
     onClick(e) {
-        const {edit} = this.state;
-        this.setState({edit: !edit});
+        const {edit} = this.props;
+        // this.setState({edit: !edit});
         this.props.onModeChange(!edit);
     }
 
     render() {
-        const { edit } = this.state;
+        const { edit } = this.props;
         let props = Object.assign({}, this.props)
-        delete props.onModeChange
+        delete props.onModeChange;
+        delete props.edit;
         let text;
         let type;
         if(edit) {
