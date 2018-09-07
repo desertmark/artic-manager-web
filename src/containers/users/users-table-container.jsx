@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getUsers } from '../../redux/users/user-actions'
 import ModalComponent from '../../components/modal/modal-component';
 import ProfileFormComponent from '../../components/profile/profile-form-component';
+import BootstrapTable from 'react-bootstrap-table-next';
 
 class UsersTableContainer extends Component{
   constructor() {
@@ -17,6 +18,17 @@ class UsersTableContainer extends Component{
   createUser(values) {
     console.log(values)
   }
+
+  getData() {
+    return this.props.users.map(user => {
+      user.actions = [
+        <button key='delete' onClick={()=>alert('Delete')} className="btn btn-outline-danger btn-block">
+        <i className="fa fa-trash"></i>
+        </button>
+      ];
+      return user;
+    })
+  }
   
   render(){
     return(
@@ -28,11 +40,23 @@ class UsersTableContainer extends Component{
                   <i className="fas fa-plus pr-1"></i>
                   Add
                 </button>
-                <BootstrapTable data={this.props.users} striped hover version="4">
-                    <TableHeaderColumn dataSort isKey dataField='_id'>User ID</TableHeaderColumn>
-                    <TableHeaderColumn dataSort dataField='firstName'>First Name</TableHeaderColumn>
-                    <TableHeaderColumn dataField='lastName'>Last Name</TableHeaderColumn>
-                    <TableHeaderColumn dataField='role'>Role</TableHeaderColumn>
+                <BootstrapTable keyField='_id' data={this.getData()} striped hover bootstrap4 columns={[{
+                    dataField: '_id',
+                    text: 'ID'
+                  }, {
+                    dataField: 'firstName',
+                    text: 'First Name'
+                  }, {
+                    dataField: 'lastName',
+                    text: 'Last Name'
+                  }, {
+                    dataField: 'role',
+                    text: 'Role'
+                  }, {
+                    dataField: 'actions',
+                    text: 'Actions',
+                    classes:'d-flex justify-content-start'
+                  }]}>
                 </BootstrapTable>
               </div>
             </div>

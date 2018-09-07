@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import UsersTableContainer from '../../containers/users/users-table-container';
 class ManagePageComponent extends Component{
   render(){

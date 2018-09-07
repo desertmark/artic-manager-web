@@ -80,12 +80,12 @@ class ProfileFormComponent extends Component{
             <div className="form-group col">
               <label className="text-secondary">Level of authorization</label>
               <SwitchableInputComponent edit={this.isEditable()} value={formData.role}>
-                <SelectComponent label="Role" name="role" selected={formData.role}>
+                <Field label="Role" name="role" selected={formData.role} component={SelectComponent}>
                   {[
                     {value: "USER",text: "USER" },
                     {value: "ADMIN",text: "ADMIN" }
                   ]}
-                </SelectComponent>
+                </Field>
               </SwitchableInputComponent>
             </div>
           </div>

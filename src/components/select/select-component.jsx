@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 
 export default class SelectComponent extends Component {
     render() {
-        const { props } = this;
         return (
             <div className="input-group mb-3">
-                <select className="custom-select" {...props}>
+                <select className="custom-select" defaultValue={this.props.input.selected} name={this.props.input.name} {...this.props.input}>
                     {this.props.children.map((opt,ix) => 
                         <option 
                             key={ix} 
