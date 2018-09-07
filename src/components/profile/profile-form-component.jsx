@@ -9,24 +9,47 @@ class ProfileFormComponent extends Component{
   constructor() {
     super()
     this.handleMode = this.handleMode.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
+    this.isEditable = this.isEditable.bind(this);
     this.state = {
-      edit: false
+      mode: 'details',
+      edit: false,
+      create: false,
+      details: true,
     }
   }
 
   componentWillMount() {
-    this.setState({edit: this.props.edit || false});
+    this.handleMode(this.props.mode);
   }
 
-  handleMode(edit) {
-    this.setState({
-      edit
-    });
+  handleMode(mode) {
+    let state;
+    switch (mode) {
+      case 'details':
+        state = {mode, edit: false, create: false, details: true};
+        break;
+      case 'edit':
+        state = {mode, edit: true, create: false, details: false};
+        break;
+      case 'create':
+        state = {mode, edit: false, create: true, details: false};
+        break;
+    }
+    this.setState(state);
+  }
+
+  isEditable() {
+    return this.state.edit || this.state.create;
+  }
+
+  toggleEdit() {
+    this.state.edit ? this.handleMode('details') : this.handleMode('edit');
   }
 
   render(){
     const { formData, buttonsPosition, hideCancel } = this.props;
-    const { edit } = this.state;
+    const { edit, create, details } = this.state;
     const role = this.props.profile ? this.props.profile.role : '';
     return(
       <div id="profile-form-component">
@@ -34,13 +57,13 @@ class ProfileFormComponent extends Component{
           <div className="form-row">
             <div className="form-group col">
               <label className="text-secondary">First Name</label>
-              <SwitchableInputComponent edit={edit} value={formData.firstName} >
+              <SwitchableInputComponent edit={this.isEditable()} value={formData.firstName} >
                 <Field name="firstName" component="input" type="text" className="form-control" placeholder="First Name" />
               </SwitchableInputComponent>
             </div>
             <div className="form-group col">
               <label className="text-secondary">Last Name</label>
-              <SwitchableInputComponent edit={edit} value={formData.lastName} >
+              <SwitchableInputComponent edit={this.isEditable()} value={formData.lastName} >
                 <Field name="lastName" component="input" type="text" className="form-control" placeholder="Last Name" />
               </SwitchableInputComponent>
             </div>
@@ -48,7 +71,7 @@ class ProfileFormComponent extends Component{
           <div className="form-row">
             <div className="form-group col">
               <label className="text-secondary">User Name</label>
-              <SwitchableInputComponent edit={edit} value={formData.email} >
+              <SwitchableInputComponent edit={this.isEditable()} value={formData.email} >
                 <Field name="email" component="input" type="text" className="form-control" placeholder="User Name or E-mail" />
               </SwitchableInputComponent>
             </div>
@@ -56,7 +79,7 @@ class ProfileFormComponent extends Component{
           <div className="form-row">
             <div className="form-group col">
               <label className="text-secondary">Level of authorization</label>
-              <SwitchableInputComponent edit={edit} value={formData.role}>
+              <SwitchableInputComponent edit={this.isEditable()} value={formData.role}>
                 <SelectComponent label="Role" name="role" selected={formData.role}>
                   {[
                     {value: "USER",text: "USER" },
@@ -67,8 +90,9 @@ class ProfileFormComponent extends Component{
             </div>
           </div>
           <div className={`d-flex justify-content-${buttonsPosition || 'start'}`}>
-            <EditSaveButton edit={edit} className="btn btn-primary" onModeChange={this.handleMode} />
-            {edit && !hideCancel && <button type="button" onClick={()=>this.handleMode(false)} className="btn btn-default ml-2">Cancel</button>}
+            {(edit || details) && <EditSaveButton edit={edit} className="btn btn-primary" onModeChange={this.toggleEdit} />}
+            {edit && !hideCancel && <button type="button" onClick={this.toggleEdit} className="btn btn-default ml-2">Cancel</button>}
+            {create && <button type="submit" className="btn btn-primary ml-2">Create</button>}
           </div>
         </form>
       </div>

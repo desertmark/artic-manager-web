@@ -8,14 +8,8 @@ export class EditSaveButton extends Component {
           edit: false
         }
     }
-
-    // componentWillMount() {
-    //     this.setState({edit: this.props.edit || false});
-    // }
-
     onClick(e) {
         const {edit} = this.props;
-        // this.setState({edit: !edit});
         this.props.onModeChange(!edit);
     }
 

@@ -8,15 +8,14 @@ import ProfileFormComponent from '../../components/profile/profile-form-componen
 class UsersTableContainer extends Component{
   constructor() {
     super();
-    this.openModal = this.openModal.bind(this);
-  }
-
-  openModal() {
-
   }
 
   componentWillMount() {
     this.props.getUsers();
+  }
+
+  createUser(values) {
+    console.log(values)
   }
   
   render(){
@@ -44,7 +43,7 @@ class UsersTableContainer extends Component{
                 <button key="1" type="button" data-dismiss="modal" className="btn btn-default">Cancel</button>
               ]}  
             >
-              <ProfileFormComponent edit={true} buttonsPosition="end" hideCancel={true}></ProfileFormComponent>
+              <ProfileFormComponent onSubmit={this.createUser} mode="create" buttonsPosition="end" hideCancel={true}></ProfileFormComponent>
             </ModalComponent>
         </div>
     );
