@@ -39,9 +39,22 @@ function updateUser(userId, values) {
     });
 }
 
+function createUser(user) {
+    return axios({
+        url: `${API_URL}/users`,
+        method: 'POST',
+        data: user
+    })
+    .then(res => res.data)
+    .catch(error => {
+        throw error.response
+    });
+}
+
 export default {
     getCurrentUser,
     getUser,
     getUsers,
-    updateUser
+    updateUser,
+    createUser
 }

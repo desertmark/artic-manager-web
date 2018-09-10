@@ -3,7 +3,7 @@
 const env = process.env.NODE_ENV || 'dev';
 let config = {
     name: 'Development',
-    API_URL:'http://localhost:3000'
+    API_URL:'http://localhost:3001'
 }
 switch (env.toLocaleLowerCase()) {
     case 'production':

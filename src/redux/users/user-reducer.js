@@ -9,6 +9,9 @@ import {
     GET_USERS_PENDING,
     GET_USERS_FULFILLED,
     GET_USERS_REJECTED,
+    CREATE_USER_PENDING,
+    CREATE_USER_FULFILLED,
+    CREATE_USER_REJECTED,
     
 
 } from './user-constants';
@@ -42,6 +45,14 @@ export function userReducer(currentState = defaultState, action) {
         case GET_USERS_FULFILLED:
             return Object.assign({}, currentState, {users: action.payload, error: null});
         case GET_USERS_REJECTED:
+            return Object.assign({}, currentState, {error: action.payload});
+
+        case CREATE_USER_PENDING:
+            return Object.assign({}, currentState);
+        case CREATE_USER_FULFILLED:
+            const users = currentState.users.concat(action.payload);
+            return Object.assign({}, currentState, {users, error: null});
+        case CREATE_USER_REJECTED:
             return Object.assign({}, currentState, {error: action.payload});
 
         default:

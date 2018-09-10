@@ -76,6 +76,17 @@ class ProfileFormComponent extends Component{
               </SwitchableInputComponent>
             </div>
           </div>
+          {
+            create && 
+            <div className="form-row">
+              <div className="form-group col">
+                <label className="text-secondary">Password</label>
+                <SwitchableInputComponent edit={this.isEditable()} value={formData.email} >
+                  <Field name="password" component="input" type="password" className="form-control" placeholder="Password" />
+                </SwitchableInputComponent>
+              </div>
+            </div>
+          }
           <div className="form-row">
             <div className="form-group col">
               <label className="text-secondary">Level of authorization</label>

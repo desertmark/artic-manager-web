@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators  } from 'redux';
 import { connect } from 'react-redux';
-import { getUsers } from '../../redux/users/user-actions'
+import { getUsers, createUser } from '../../redux/users/user-actions'
 import ModalComponent from '../../components/modal/modal-component';
 import ProfileFormComponent from '../../components/profile/profile-form-component';
 import BootstrapTable from 'react-bootstrap-table-next';
@@ -9,6 +9,8 @@ import BootstrapTable from 'react-bootstrap-table-next';
 class UsersTableContainer extends Component{
   constructor() {
     super();
+    this.getData = this.getData.bind(this);
+    this.createUser = this.createUser.bind(this);
   }
 
   componentWillMount() {
@@ -16,7 +18,7 @@ class UsersTableContainer extends Component{
   }
 
   createUser(values) {
-    console.log(values)
+    this.props.createUser(values);
   }
 
   getData() {
@@ -79,5 +81,5 @@ export default connect(
     isLoading: state.appReducer.showSpinner,
     users: state.userReducer.users
   }), // mapStateToProps
-  dispatch => bindActionCreators({getUsers},dispatch) // mapDispatchToProps
+  dispatch => bindActionCreators({getUsers, createUser},dispatch) // mapDispatchToProps
 )(UsersTableContainer)
