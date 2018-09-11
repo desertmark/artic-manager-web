@@ -103,7 +103,7 @@ class ProfileFormComponent extends Component{
           <div className={`d-flex justify-content-${buttonsPosition || 'start'}`}>
             {(edit || details) && <EditSaveButton edit={edit} className="btn btn-primary" onModeChange={this.toggleEdit} />}
             {(edit || create) && !hideCancel && <button type="button" onClick={this.toggleEdit} className="btn btn-default ml-2">Cancel</button>}
-            {create && <button type="submit" className="btn btn-primary ml-2">Create</button>}
+            {create && <button type="submit" data-target="#add-user-modal" data-toggle="modal" className="btn btn-primary ml-2">Create</button>}
           </div>
         </form>
       </div>

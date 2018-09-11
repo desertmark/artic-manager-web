@@ -19,7 +19,6 @@ class UsersTableContainer extends Component{
 
   createUser(values) {
     this.props.createUser(values);
-    $('#add-user-modal').modal('hide');
   }
 
   getData() {
