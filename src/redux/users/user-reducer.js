@@ -12,9 +12,11 @@ import {
     CREATE_USER_PENDING,
     CREATE_USER_FULFILLED,
     CREATE_USER_REJECTED,
-    
-
+    DELETE_USER_PENDING,
+    DELETE_USER_FULFILLED,
+    DELETE_USER_REJECTED,
 } from './user-constants';
+import * as _ from 'lodash';
 
 const defaultState = {
     currentUser: null,
@@ -22,6 +24,8 @@ const defaultState = {
 }
 
 export function userReducer(currentState = defaultState, action) {
+    let users;
+
     switch(action.type) {        
         case GET_CURRENT_USER_PENDING:
             return Object.assign({}, currentState);
@@ -50,9 +54,18 @@ export function userReducer(currentState = defaultState, action) {
         case CREATE_USER_PENDING:
             return Object.assign({}, currentState);
         case CREATE_USER_FULFILLED:
-            const users = currentState.users.concat(action.payload);
+            users = currentState.users.concat(action.payload);
             return Object.assign({}, currentState, {users, error: null});
         case CREATE_USER_REJECTED:
+            return Object.assign({}, currentState, {error: action.payload});
+        
+        case DELETE_USER_PENDING:
+            return Object.assign({}, currentState);
+        case DELETE_USER_FULFILLED:
+            users = currentState.users.slice(0);
+            _.remove(users, user => user._id === action.meta.userId);
+            return Object.assign({}, currentState, {users, error: null});
+        case DELETE_USER_REJECTED:
             return Object.assign({}, currentState, {error: action.payload});
 
         default:

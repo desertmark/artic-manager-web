@@ -1,5 +1,5 @@
 import userService from './user-service';
-import { GET_CURRENT_USER, CLEAR_CURRENT_USER, PUT_USER, GET_USERS, CREATE_USER } from './user-constants';
+import { GET_CURRENT_USER, CLEAR_CURRENT_USER, PUT_USER, GET_USERS, CREATE_USER, DELETE_USER } from './user-constants';
 
 export function getCurrentUser() {
     return (dispatch, getState) => {
@@ -56,6 +56,21 @@ export function createUser(user) {
             meta: {
                 showSpinner: true,
                 promise
+            }
+        });
+    }
+}
+
+export function deleteUser(userId) {
+    return (dispatch, getState) => {
+        const promise = userService.deleteUser(userId);
+        return dispatch({
+            type: DELETE_USER,
+            payload: promise,
+            meta: {
+                showSpinner: true,
+                promise,
+                userId
             }
         });
     }

@@ -51,10 +51,22 @@ function createUser(user) {
     });
 }
 
+function deleteUser(userId) {
+    return axios({
+        url: `${API_URL}/users/${userId}`,
+        method: 'DELETE',
+    })
+    .then(res => res.data)
+    .catch(error => {
+        throw error.response
+    });
+}
+
 export default {
     getCurrentUser,
     getUser,
     getUsers,
     updateUser,
-    createUser
+    createUser,
+    deleteUser
 }

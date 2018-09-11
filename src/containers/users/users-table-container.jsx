@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators  } from 'redux';
 import { connect } from 'react-redux';
-import { getUsers, createUser } from '../../redux/users/user-actions'
+import { getUsers, createUser, deleteUser } from '../../redux/users/user-actions'
 import ModalComponent from '../../components/modal/modal-component';
 import ProfileFormComponent from '../../components/profile/profile-form-component';
 import BootstrapTable from 'react-bootstrap-table-next';
@@ -19,12 +19,13 @@ class UsersTableContainer extends Component{
 
   createUser(values) {
     this.props.createUser(values);
+    $('#add-user-modal').modal('hide');
   }
 
   getData() {
     return this.props.users.map(user => {
       user.actions = [
-        <button key='delete' onClick={()=>alert('Delete')} className="btn btn-outline-danger btn-block">
+        <button key='delete' onClick={()=>this.props.deleteUser(user._id)} className="btn btn-outline-danger btn-block">
         <i className="fa fa-trash"></i>
         </button>
       ];
@@ -45,16 +46,24 @@ class UsersTableContainer extends Component{
                 <BootstrapTable keyField='_id' data={this.getData()} striped hover bootstrap4 columns={[{
                     dataField: '_id',
                     text: 'ID'
-                  }, {
+                  }, 
+                  {
                     dataField: 'firstName',
                     text: 'First Name'
-                  }, {
+                  }, 
+                  {
                     dataField: 'lastName',
                     text: 'Last Name'
-                  }, {
+                  }, 
+                  {
+                    dataField: 'email',
+                    text: 'email'
+                  }, 
+                  {
                     dataField: 'role',
                     text: 'Role'
-                  }, {
+                  }, 
+                  {
                     dataField: 'actions',
                     text: 'Actions',
                     classes:'d-flex justify-content-start'
@@ -64,7 +73,7 @@ class UsersTableContainer extends Component{
             </div>
             <ModalComponent 
               name="add-user-modal"
-              title="Add a new user"
+              title="CREATE USER"
             >
               <ProfileFormComponent onSubmit={this.createUser} mode="create" buttonsPosition="end"></ProfileFormComponent>
             </ModalComponent>
@@ -78,5 +87,5 @@ export default connect(
     isLoading: state.appReducer.showSpinner,
     users: state.userReducer.users
   }), // mapStateToProps
-  dispatch => bindActionCreators({getUsers, createUser},dispatch) // mapDispatchToProps
+  dispatch => bindActionCreators({getUsers, createUser, deleteUser},dispatch) // mapDispatchToProps
 )(UsersTableContainer)
