@@ -14,7 +14,7 @@ class LoginLogoutContainer extends Component {
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           {this.props.isAuthenticated &&
-            <DropdownComponent text={fullName} options={[{
+            <DropdownComponent text={fullName} icon="fa-user-circle" options={[{
               link: '/manage',
               text: 'Manage',
               icon: 'fa-cog'

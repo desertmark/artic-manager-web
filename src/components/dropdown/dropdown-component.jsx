@@ -18,8 +18,8 @@ export default class DropdownComponent extends Component {
     render() {
         return (
             <div className="dropdown show">
-                <a className="btn text-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i className="fas fa-user m-2"></i>
+                <a className="btn text-light dropdown-toggle ml-0 pl-0" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i className={`fas ${this.props.icon} m-2`}></i>
                     {this.props.text}
                 </a>
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">

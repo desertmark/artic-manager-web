@@ -65,11 +65,8 @@ class UsersTableContainer extends Component{
             <ModalComponent 
               name="add-user-modal"
               title="Add a new user"
-              buttons={[
-                <button key="1" type="button" data-dismiss="modal" className="btn btn-default">Cancel</button>
-              ]}  
             >
-              <ProfileFormComponent onSubmit={this.createUser} mode="create" buttonsPosition="end" hideCancel={true}></ProfileFormComponent>
+              <ProfileFormComponent onSubmit={this.createUser} mode="create" buttonsPosition="end"></ProfileFormComponent>
             </ModalComponent>
         </div>
     );

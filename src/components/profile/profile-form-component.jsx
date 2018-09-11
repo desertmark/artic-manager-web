@@ -44,7 +44,7 @@ class ProfileFormComponent extends Component{
   }
 
   toggleEdit() {
-    this.state.edit ? this.handleMode('details') : this.handleMode('edit');
+    if(!this.state.create) this.state.edit ? this.handleMode('details') : this.handleMode('edit');
   }
 
   render(){
@@ -91,7 +91,7 @@ class ProfileFormComponent extends Component{
             <div className="form-group col">
               <label className="text-secondary">Level of authorization</label>
               <SwitchableInputComponent edit={this.isEditable()} value={formData.role}>
-                <Field label="Role" name="role" selected={formData.role} component={SelectComponent}>
+                <Field label="Role" name="role" defaultValue={formData.role} component={SelectComponent}>
                   {[
                     {value: "USER",text: "USER" },
                     {value: "ADMIN",text: "ADMIN" }
@@ -102,7 +102,7 @@ class ProfileFormComponent extends Component{
           </div>
           <div className={`d-flex justify-content-${buttonsPosition || 'start'}`}>
             {(edit || details) && <EditSaveButton edit={edit} className="btn btn-primary" onModeChange={this.toggleEdit} />}
-            {edit && !hideCancel && <button type="button" onClick={this.toggleEdit} className="btn btn-default ml-2">Cancel</button>}
+            {(edit || create) && !hideCancel && <button type="button" onClick={this.toggleEdit} data-dismiss="modal" className="btn btn-default ml-2">Cancel</button>}
             {create && <button type="submit" className="btn btn-primary ml-2">Create</button>}
           </div>
         </form>
@@ -115,7 +115,7 @@ const selector = formValueSelector('profileForm');
 export default connect(
   (state, ownProps) => {
     return {
-      initialValues: ownProps.initialValues,
+      initialValues: ownProps.initialValues || {role: 'USER'},
       formData: selector(state, 'firstName', 'lastName', 'email', 'role')
     }
   },

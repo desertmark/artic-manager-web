@@ -4,7 +4,7 @@ export default class SelectComponent extends Component {
     render() {
         return (
             <div className="input-group mb-3">
-                <select className="custom-select" defaultValue={this.props.input.selected} name={this.props.input.name} {...this.props.input}>
+                <select className="custom-select" name={this.props.input.name} {...this.props.input}>
                     {this.props.children.map((opt,ix) => 
                         <option 
                             key={ix} 

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 export default class ModalComponent extends Component {
     render() {
+        const { buttons } = this.props;
         return (
             <div className="modal fade" id={this.props.name} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
@@ -15,9 +16,11 @@ export default class ModalComponent extends Component {
                     <div className="modal-body">
                         {this.props.children}
                     </div>
-                    <div className="modal-footer">
-                        {this.props.buttons}
-                    </div>
+                    {buttons && buttons.length > 0 &&
+                        <div className="modal-footer">
+                            {this.props.buttons}
+                        </div>
+                    }
                     </div>
                 </div>
             </div>

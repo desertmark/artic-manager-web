@@ -14,7 +14,7 @@ class HeaderComponent extends Component {
     if(this.props.showAuthRoutes) {
       return (
         <li className="nav-item">
-          <Link className="nav-link" to='/profile'>Profile</Link>
+          <Link className="nav-link" to='/profile'><i className="fas fa-user-circle m-2"></i>Profile</Link>
         </li>
       )
     }
@@ -30,14 +30,14 @@ class HeaderComponent extends Component {
           <div className="collapse navbar-collapse justify-content-stretch" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <Link className="nav-link" to='/'>Home</Link>
+                <Link className="nav-link" to='/'><i className="fas fa-home m-2"></i>Home</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to='/contact'>Contact</Link>
+                <Link className="nav-link" to='/contact'><i className="fas fa-at m-2"></i>Contact</Link>
               </li>
               {this.authRoutes()}
               <li className="nav-item">
-                <Link className="nav-link" to='/debug'>Debug</Link>
+                <Link className="nav-link" to='/debug'><i className="fas fa-bug m-2"></i>Debug</Link>
               </li>
             </ul>
             <LoginLogoutContainer></LoginLogoutContainer>
