@@ -19,6 +19,7 @@ import ProfilePageComponent from '../pages/profile-page/profile-page-component';
 import ManagePageComponent from '../pages/manage-page/manage-page-component';
 
 import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
+import AlertContainer from '../containers/alert/alert-container';
 
 
 const AuthRoute = (props) => (
@@ -57,18 +58,20 @@ class App extends Component{
   }
 
   render(){
+    const {alertConfig, showSpinner, isAuthenticated } = this.props;
     return(
       <BrowserRouter>
-        <div className="App"> 
-          <HeaderComponent showAuthRoutes={this.props.isAuthenticated}></HeaderComponent>
-          {this.props.showSpinner && <ProgressBarComponent></ProgressBarComponent> }
+        <div className="App">
+          <HeaderComponent showAuthRoutes={ isAuthenticated }></HeaderComponent>
+          { showSpinner && <ProgressBarComponent></ProgressBarComponent> }
+          <AlertContainer></AlertContainer>
           <Switch>
-            <Route exact path='/' component={HomePageComponent}/>
-            <Route exact path='/contact' component={ContactPageComponent}/>
-            <AuthRoute exact path='/profile' show={this.props.isAuthenticated}component={ProfilePageComponent}/>
-            <AuthRoute exact path='/login' show={!this.props.isAuthenticated} component={LoginPageComponent}/>
-            <AuthRoute exact path='/manage' show={this.props.isAuthenticated} component={ManagePageComponent}/>
-            { ENV_NAME !== 'Production' && <Route exact path='/debug' component={DebugPageComponent}></Route> } 
+            <Route exact path='/' component={ HomePageComponent }/>
+            <Route exact path='/contact' component={ ContactPageComponent }/>
+            <AuthRoute exact path='/profile' show={ isAuthenticated }component={ ProfilePageComponent }/>
+            <AuthRoute exact path='/login' show={ !isAuthenticated } component={ LoginPageComponent }/>
+            <AuthRoute exact path='/manage' show={ isAuthenticated } component={ ManagePageComponent }/>
+            { ENV_NAME !== 'Production' && <Route exact path='/debug' component={ DebugPageComponent }></Route> } 
           </Switch>
         </div>
       </BrowserRouter>

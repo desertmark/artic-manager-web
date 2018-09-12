@@ -55,7 +55,11 @@ export function createUser(user) {
             payload: promise,
             meta: {
                 showSpinner: true,
-                promise
+                promise,
+                alertConfig:{
+                    alertType: 'success',
+                    message:'User was created.'
+                },
             }
         });
     }
@@ -70,6 +74,10 @@ export function deleteUser(userId) {
             meta: {
                 showSpinner: true,
                 promise,
+                alertConfig:{
+                    alertType: 'success',
+                    message:'User was deleted.'
+                },
                 userId
             }
         });
