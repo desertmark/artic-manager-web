@@ -15,7 +15,7 @@ class ProfileFormContainer extends Component{
   render(){
     const { firstName, lastName, email, role } = this.props.currentUser;
     return(
-      <div className="col-lg-6">
+      <div id="profile-form-container">
         {this.props.currentUser &&
           <ProfileFormComponent
             onSubmit={this.save}
