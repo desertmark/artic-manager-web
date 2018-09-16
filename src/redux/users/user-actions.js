@@ -20,7 +20,7 @@ export function clearCurrentUser() {
 }
 
 export function updateUser(userId, values) {
-    return (dispatch, getState) => {
+    return dispatch => {
         const promise = userService.updateUser(userId, values);
         return dispatch({
             type: PUT_USER,
@@ -34,7 +34,7 @@ export function updateUser(userId, values) {
 }
 
 export function getUsers() {
-    return (dispatch, getState) => {
+    return dispatch => {
         const promise = userService.getUsers();
         return dispatch({
             type: GET_USERS,
@@ -48,7 +48,7 @@ export function getUsers() {
 }
 
 export function createUser(user) {
-    return (dispatch, getState) => {
+    return dispatch => {
         const promise = userService.createUser(user);
         return dispatch({
             type: CREATE_USER,

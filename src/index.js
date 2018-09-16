@@ -10,7 +10,7 @@ import ReactDOM from 'react-dom';
 import App from './app/app';
 
 // Redux
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducer';
 // middlewares
@@ -20,12 +20,15 @@ import { createLogger } from 'redux-logger'
 import { spinnerMiddleware } from './redux/middlewares/spinner-middleware';
 import { getCurrentUserMiddleware } from './redux/middlewares/user-middleware';
 import { detectExpiredSessionMiddleware } from './redux/middlewares/auth-middleware';
-import {  alertMiddleware,alertErrorMiddleware } from './redux/middlewares/alert-middleware';
+import { alertMiddleware,alertErrorMiddleware } from './redux/middlewares/alert-middleware';
+
+// For redux devtools
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const logger = createLogger({
   predicate: (getState, action) => !action.type.startsWith('@@redux-form')
 })
-const middlewares = applyMiddleware(
+const middlewares = composeEnhancers(applyMiddleware(
   ReduxThunk, 
   logger, 
   promiseMiddleware(), 
@@ -34,7 +37,7 @@ const middlewares = applyMiddleware(
   detectExpiredSessionMiddleware,
   alertMiddleware,
   alertErrorMiddleware
-);
+));
 
 const store = createStore(reducer, middlewares);
 

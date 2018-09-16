@@ -9,8 +9,11 @@ import {
 
     STORE_SESSION,
     GET_LOCAL_SESSION,
-    CLEAR_SESSION,
-    CLEAR_LOCAL_SESSION
+    CLEAR_LOCAL_SESSION,
+
+    PASSWORD_UPDATE_PENDING,
+    PASSWORD_UPDATE_FULFILLED,
+    PASSWORD_UPDATE_REJECTED
 } from './auth-constants-container';
 
 const defaultState = {
@@ -51,7 +54,16 @@ export function authReducer (currentState = defaultState, action) {
             isAuthenticated: false,
             session: null,
             error: null
-        }); 
+        });
+
+    // PASSWORD UPDATE
+    case PASSWORD_UPDATE_PENDING:
+        return Object.assign({}, currentState, {isLoading: true});
+    case PASSWORD_UPDATE_FULFILLED:
+        return Object.assign({}, currentState, {isLoading: false, }); //session: null, isAuthenticated: false
+    case PASSWORD_UPDATE_REJECTED:
+        return Object.assign({}, currentState, {isLoading: false, error: action.payload});
+
     default:
     	return currentState; // Always return the state
   }

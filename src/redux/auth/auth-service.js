@@ -44,10 +44,23 @@ function clearLocalSession() {
     localStorage.setItem('session', null);
 }
 
+function passwordUpdate(values) {
+    return axios({
+        url: `${API_URL}/auth/passwordUpdate`,
+        method:'POST',
+        data: values
+    })
+    .catch(error => {
+        console.log('Error login out:', error);
+        throw error.response.data;
+    });
+}
+
 export default {
     login,
     logout,
     storeSession,
     getLocalStorageSession,
-    clearLocalSession
+    clearLocalSession,
+    passwordUpdate
 }

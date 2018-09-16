@@ -47,7 +47,7 @@ export function userReducer(currentState = defaultState, action) {
         case GET_USERS_PENDING:
             return Object.assign({}, currentState);
         case GET_USERS_FULFILLED:
-            return Object.assign({}, currentState, {users: action.payload, error: null});
+            return Object.assign({}, currentState, {users: action.payload.slice(0), error: null});
         case GET_USERS_REJECTED:
             return Object.assign({}, currentState, {error: action.payload});
 

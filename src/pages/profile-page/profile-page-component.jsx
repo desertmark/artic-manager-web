@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ProfileFormContainer from '../../containers/profile/profile-form-container';
-import ChangePasswordFormComponent from '../../components/change-password-form-component';
+import ChangePasswordFormContainer from '../../containers/profile/change-password-form-container';
 
 class ProfilePageComponent extends Component{
   render(){
@@ -17,7 +17,7 @@ class ProfilePageComponent extends Component{
                 <ProfileFormContainer></ProfileFormContainer>
               </div>
               <div className="collapse col-lg-4" id="forgot-password-collapse">
-                <ChangePasswordFormComponent onSubmit={(values) => console.log(values)}></ChangePasswordFormComponent>
+                <ChangePasswordFormContainer></ChangePasswordFormContainer>
               </div>
             </div>
 

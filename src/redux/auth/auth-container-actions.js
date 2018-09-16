@@ -1,6 +1,14 @@
 import authService from './auth-service';
-import { LOGIN_REQUEST, LOGOUT_REQUEST, STORE_SESSION, GET_LOCAL_SESSION, CLEAR_LOCAL_SESSION } from './auth-constants-container';
+import { 
+    LOGIN_REQUEST,
+    LOGOUT_REQUEST,
+    STORE_SESSION,
+    GET_LOCAL_SESSION,
+    CLEAR_LOCAL_SESSION,
+    PASSWORD_UPDATE,
+} from './auth-constants-container';
 import { clearCurrentUser } from '../users/user-actions';
+import { reset } from 'redux-form'
 
 // ActionCreators
 
@@ -57,5 +65,26 @@ export function clearLocalSession() {
     authService.clearLocalSession();
     return {
         type: CLEAR_LOCAL_SESSION
+    }
+}
+
+export function passwordUpdate(values) {
+    return dispatch => {
+        const promise = authService.passwordUpdate(values);
+        dispatch({
+            type: PASSWORD_UPDATE,
+            payload: promise,
+            meta: {
+                showSpinner: true,
+                promise,
+                alertConfig:{
+                    alertType: 'success',
+                    message:'Password updated.'
+                }
+            }
+        }).then(result => {
+            dispatch(reset('changePasswordForm'))
+            return result;
+        });
     }
 }

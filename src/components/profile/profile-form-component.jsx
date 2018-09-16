@@ -53,6 +53,7 @@ class ProfileFormComponent extends Component{
     const role = this.props.profile ? this.props.profile.role : '';
     return(
       <div id="profile-form-component">
+        {edit && <h4 className="font-weight-light">Edit Profile</h4>}
         <form onSubmit={this.props.handleSubmit}>
           <div className="form-row">
             <div className="form-group col">
