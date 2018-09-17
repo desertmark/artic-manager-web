@@ -35,6 +35,9 @@ class HeaderComponent extends Component {
               <li className="nav-item">
                 <Link className="nav-link" to='/contact'><i className="fas fa-at m-2"></i>Contact</Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to='/articles'><i className="fas fa-list m-2"></i>Articles</Link>
+              </li>
               {this.authRoutes()}
               <li className="nav-item">
                 <Link className="nav-link" to='/debug'><i className="fas fa-bug m-2"></i>Debug</Link>

@@ -17,6 +17,7 @@ import LoginPageComponent from '../pages/login-page/login-page-component';
 import DebugPageComponent from '../pages/debug-page/debug-page-component';
 import ProfilePageComponent from '../pages/profile-page/profile-page-component';
 import ManagePageComponent from '../pages/manage-page/manage-page-component';
+import ArticlesPageComponent from '../pages/articles-page/articles-page-component';
 
 import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
 import AlertContainer from '../containers/alert/alert-container';
@@ -68,10 +69,11 @@ class App extends Component{
           <Switch>
             <Route exact path='/' component={ HomePageComponent }/>
             <Route exact path='/contact' component={ ContactPageComponent }/>
+            <Route exact path='/articles' component={ ArticlesPageComponent }/>
             <AuthRoute exact path='/profile' show={ isAuthenticated }component={ ProfilePageComponent }/>
             <AuthRoute exact path='/login' show={ !isAuthenticated } component={ LoginPageComponent }/>
             <AuthRoute exact path='/manage' show={ isAuthenticated } component={ ManagePageComponent }/>
-            { ENV_NAME !== 'Production' && <Route exact path='/debug' component={ DebugPageComponent }></Route> } 
+            { ENV_NAME !== 'Production' && <Route exact path='/debug' component={ DebugPageComponent }></Route> }
           </Switch>
         </div>
       </BrowserRouter>
