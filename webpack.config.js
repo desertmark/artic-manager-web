@@ -1,7 +1,8 @@
 // config docs in https://blog.usejournal.com/creating-a-react-app-from-scratch-f3c693b84658
 const path = require("path");
 const webpack = require("webpack");
-
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const env = require('./config/index.js');
 
 module.exports = {
@@ -54,8 +55,23 @@ module.exports = {
        * If this is set incorrectly, you’ll get 404’s as the server won’t be serving your files from the correct location!
        */
       publicPath: "/dist/",
-      filename: "bundle.js"
+      filename: "[name].[hash].bundle.js",
+      chunkFilename: '[name].[hash].bundle.js',
     },
+
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          vendor: {
+            test: /node_modules/,
+            chunks: 'initial',
+            name: 'vendor',
+            enforce: true
+          },
+        }
+      }
+    }, 
+
     /**
      * We set up webpack-dev-server in the devServer property. 
      * This doesn’t require much for our needs — just the location we’re serving static files from (such as our index.html) and the port we want to run the server on. 
@@ -63,8 +79,8 @@ module.exports = {
      */
     devServer: {
       contentBase: path.join(__dirname, "public/"),
-      port: 3000,
-      publicPath: "http://localhost:3000/dist/",
+      port: 4000,
+      publicPath: "http://localhost:4000/dist/",
       hotOnly: true,
       historyApiFallback: true,
     },
@@ -73,7 +89,11 @@ module.exports = {
      * All we do for that in terms of this file is instantiate a new instance of the plugin in the plugins property and make sure that we set hotOnly to true in devServer. 
      * We still need to set up one more thing in React before HMR works, though.
      */
-    plugins: [ 
+    plugins: [
+      new CleanWebpackPlugin(['dist']),
+      new HtmlWebpackPlugin({
+        template:'./src/index.html'
+      }),
       new webpack.HotModuleReplacementPlugin(),
       new webpack.DefinePlugin({
         API_URL: JSON.stringify(env.API_URL),
