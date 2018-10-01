@@ -5,11 +5,14 @@ import { getArticles } from '../../redux/articles/articles-actions'
 import ModalComponent from '../../components/modal/modal-component';
 import ProfileFormComponent from '../../components/profile/profile-form-component';
 import BootstrapTable from 'react-bootstrap-table-next';
+// import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 
 class ArticlesTableContainer extends Component{
   constructor() {
     super();
     this.getData = this.getData.bind(this);
+    this.handleTableChange = this.handleTableChange.bind(this);
   }
 
   componentWillMount() {
@@ -28,8 +31,13 @@ class ArticlesTableContainer extends Component{
       return art;
     })
   }
+
+  handleTableChange(type, { page, sizePerPage }) {
+    this.props.getArticles({ page, sizePerPage });
+  }
   
   render(){
+    const { page, sizePerPage, totalSize } = this.props.pagination;
     return(
         <div className="container-fluid">
             <div className="card border mb-3">
@@ -39,22 +47,30 @@ class ArticlesTableContainer extends Component{
                   <i className="fas fa-plus pr-1"></i>
                   Add
                 </button>
-                <BootstrapTable keyField='_id' data={this.getData()} striped hover bootstrap4 columns={[{
+                <BootstrapTable
+                  remote
+                  keyField='_id' 
+                  data={this.getData()} 
+                  striped hover bootstrap4
+                  pagination={ paginationFactory({page, sizePerPage, totalSize}) }
+                  onTableChange={ this.handleTableChange }
+                  columns={[{
                     dataField: '_id',
-                    text: 'ID'
-                  }, 
+                    text: 'ID',
+                    hidden: true
+                  },
                   {
                     dataField: 'code',
                     text: 'Code'
-                  }, 
-                  {
-                    dataField: 'category.description',
-                    text: 'Category'
-                  }, 
+                  },
                   {
                     dataField: 'description',
                     text: 'Description'
-                  }, 
+                  },
+                  {
+                    dataField: 'category.description',
+                    text: 'Category'
+                  },  
                   {
                     dataField: 'actions',
                     text: 'Actions',
@@ -77,7 +93,8 @@ class ArticlesTableContainer extends Component{
 export default connect(
   state => ({
     isLoading: state.appReducer.showSpinner,
-    articles: state.articlesReducer.articles
+    articles: state.articlesReducer.articles,
+    pagination: state.articlesReducer.pagination
   }), // mapStateToProps
   dispatch => bindActionCreators({ getArticles }, dispatch) // mapDispatchToProps
 )(ArticlesTableContainer)

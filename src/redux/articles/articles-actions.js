@@ -3,11 +3,13 @@ import { GET_ARTICLES } from './articles-constants';
 
 export function getArticles(params) {
     return dispatch => {
+        if(params) params.size = params.sizePerPage;
         const promise = articlesService.getArticles(params);
         dispatch({
             type: GET_ARTICLES,
             payload: promise,
             meta: {
+                pagination: params,
                 showSpinner: true,
                 promise
             }
