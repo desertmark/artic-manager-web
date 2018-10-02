@@ -54,7 +54,7 @@ module.exports = {
        * It specifies the public URL of the the directory — at least as far as webpack-dev-server will know or care. 
        * If this is set incorrectly, you’ll get 404’s as the server won’t be serving your files from the correct location!
        */
-      publicPath: "/dist/",
+      publicPath: "/",
       filename: "[name].[hash].bundle.js",
       chunkFilename: '[name].[hash].bundle.js',
     },
@@ -78,9 +78,9 @@ module.exports = {
      * Note that devServer also has a publicPath property. This publicPath tells the server where our bundled code actually is.
      */
     devServer: {
-      contentBase: path.join(__dirname, "public/"),
+      contentBase: path.join(__dirname, "dist/"),
       port: 4000,
-      publicPath: "http://localhost:4000/dist/",
+      publicPath: "http://localhost:4000/",
       hotOnly: true,
       historyApiFallback: true,
     },
