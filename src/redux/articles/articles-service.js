@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-function getArticles(params) {
+function getArticles(params, filters) {
     return axios({
-        url: `${API_URL}/articles`,
-        method:'GET',
-        params
+        url: `${API_URL}/articles/search`,
+        method:'POST',
+        params,
+        data: filters
     }).then(res => res.data)
     .catch(error => {
         console.error(error);

@@ -7,12 +7,15 @@ import ProfileFormComponent from '../../components/profile/profile-form-componen
 import BootstrapTable from 'react-bootstrap-table-next';
 // import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+
 
 class ArticlesTableContainer extends Component{
   constructor() {
     super();
     this.getData = this.getData.bind(this);
     this.handleTableChange = this.handleTableChange.bind(this);
+    this.toApiFilter = this.toApiFilter.bind(this);
   }
 
   componentWillMount() {
@@ -32,8 +35,14 @@ class ArticlesTableContainer extends Component{
     })
   }
 
-  handleTableChange(type, { page, sizePerPage }) {
-    this.props.getArticles({ page, sizePerPage });
+  toApiFilter(tableFilter) {
+    let apiFilter = {};
+    Object.keys(tableFilter).forEach(k => apiFilter[k] = tableFilter[k].filterVal);
+    return apiFilter;
+  }
+
+  handleTableChange(type, { page, sizePerPage, filters }) {
+    this.props.getArticles({ page, sizePerPage }, this.toApiFilter(filters));
   }
   
   render(){
@@ -53,6 +62,7 @@ class ArticlesTableContainer extends Component{
                   data={this.getData()} 
                   striped hover bootstrap4
                   pagination={ paginationFactory({page, sizePerPage, totalSize}) }
+                  filter={ filterFactory() }
                   onTableChange={ this.handleTableChange }
                   columns={[{
                     dataField: '_id',
@@ -61,15 +71,18 @@ class ArticlesTableContainer extends Component{
                   },
                   {
                     dataField: 'code',
-                    text: 'Code'
+                    text: 'Code',
+                    filter: textFilter()
                   },
                   {
                     dataField: 'description',
-                    text: 'Description'
+                    text: 'Description',
+                    filter: textFilter()
                   },
                   {
                     dataField: 'category.description',
-                    text: 'Category'
+                    text: 'Category',
+                    filter: textFilter()
                   },  
                   {
                     dataField: 'actions',
