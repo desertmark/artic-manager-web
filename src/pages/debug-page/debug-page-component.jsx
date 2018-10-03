@@ -14,6 +14,16 @@ class DebugPageComponent extends Component {
 }
 
 export default connect(
-    state => ({appState: state}),
+    state => {
+        const { appReducer, authReducer, userReducer, articlesReducer } = state;
+        return {
+            appState: {
+                appReducer,
+                authReducer,
+                userReducer,
+                articlesReducer
+            }
+        }
+    },
     null
 )(DebugPageComponent)
