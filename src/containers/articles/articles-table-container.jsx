@@ -8,7 +8,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 // import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
-import { toApiFilter } from '../../util/util';
+import { toApiFilter, toApiParams } from '../../util/util';
 
 class ArticlesTableContainer extends Component{
   constructor() {
@@ -35,7 +35,7 @@ class ArticlesTableContainer extends Component{
   }
 
   handleTableChange(type, { page, sizePerPage, filters }) {
-    this.props.getArticles({ page, sizePerPage }, toApiFilter(filters));
+    this.props.getArticles(toApiParams({ page, sizePerPage }), toApiFilter(filters));
   }
   
   render(){

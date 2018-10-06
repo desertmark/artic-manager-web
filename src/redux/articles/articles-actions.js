@@ -3,7 +3,6 @@ import { GET_ARTICLES } from './articles-constants';
 
 export function getArticles(params, filters) {
     return dispatch => {
-        if(params) params.size = params.sizePerPage;
         const promise = articlesService.getArticles(params, filters);
         dispatch({
             type: GET_ARTICLES,

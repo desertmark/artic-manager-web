@@ -1,4 +1,4 @@
-// this file builds the config object using at build time to bind the config values thorught webpack.DefinePlugin, 
+// this file builds the config object used at build time to bind the config values thorught webpack.DefinePlugin, 
 // so it is executed by node not the browser.
 const env = process.env.NODE_ENV || 'dev';
 let config = {
