@@ -8,14 +8,13 @@ import BootstrapTable from 'react-bootstrap-table-next';
 // import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
-
+import { toApiFilter } from '../../util/util';
 
 class ArticlesTableContainer extends Component{
   constructor() {
     super();
     this.getData = this.getData.bind(this);
     this.handleTableChange = this.handleTableChange.bind(this);
-    this.toApiFilter = this.toApiFilter.bind(this);
   }
 
   componentWillMount() {
@@ -35,14 +34,8 @@ class ArticlesTableContainer extends Component{
     })
   }
 
-  toApiFilter(tableFilter) {
-    let apiFilter = {};
-    Object.keys(tableFilter).forEach(k => apiFilter[k] = tableFilter[k].filterVal);
-    return apiFilter;
-  }
-
   handleTableChange(type, { page, sizePerPage, filters }) {
-    this.props.getArticles({ page, sizePerPage }, this.toApiFilter(filters));
+    this.props.getArticles({ page, sizePerPage }, toApiFilter(filters));
   }
   
   render(){
@@ -52,7 +45,7 @@ class ArticlesTableContainer extends Component{
             <div className="card border mb-3">
               <div className="card-header border">List of articles</div>
               <div className="card-body text">
-                <button data-target="#add-user-modal" data-toggle="modal" className="btn btn-success mb-2">
+                <button data-target="" data-toggle="modal" className="btn btn-success mb-2">
                   <i className="fas fa-plus pr-1"></i>
                   Add
                 </button>
