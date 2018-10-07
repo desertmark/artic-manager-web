@@ -3,18 +3,21 @@
 const env = process.env.NODE_ENV || 'dev';
 let config = {
     name: 'Development',
+    configName: 'dev',
     API_URL:'http://localhost:3001'
 }
 switch (env.toLocaleLowerCase()) {
     case 'production':
         config = {
             name: 'Production',
+            configName: 'prod',
             API_URL: 'https://qa-artic-manager.herokuapp.com'
         };
         break;
     case 'qa':
         config = {
             name: 'QA',
+            configName: 'prod',
             API_URL: 'https://qa-artic-manager.herokuapp.com'
         };
         break;
