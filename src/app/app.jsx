@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {hot} from 'react-hot-loader';
-import './App.scss';
+import './app.scss';
 
 import HeaderComponent from '../components/header/header-component';
 import ProgressBarComponent from '../components/progress-bar/progress-bar-component';

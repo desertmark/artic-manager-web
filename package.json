@@ -45,7 +45,7 @@
     "webpack-dev-server": "^3.1.5"
   },
   "scripts": {
-    "start": "npm run build:prod && npm run serve",
+    "start": "npm run serve",
     "serve": "node server/index.js",
     "local": "webpack-dev-server --mode development",
     "build:prod": "webpack --mode production"

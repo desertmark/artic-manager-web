@@ -1,5 +1,5 @@
-import React, {Component} from 'React';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class DebugPageComponent extends Component { 
     render() {
