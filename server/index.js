@@ -8,4 +8,4 @@ app.get('/*', (req, res) => {
     res.sendFile(path.resolve(path.join(__dirname, '../dist/index.html')));
 });
 
-app.listen(PORT, () => console.log('app running on port ', PORT));
+app.listen(PORT, () => console.log('app running on port ', PORT, process.env.NODE_ENV));

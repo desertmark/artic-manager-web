@@ -3,12 +3,18 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const env = require('./config/index.js');
+const getConfig = require('./config/index.js');
 
 const modeIndex = process.argv.findIndex(x => x === '--mode') + 1;
-const config = modeIndex ? process.argv[modeIndex] : 'development';
+const env = modeIndex ? process.argv[modeIndex] : 'development';
 
-const envConfig =  require(`./webpack.${config}.config.js`)
+const envConfig =  require(`./webpack.${env}.config.js`);
+const config = getConfig(env);
+
+console.log('building...');
+console.log('ENV', env);
+console.log('CONFIG', config);
+
 const commonConfig = {
   entry: "./src/index.js",
   
@@ -79,8 +85,8 @@ const commonConfig = {
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
-      API_URL: JSON.stringify(env.API_URL),
-      ENV_NAME: JSON.stringify(env.name)
+      API_URL: JSON.stringify(config.API_URL),
+      ENV_NAME: JSON.stringify(config.name)
     })
   ]
   
