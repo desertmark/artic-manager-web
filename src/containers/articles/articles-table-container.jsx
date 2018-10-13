@@ -8,7 +8,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 // import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
-import { toApiFilter, toApiParams } from '../../util/util';
+import { toApiFilter, toApiParams, toTablePagination } from '../../util/util';
 
 class ArticlesTableContainer extends Component{
   constructor() {
@@ -54,7 +54,7 @@ class ArticlesTableContainer extends Component{
                   keyField='_id' 
                   data={this.getData()} 
                   striped hover bootstrap4
-                  pagination={ paginationFactory({page, sizePerPage, totalSize}) }
+                  pagination={ paginationFactory( toTablePagination({page, sizePerPage, totalSize}) ) }
                   filter={ filterFactory() }
                   onTableChange={ this.handleTableChange }
                   columns={[{
