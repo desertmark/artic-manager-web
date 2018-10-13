@@ -39,3 +39,26 @@ export function toTablePagination(pagination) {
         totalSize: get(pagination, 'totalSize', 0)
     }
 }
+
+export function getBoostrapColor(colorName) {
+    let color;
+    switch(colorName) {
+        case 'success':
+            color = '#28a745';
+        break;
+        case 'info':
+            color = '#17a2b8';
+        break;
+        case 'warning':
+            color = '#ffc107';
+        break;
+        case 'danger':
+            color = '#dc3545';
+        break;
+        default:
+            color = '#007bff';
+    }
+    return color;
+}
+
+

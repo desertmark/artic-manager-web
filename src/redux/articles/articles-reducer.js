@@ -11,22 +11,28 @@ const defaultState = {
         sizePerPage: 20,
         totalSize: 0
     },
+    loading: false,
     error: null
 }
 
 export function articlesReducer(currentState = defaultState, action) {
     switch(action.type) {        
         case GET_ARTICLES_PENDING:
-            return Object.assign({}, currentState, { pagination: {...currentState.pagination, ...action.meta.pagination} });
+            return Object.assign({}, currentState, {
+                articles: [],
+                pagination: {...currentState.pagination, ...action.meta.pagination},
+                loading: true,
+            });
         case GET_ARTICLES_FULFILLED:
             const pagination = {...currentState.pagination, ...{ totalSize: action.payload.totalSize } };
             return Object.assign({}, currentState, { 
                 articles: action.payload.articles, 
                 pagination,
+                loading: false,
                 error: null 
             });
         case GET_ARTICLES_REJECTED:
-            return Object.assign({}, currentState, { error: action.payload });
+            return Object.assign({}, currentState, { error: action.payload, loading: false } );
 
         default:
             return currentState;

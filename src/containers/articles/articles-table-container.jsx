@@ -5,10 +5,10 @@ import { getArticles } from '../../redux/articles/articles-actions'
 import ModalComponent from '../../components/modal/modal-component';
 import ProfileFormComponent from '../../components/profile/profile-form-component';
 import BootstrapTable from 'react-bootstrap-table-next';
-// import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import { toApiFilter, toApiParams, toTablePagination } from '../../util/util';
+import { Spinner } from '../../components/spinner/spinner';
 
 class ArticlesTableContainer extends Component{
   constructor() {
@@ -40,6 +40,7 @@ class ArticlesTableContainer extends Component{
   
   render(){
     const { page, sizePerPage, totalSize } = this.props.pagination;
+    const { loading } = this.props;
     return(
         <div className="container-fluid">
             <div className="card border mb-3">
@@ -56,6 +57,11 @@ class ArticlesTableContainer extends Component{
                   striped hover bootstrap4
                   pagination={ paginationFactory( toTablePagination({page, sizePerPage, totalSize}) ) }
                   filter={ filterFactory() }
+                  noDataIndication={() => 
+                    <div className="d-flex justify-content-center">
+                      <Spinner color="success"/>
+                    </div>
+                  }
                   onTableChange={ this.handleTableChange }
                   columns={[{
                     dataField: '_id',
@@ -83,6 +89,7 @@ class ArticlesTableContainer extends Component{
                     classes:'d-flex justify-content-start'
                   }]}>
                 </BootstrapTable>
+                
               </div>
             </div>
             <ModalComponent 
@@ -100,7 +107,8 @@ export default connect(
   state => ({
     isLoading: state.appReducer.showSpinner,
     articles: state.articlesReducer.articles,
-    pagination: state.articlesReducer.pagination
+    pagination: state.articlesReducer.pagination,
+    loading: state.articlesReducer.loading
   }), // mapStateToProps
   dispatch => bindActionCreators({ getArticles }, dispatch) // mapDispatchToProps
 )(ArticlesTableContainer)
