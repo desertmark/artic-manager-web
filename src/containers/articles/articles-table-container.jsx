@@ -40,7 +40,6 @@ class ArticlesTableContainer extends Component{
   
   render(){
     const { page, sizePerPage, totalSize } = this.props.pagination;
-    const { loading } = this.props;
     return(
         <div className="container-fluid">
             <div className="card border mb-3">
@@ -108,7 +107,6 @@ export default connect(
     isLoading: state.appReducer.showSpinner,
     articles: state.articlesReducer.articles,
     pagination: state.articlesReducer.pagination,
-    loading: state.articlesReducer.loading
   }), // mapStateToProps
   dispatch => bindActionCreators({ getArticles }, dispatch) // mapDispatchToProps
 )(ArticlesTableContainer)

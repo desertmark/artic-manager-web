@@ -6,12 +6,16 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const getConfig = require('./config/index.js');
 
 const modeIndex = process.argv.findIndex(x => x === '--mode') + 1;
-const env = modeIndex ? process.argv[modeIndex] : 'development';
+const mode = modeIndex ? process.argv[modeIndex] : 'development';
 
-const envConfig =  require(`./webpack.${env}.config.js`);
+const envIndex = process.argv.findIndex(x => x === '--env') + 1;
+const env = envIndex ? process.argv[envIndex] : 'development';
+
+const modeConfig =  require(`./webpack.${mode}.config.js`);
 const config = getConfig(env);
 
 console.log('building...');
+console.log('MODE', mode);
 console.log('ENV', env);
 console.log('CONFIG', config);
 
@@ -94,4 +98,4 @@ const commonConfig = {
 
 
 
-module.exports = { ...commonConfig, ...envConfig };
+module.exports = { ...commonConfig, ...modeConfig };

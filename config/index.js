@@ -18,7 +18,7 @@ module.exports = function getConfig(env) {
         case 'qa':
             config = {
                 name: 'QA',
-                configName: 'prod',
+                configName: 'qa',
                 API_URL: 'https://qa-artic-manager.herokuapp.com'
             };
             break;
