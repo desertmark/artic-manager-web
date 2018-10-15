@@ -8,6 +8,7 @@ module.exports = function getConfig(env) {
         API_URL:'http://localhost:3001'
     }
     switch (env.toLocaleLowerCase()) {
+        case 'prod':
         case 'production':
             config = {
                 name: 'Production',

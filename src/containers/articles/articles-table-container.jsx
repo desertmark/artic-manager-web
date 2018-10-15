@@ -4,13 +4,9 @@ import { connect } from 'react-redux';
 import { getArticles } from '../../redux/articles/articles-actions'
 import ModalComponent from '../../components/modal/modal-component';
 import ProfileFormComponent from '../../components/profile/profile-form-component';
-import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory from 'react-bootstrap-table2-paginator';
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
-import { toApiFilter, toApiParams, toTablePagination } from '../../util/util';
-import { Spinner } from '../../components/spinner/spinner';
-
+import { textFilter } from 'react-bootstrap-table2-filter';
 import TableComponent from '../../components/table/table-component';
+import { get } from 'lodash';
 
 class ArticlesTableContainer extends Component{
   constructor() {
@@ -24,7 +20,7 @@ class ArticlesTableContainer extends Component{
   }
 
   getColumns() {
-    return [{
+    let columns = [{
       dataField: '_id',
       text: 'ID',
       hidden: true
@@ -43,12 +39,51 @@ class ArticlesTableContainer extends Component{
       dataField: 'category.description',
       text: 'Category',
       filter: textFilter()
-    },  
-    {
+    }];
+
+    const role = get(this.props.currentUser,'role');
+    if (role) {
+      columns.push({
+        dataField: 'listPrice',
+        text: 'Price',
+        classes:'d-flex justify-content-start'
+      });
+    }
+
+    if(role === 'ADMIN') {
+      columns = columns.concat([{
+        dataField: 'utility',
+        text: 'Utility',
+        classes:'d-flex justify-content-start'
+      },
+      {
+        dataField: 'dolar',
+        text: 'Dolar Price',
+        classes:'d-flex justify-content-start'
+      },
+      {
+        dataField: 'vat',
+        text: 'V.A.T.',
+        classes:'d-flex justify-content-start'
+      },
+      {
+        dataField: 'transport',
+        text: 'Transport',
+        classes:'d-flex justify-content-start'
+      },
+      {
+        dataField: 'card',
+        text: 'Card',
+        classes:'d-flex justify-content-start'
+      }]);
+    }
+
+    columns.push({
       dataField: 'actions',
       text: 'Actions',
       classes:'d-flex justify-content-start'
-    }];
+    });
+    return columns;
   }
 
   handleTableChange(type, params, filters) {
@@ -56,7 +91,7 @@ class ArticlesTableContainer extends Component{
   }
   
   render(){
-    const { pagination, articles } = this.props;
+    const { pagination, articles, isEmpty } = this.props;
     return(
         <div className="container-fluid">
             <div className="card border mb-3">
@@ -71,7 +106,8 @@ class ArticlesTableContainer extends Component{
                   pagination={ pagination }
                   data={ articles }
                   onDelete={ art => console.log('delete', art) }
-                  handleTableChange={this.handleTableChange}
+                  handleTableChange={ this.handleTableChange }
+                  isEmpty = { isEmpty }
                 >
                 </TableComponent>
               </div>
@@ -92,6 +128,8 @@ export default connect(
     isLoading: state.appReducer.showSpinner,
     articles: state.articlesReducer.articles,
     pagination: state.articlesReducer.pagination,
+    isEmpty: state.articlesReducer.isEmpty,
+    currentUser: state.userReducer.currentUser,
   }), // mapStateToProps
   dispatch => bindActionCreators({ getArticles }, dispatch) // mapDispatchToProps
 )(ArticlesTableContainer)

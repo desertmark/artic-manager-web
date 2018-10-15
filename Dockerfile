@@ -14,6 +14,9 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+ARG NODE_ENV='qa'
+ENV NODE_ENV=$NODE_ENV
+
 RUN npm run build:prod
 
 EXPOSE 3000

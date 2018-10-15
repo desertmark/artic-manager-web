@@ -41,7 +41,7 @@ class TableComponent extends Component {
     }
 
     render() {
-        const { columns, pagination } = this.props;
+        const { columns, pagination, isLoading, isEmpty } = this.props;
        return <BootstrapTable
           remote
           keyField='_id' 
@@ -51,7 +51,8 @@ class TableComponent extends Component {
           filter={ filterFactory() }
           noDataIndication={() => 
             <div className="d-flex justify-content-center">
-              <Spinner color="info"/>
+              { !isEmpty && <Spinner color="info"/> }
+              { isEmpty && <span className="font-italic text-info" >We coulnd't find what you are looking for.</span> }
             </div>
           }
           onTableChange={ this.handleTableChange }

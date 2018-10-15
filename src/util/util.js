@@ -34,7 +34,7 @@ export function toApiParams(tablePagination) {
  */
 export function toTablePagination(pagination) {
     return {
-        sizePerPage: get(pagination,'sizePerPage', 20),
+        sizePerPage: get(pagination,'size', 20),
         page: get(pagination, 'page', 0) + 1,
         totalSize: get(pagination, 'totalSize', 0)
     }

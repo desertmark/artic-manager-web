@@ -12,6 +12,7 @@ const defaultState = {
         totalSize: 0
     },
     loading: false,
+    isEmpty: false,
     error: null
 }
 
@@ -21,6 +22,7 @@ export function articlesReducer(currentState = defaultState, action) {
             return Object.assign({}, currentState, {
                 articles: [],
                 pagination: {...currentState.pagination, ...action.meta.pagination},
+                isEmpty: false,
                 loading: true,
             });
         case GET_ARTICLES_FULFILLED:
@@ -29,7 +31,8 @@ export function articlesReducer(currentState = defaultState, action) {
                 articles: action.payload.articles, 
                 pagination,
                 loading: false,
-                error: null 
+                isEmpty: action.payload.articles.length === 0,
+                error: null
             });
         case GET_ARTICLES_REJECTED:
             return Object.assign({}, currentState, { error: action.payload, loading: false } );

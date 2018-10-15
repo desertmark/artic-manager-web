@@ -8,8 +8,7 @@ const getConfig = require('./config/index.js');
 const modeIndex = process.argv.findIndex(x => x === '--mode') + 1;
 const mode = modeIndex ? process.argv[modeIndex] : 'development';
 
-const envIndex = process.argv.findIndex(x => x === '--env') + 1;
-const env = envIndex ? process.argv[envIndex] : 'development';
+const env = process.env.NODE_ENV || 'development';
 
 const modeConfig =  require(`./webpack.${mode}.config.js`);
 const config = getConfig(env);
