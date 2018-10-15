@@ -10,10 +10,12 @@ import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import { toApiFilter, toApiParams, toTablePagination } from '../../util/util';
 import { Spinner } from '../../components/spinner/spinner';
 
+import TableComponent from '../../components/table/table-component';
+
 class ArticlesTableContainer extends Component{
   constructor() {
     super();
-    this.getData = this.getData.bind(this);
+    this.getColumns = this.getColumns.bind(this);
     this.handleTableChange = this.handleTableChange.bind(this);
   }
 
@@ -21,25 +23,40 @@ class ArticlesTableContainer extends Component{
     this.props.getArticles()
   }
 
-  getData() {
-    return this.props.articles.length === 0 ?  
-    [] :
-    this.props.articles.map(art => {
-      art.actions = [
-        <button key='delete' className="btn btn-outline-danger btn-block">
-            <i className="fa fa-trash"></i>
-        </button>
-      ];
-      return art;
-    })
+  getColumns() {
+    return [{
+      dataField: '_id',
+      text: 'ID',
+      hidden: true
+    },
+    {
+      dataField: 'code',
+      text: 'Code',
+      filter: textFilter()
+    },
+    {
+      dataField: 'description',
+      text: 'Description',
+      filter: textFilter()
+    },
+    {
+      dataField: 'category.description',
+      text: 'Category',
+      filter: textFilter()
+    },  
+    {
+      dataField: 'actions',
+      text: 'Actions',
+      classes:'d-flex justify-content-start'
+    }];
   }
 
-  handleTableChange(type, { page, sizePerPage, filters }) {
-    this.props.getArticles(toApiParams({ page, sizePerPage }), toApiFilter(filters));
+  handleTableChange(type, params, filters) {
+    this.props.getArticles(params, filters);
   }
   
   render(){
-    const { page, sizePerPage, totalSize } = this.props.pagination;
+    const { pagination, articles } = this.props;
     return(
         <div className="container-fluid">
             <div className="card border mb-3">
@@ -49,46 +66,14 @@ class ArticlesTableContainer extends Component{
                   <i className="fas fa-plus pr-1"></i>
                   Add
                 </button>
-                <BootstrapTable
-                  remote
-                  keyField='_id' 
-                  data={this.getData()} 
-                  striped hover bootstrap4
-                  pagination={ paginationFactory( toTablePagination({page, sizePerPage, totalSize}) ) }
-                  filter={ filterFactory() }
-                  noDataIndication={() => 
-                    <div className="d-flex justify-content-center">
-                      <Spinner color="success"/>
-                    </div>
-                  }
-                  onTableChange={ this.handleTableChange }
-                  columns={[{
-                    dataField: '_id',
-                    text: 'ID',
-                    hidden: true
-                  },
-                  {
-                    dataField: 'code',
-                    text: 'Code',
-                    filter: textFilter()
-                  },
-                  {
-                    dataField: 'description',
-                    text: 'Description',
-                    filter: textFilter()
-                  },
-                  {
-                    dataField: 'category.description',
-                    text: 'Category',
-                    filter: textFilter()
-                  },  
-                  {
-                    dataField: 'actions',
-                    text: 'Actions',
-                    classes:'d-flex justify-content-start'
-                  }]}>
-                </BootstrapTable>
-                
+                <TableComponent
+                  columns={ this.getColumns() }
+                  pagination={ pagination }
+                  data={ articles }
+                  onDelete={ art => console.log('delete', art) }
+                  handleTableChange={this.handleTableChange}
+                >
+                </TableComponent>
               </div>
             </div>
             <ModalComponent 
