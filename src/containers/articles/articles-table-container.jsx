@@ -46,7 +46,6 @@ class ArticlesTableContainer extends Component{
       columns.push({
         dataField: 'listPrice',
         text: 'Price',
-        classes:'d-flex justify-content-start'
       });
     }
 
@@ -54,34 +53,28 @@ class ArticlesTableContainer extends Component{
       columns = columns.concat([{
         dataField: 'utility',
         text: 'Utility',
-        classes:'d-flex justify-content-start'
       },
       {
         dataField: 'dolar',
         text: 'Dolar Price',
-        classes:'d-flex justify-content-start'
       },
       {
         dataField: 'vat',
         text: 'V.A.T.',
-        classes:'d-flex justify-content-start'
       },
       {
         dataField: 'transport',
         text: 'Transport',
-        classes:'d-flex justify-content-start'
       },
       {
         dataField: 'card',
         text: 'Card',
-        classes:'d-flex justify-content-start'
       }]);
     }
 
     columns.push({
       dataField: 'actions',
       text: 'Actions',
-      classes:'d-flex justify-content-start'
     });
     return columns;
   }
