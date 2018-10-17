@@ -29,7 +29,7 @@ const AuthRoute = (props) => (
       () =>
         props.show ?
         (<props.component {...props} />) : 
-        (<Redirect to={{pathname: '/',state: { from: props.location }}}/>)
+        (<Redirect to={{pathname: '/', state: { from: props.location }}}/>)
       }
   />
 );
@@ -59,22 +59,24 @@ class App extends Component{
   }
 
   render(){
-    const {alertConfig, showSpinner, isAuthenticated } = this.props;
+    const { showSpinner, isAuthenticated, isInitializing } = this.props;
     return(
       <BrowserRouter>
         <div className="App">
           <HeaderComponent showAuthRoutes={ isAuthenticated }></HeaderComponent>
           { showSpinner && <ProgressBarComponent></ProgressBarComponent> }
           <AlertContainer></AlertContainer>
-          <Switch>
-            <Route exact path='/' component={ HomePageComponent }/>
-            <Route exact path='/contact' component={ ContactPageComponent }/>
-            <Route exact path='/articles' component={ ArticlesPageComponent }/>
-            <AuthRoute exact path='/profile' show={ isAuthenticated }component={ ProfilePageComponent }/>
-            <AuthRoute exact path='/login' show={ !isAuthenticated } component={ LoginPageComponent }/>
-            <AuthRoute exact path='/manage' show={ isAuthenticated } component={ ManagePageComponent }/>
-            { ENV_NAME !== 'Production' && <Route exact path='/debug' component={ DebugPageComponent }></Route> }
-          </Switch>
+          { !isInitializing && 
+            <Switch>
+              <Route exact path='/' component={ HomePageComponent }/>
+              <Route exact path='/contact' component={ ContactPageComponent }/>
+              <Route exact path='/articles' component={ ArticlesPageComponent }/>
+              <AuthRoute exact path='/profile' show={ isAuthenticated }component={ ProfilePageComponent }/>
+              <AuthRoute exact path='/login' show={ !isAuthenticated } component={ LoginPageComponent }/>
+              <AuthRoute exact path='/manage' show={ isAuthenticated } component={ ManagePageComponent }/>
+              { ENV_NAME === 'Development' && <Route exact path='/debug' component={ DebugPageComponent }></Route> }
+            </Switch>
+          }
         </div>
       </BrowserRouter>
     );
@@ -83,7 +85,8 @@ class App extends Component{
 const connectedApp = connect(
   state => ({
     showSpinner: state.appReducer.showSpinner,
-    isAuthenticated: state.authReducer.isAuthenticated
+    isAuthenticated: state.authReducer.isAuthenticated,
+    isInitializing: state.appReducer.isInitializing,
   }),
   dispatch => bindActionCreators({getLocalStorageSession, appInit, logout}, dispatch)
 )(App)

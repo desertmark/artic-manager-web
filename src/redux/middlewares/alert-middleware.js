@@ -1,4 +1,5 @@
 import { SHOW_ALERT, HIDE_ALERT } from "../../app/app-constants";
+import { GET_CURRENT_USER_REJECTED } from "../users/user-constants";
 
 export const alertMiddleware = store => next => action => {
   if(action.meta && action.meta.alertConfig) {
@@ -13,9 +14,16 @@ export const alertMiddleware = store => next => action => {
 export const alertErrorMiddleware = store => next => action => {
   if(action.meta && action.meta.promise) {
     action.meta.promise.catch(error => {
-      const message = error.message || 'Something went wrong. Try again later.';
+      let message = error.message || 'Something went wrong. Try again later.';
+      let alertType = 'danger';
+      
+      if (error.status === 401 && action.type === GET_CURRENT_USER_REJECTED) {
+        message = 'Your session has expired. Please log in again to continue.';
+        alertType = 'warning';
+      }
+
       store.dispatch({type: SHOW_ALERT, alertConfig: {
-        alertType: 'danger',
+        alertType,
         message
       }});
       throw error;

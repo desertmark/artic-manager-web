@@ -17,7 +17,7 @@ import {
 } from './auth-constants-container';
 
 const defaultState = {
-    isLoading: false,
+  isLoading: true,
   session: null,
   error: null,
   isAuthenticated: false,
@@ -47,6 +47,7 @@ export function authReducer (currentState = defaultState, action) {
     case GET_LOCAL_SESSION:
         return Object.assign({}, currentState, {
             isAuthenticated: action.payload ? true : false,
+            isLoading: action.payload ? true : false,
             session: action.payload || null
         });
     case CLEAR_LOCAL_SESSION: 

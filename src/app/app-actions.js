@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { APP_INIT, HIDE_ALERT } from './app-constants';
+import { APP_INIT, HIDE_ALERT, APP_INIT_COMPLETED } from './app-constants';
 
 export function appInit() {
     axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -11,5 +11,11 @@ export function appInit() {
 export function dismissAlert() {
     return {
         type: HIDE_ALERT
+    }
+}
+
+export function appInitCompleted() {
+    return {
+        type: APP_INIT_COMPLETED,
     }
 }
