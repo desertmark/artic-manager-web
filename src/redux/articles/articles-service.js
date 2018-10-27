@@ -13,6 +13,18 @@ function getArticles(params, filters) {
     });
 }
 
+function deleteArticle(articleId) {
+    return axios({
+        url: `${API_URL}/articles/${articleId}`,
+        method:'DELETE',
+    }).then(res => res.data)
+    .catch(error => {
+        console.error(error);
+        throw error;
+    });
+}
+
 export default {
-    getArticles
+    getArticles,
+    deleteArticle
 }

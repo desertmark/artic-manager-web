@@ -1,7 +1,10 @@
 import {
     GET_ARTICLES_PENDING,
     GET_ARTICLES_FULFILLED,
-    GET_ARTICLES_REJECTED
+    GET_ARTICLES_REJECTED,
+    DELETE_ARTICLE_PENDING,
+    DELETE_ARTICLE_FULFILLED,
+    DELETE_ARTICLE_REJECTED
 } from './articles-constants';
 
 const defaultState = {
@@ -37,6 +40,20 @@ export function articlesReducer(currentState = defaultState, action) {
         case GET_ARTICLES_REJECTED:
             return Object.assign({}, currentState, { error: action.payload, loading: false } );
 
+
+        case DELETE_ARTICLE_PENDING:
+            return Object.assign({}, currentState, {
+                loading: true,
+            });
+        case DELETE_ARTICLE_FULFILLED:
+            const articles = currentState.articles.filter(art => art._id !== action.meta.article._id);
+            return Object.assign({}, currentState, { 
+                articles,
+                loading: false,
+                error: null,
+            });
+        case DELETE_ARTICLE_REJECTED:
+            return Object.assign({}, currentState, { error: action.payload, loading: false } );
         default:
             return currentState;
     }

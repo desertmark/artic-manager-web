@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators  } from 'redux';
 import { connect } from 'react-redux';
-import { getArticles } from '../../redux/articles/articles-actions'
+import { getArticles, deleteArticle } from '../../redux/articles/articles-actions'
 import ModalComponent from '../../components/modal/modal-component';
 import ProfileFormComponent from '../../components/profile/profile-form-component';
 import { textFilter } from 'react-bootstrap-table2-filter';
@@ -110,7 +110,7 @@ class ArticlesTableContainer extends Component{
   }
   
   render(){
-    const { pagination, articles, isEmpty } = this.props;
+    const { pagination, articles, isEmpty, deleteArticle } = this.props;
     return(
         <div className="container-fluid">
             <div className="card border mb-3">
@@ -124,7 +124,7 @@ class ArticlesTableContainer extends Component{
                   columns={ this.getColumns() }
                   pagination={ pagination }
                   data={ articles }
-                  onDelete={ art => console.log('delete', art) }
+                  onDelete={ deleteArticle }
                   handleTableChange={ this.handleTableChange }
                   isEmpty = { isEmpty }
                 >
@@ -150,5 +150,5 @@ export default connect(
     isEmpty: state.articlesReducer.isEmpty,
     currentUser: state.userReducer.currentUser,
   }), // mapStateToProps
-  dispatch => bindActionCreators({ getArticles }, dispatch) // mapDispatchToProps
+  dispatch => bindActionCreators({ getArticles, deleteArticle }, dispatch) // mapDispatchToProps
 )(ArticlesTableContainer)

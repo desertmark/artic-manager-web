@@ -1,5 +1,5 @@
 import articlesService from './articles-service';
-import { GET_ARTICLES } from './articles-constants';
+import { GET_ARTICLES, DELETE_ARTICLE } from './articles-constants';
 
 export function getArticles(params, filters) {
     return dispatch => {
@@ -16,15 +16,20 @@ export function getArticles(params, filters) {
     }
 }
 
-export function getCurrentUser() {
+export function deleteArticle(article) {
     return (dispatch, getState) => {
-        const promise = userService.getCurrentUser(getState().authReducer.session);
+        const promise = articlesService.deleteArticle(article._id)
         return dispatch({
-            type: GET_CURRENT_USER,
+            type: DELETE_ARTICLE,
             payload: promise,
             meta: {
+                article,
                 showSpinner: true,
-                promise
+                promise,
+                alertConfig:{
+                    alertType: 'success',
+                    message:'Article removed.'
+                },
             }
         });
     }
