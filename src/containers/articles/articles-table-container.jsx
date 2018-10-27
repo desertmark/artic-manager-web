@@ -7,6 +7,7 @@ import ProfileFormComponent from '../../components/profile/profile-form-componen
 import { textFilter } from 'react-bootstrap-table2-filter';
 import TableComponent from '../../components/table/table-component';
 import { get } from 'lodash';
+import { codeFormatter, currencyFormatter, percentageFormatter } from '../../util/articles-formatters';
 
 class ArticlesTableContainer extends Component{
   constructor() {
@@ -28,7 +29,8 @@ class ArticlesTableContainer extends Component{
     {
       dataField: 'code',
       text: 'Code',
-      filter: textFilter()
+      filter: textFilter(),
+      formatter: codeFormatter
     },
     {
       dataField: 'description',
@@ -43,32 +45,50 @@ class ArticlesTableContainer extends Component{
 
     const role = get(this.props.currentUser,'role');
     if (role) {
-      columns.push({
-        dataField: 'listPrice',
-        text: 'Price',
-      });
+      columns = columns.concat([
+        {
+          dataField: 'price',
+          text: 'Price',
+          formatter: currencyFormatter
+        },{
+          dataField: 'cardPrice',
+          text: 'Card Price',
+          formatter: currencyFormatter
+        }
+      ]);
     }
 
     if(role === 'ADMIN') {
-      columns = columns.concat([{
+      columns = columns.concat([
+      {
+        dataField: 'listPrice',
+        text: 'List Price',
+        formatter: currencyFormatter
+      },
+      {
         dataField: 'utility',
         text: 'Utility',
+        formatter: percentageFormatter
       },
       {
         dataField: 'dolar',
         text: 'Dolar Price',
+        formatter: currencyFormatter
       },
       {
         dataField: 'vat',
         text: 'V.A.T.',
+        formatter: percentageFormatter
       },
       {
         dataField: 'transport',
         text: 'Transport',
+        formatter: percentageFormatter
       },
       {
         dataField: 'card',
         text: 'Card',
+        formatter: percentageFormatter
       }]);
     }
 

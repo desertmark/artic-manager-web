@@ -1,4 +1,5 @@
 // config docs in https://blog.usejournal.com/creating-a-react-app-from-scratch-f3c693b84658
+require('dotenv').config()
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
