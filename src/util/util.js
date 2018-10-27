@@ -7,11 +7,11 @@ export function toApiFilter(tableFilter) {
     let apiFilter = {};
     Object.keys(tableFilter).forEach(k =>  {
         let value = get(tableFilter[k], 'filterVal', '');
-        if (!Number.isNaN(parseInt(value))) {
-            value = parseInt(value);
-        } else {
+        // if (!Number.isNaN(parseInt(value))) {
+            // value = parseInt(value);
+        // } else {
             value = value.replace(/[\s]+/g,'.*');
-        }
+        // }
         set(apiFilter, k, value);
     });
     return apiFilter;
@@ -59,6 +59,13 @@ export function getBoostrapColor(colorName) {
             color = '#007bff';
     }
     return color;
+}
+/**
+ * Takes a formatted code and returns it as a number.
+ * @param {string} code string with format `05.05.05.05` where x are numbers.
+ */
+export function parseCode(code) {
+    return parseInt(code.replace(/[.]+/gm,''));
 }
 
 

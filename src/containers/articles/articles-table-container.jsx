@@ -8,6 +8,7 @@ import { textFilter } from 'react-bootstrap-table2-filter';
 import TableComponent from '../../components/table/table-component';
 import { get } from 'lodash';
 import { codeFormatter, currencyFormatter, percentageFormatter } from '../../util/articles-formatters';
+import { parseCode } from '../../util/util';
 
 class ArticlesTableContainer extends Component{
   constructor() {
@@ -49,11 +50,13 @@ class ArticlesTableContainer extends Component{
         {
           dataField: 'price',
           text: 'Price',
-          formatter: currencyFormatter
+          formatter: currencyFormatter,
+          classes: 'text-success'
         },{
           dataField: 'cardPrice',
           text: 'Card Price',
-          formatter: currencyFormatter
+          formatter: currencyFormatter,
+          classes: 'text-danger'
         }
       ]);
     }
@@ -63,7 +66,7 @@ class ArticlesTableContainer extends Component{
       {
         dataField: 'listPrice',
         text: 'List Price',
-        formatter: currencyFormatter
+        formatter: currencyFormatter,
       },
       {
         dataField: 'utility',
@@ -100,6 +103,9 @@ class ArticlesTableContainer extends Component{
   }
 
   handleTableChange(type, params, filters) {
+    if(filters.code) {
+      filters.code = parseCode(filters.code);
+    }
     this.props.getArticles(params, filters);
   }
   
