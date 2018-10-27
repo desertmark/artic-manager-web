@@ -9,12 +9,16 @@ import TableComponent from '../../components/table/table-component';
 import { get } from 'lodash';
 import { codeFormatter, currencyFormatter, percentageFormatter } from '../../util/articles-formatters';
 import { parseCode } from '../../util/util';
+import ConfirmComponent from '../../components/confirm/confirm-component';
 
 class ArticlesTableContainer extends Component{
   constructor() {
     super();
     this.getColumns = this.getColumns.bind(this);
     this.handleTableChange = this.handleTableChange.bind(this);
+    this.deleteArticle = this.deleteArticle.bind(this);
+    this.confirmDelete = this.confirmDelete.bind(this);
+    this.articleAboutToDelete = null;
   }
 
   componentWillMount() {
@@ -109,6 +113,15 @@ class ArticlesTableContainer extends Component{
     this.props.getArticles(params, filters);
   }
   
+  confirmDelete(article) {
+    this.articleAboutToDelete = article;
+  }
+
+  deleteArticle() {
+    this.props.deleteArticle(this.articleAboutToDelete);
+    this.articleAboutToDelete = null;
+  }
+
   render(){
     const { pagination, articles, isEmpty, deleteArticle } = this.props;
     return(
@@ -124,7 +137,8 @@ class ArticlesTableContainer extends Component{
                   columns={ this.getColumns() }
                   pagination={ pagination }
                   data={ articles }
-                  onDelete={ deleteArticle }
+                  onDelete={ this.confirmDelete }
+                  deleteConfirmModalName="delete-article"
                   handleTableChange={ this.handleTableChange }
                   isEmpty = { isEmpty }
                 >
@@ -137,6 +151,13 @@ class ArticlesTableContainer extends Component{
             >
               <ProfileFormComponent onSubmit={this.createUser} mode="create" buttonsPosition="end"></ProfileFormComponent>
             </ModalComponent>
+            <ConfirmComponent 
+              name="delete-article"
+              title="Delete Article"
+              body="Are you sure you want to delete this article?"
+              onAccept={ this.deleteArticle }
+              onCancel={ () => console.log('cancel') }
+            />
         </div>
     );
   }

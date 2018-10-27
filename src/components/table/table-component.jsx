@@ -15,7 +15,7 @@ class TableComponent extends Component {
         this.handleTableChange = this.handleTableChange.bind(this);
     }
     getDeleteBtn(onDelete, item) { 
-        return <button onClick={ () => onDelete(item) } key='delete' className="btn btn-outline-danger btn-block">
+        return <button onClick={ () => onDelete(item) } key='delete' data-target={`#${this.props.deleteConfirmModalName}`} data-toggle="modal" className="btn btn-outline-danger btn-block">
             <i className="fa fa-trash"></i>
         </button>
     }
