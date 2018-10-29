@@ -123,7 +123,7 @@ class ArticlesTableContainer extends Component{
   }
 
   render(){
-    const { pagination, articles, isEmpty, deleteArticle } = this.props;
+    const { pagination, articles, isEmpty } = this.props;
     return(
         <div className="container-fluid">
             <div className="card border mb-3">
@@ -131,7 +131,7 @@ class ArticlesTableContainer extends Component{
               <div className="card-body text">
                 <button data-target="" data-toggle="modal" className="btn btn-success mb-2">
                   <i className="fas fa-plus pr-1"></i>
-                  Add
+                  New Article
                 </button>
                 <TableComponent
                   columns={ this.getColumns() }

@@ -18,7 +18,7 @@ import DebugPageComponent from '../pages/debug-page/debug-page-component';
 import ProfilePageComponent from '../pages/profile-page/profile-page-component';
 import ManagePageComponent from '../pages/manage-page/manage-page-component';
 import ArticlesPageComponent from '../pages/articles-page/articles-page-component';
-
+import ArticlesDetailsPageComponent from '../pages/articles-page/articles-detail-page-component';
 import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
 import AlertContainer from '../containers/alert/alert-container';
 
@@ -71,6 +71,8 @@ class App extends Component{
               <Route exact path='/' component={ HomePageComponent }/>
               <Route exact path='/contact' component={ ContactPageComponent }/>
               <Route exact path='/articles' component={ ArticlesPageComponent }/>
+              <AuthRoute exact path='/articles/create' show={ isAuthenticated } component={ ArticlesDetailsPageComponent }/>
+              <AuthRoute exact path='/articles/:id' show={ isAuthenticated } component={ ArticlesDetailsPageComponent }/>
               <AuthRoute exact path='/profile' show={ isAuthenticated }component={ ProfilePageComponent }/>
               <AuthRoute exact path='/login' show={ !isAuthenticated } component={ LoginPageComponent }/>
               <AuthRoute exact path='/manage' show={ isAuthenticated } component={ ManagePageComponent }/>
