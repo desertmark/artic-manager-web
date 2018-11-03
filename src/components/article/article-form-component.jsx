@@ -4,6 +4,14 @@ import { connect } from 'react-redux';
 import {SwitchableInputComponent} from '../../components/switchable-input/switchable-input'
 import SelectComponent from '../select/select-component';
 import { PercentageInput } from '../inputs/inputs';
+const required = value => (value || typeof value === "number" ? undefined : "Required")
+const renderField = ({ input, label, type, className, meta: { touched, error, warning } }) => (
+  <div>
+      <input {...input} placeholder={label} type={type} className={className}/>
+      {touched && ((error && <span className="text-danger">{error}</span>) || (warning && <span>{warning}</span>))}
+  </div>
+)
+
 
 class ArticleFormComponent extends Component{
 
@@ -19,7 +27,7 @@ class ArticleFormComponent extends Component{
                 <div className="form-group col">
                   <label className="text-secondary">Code</label>
                   <SwitchableInputComponent edit={true} value={formData.code} >
-                    <Field name="code" component="input" type="text" className="form-control" placeholder="00.00.00.00" />
+                    <Field name="code" component={renderField} type="text" className="form-control" placeholder="00.00.00.00" validate={[required]} />
                   </SwitchableInputComponent>
                 </div>
                 <div className="form-group col">
