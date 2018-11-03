@@ -3,7 +3,7 @@ import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 import {SwitchableInputComponent} from '../../components/switchable-input/switchable-input'
 import SelectComponent from '../select/select-component';
-import { PercentageInput } from '../inputs/inputs';
+import { PercentageInput, CurrencyInput } from '../inputs/inputs';
 const required = value => (value || typeof value === "number" ? undefined : "Required")
 const renderField = ({ input, label, type, className, meta: { touched, error, warning } }) => (
   <div>
@@ -33,13 +33,13 @@ class ArticleFormComponent extends Component{
                 <div className="form-group col">
                   <label className="text-secondary">List Price</label>
                   <SwitchableInputComponent edit={true} value={formData.listPrice} >
-                    <Field name="listPrice" component="input" type="number" className="form-control" placeholder="$0" />
+                    <CurrencyInput name="listPrice" placeholder="$0" validate={[required]} />
                   </SwitchableInputComponent>
                 </div>
                 <div className="form-group col">
                   <label className="text-secondary">Utility</label>
                   <SwitchableInputComponent edit={true} value={formData.utility} >
-                    <PercentageInput name="utility" placeholder="0%" />
+                    <PercentageInput name="utility" placeholder="0%" validate={[required]} />
                   </SwitchableInputComponent>
                 </div> 
               </div>
