@@ -1,4 +1,4 @@
-import { set, get } from 'lodash';
+import { set, get, sumBy } from 'lodash';
 /**
  * Transforms the table filter to pass it to the body of the request.
  * @param {*} tableFilter is the react-bootstrap-table2 filter event payload property.
@@ -68,4 +68,16 @@ export function parseCode(code) {
     return parseInt(code.replace(/[.]+/gm,''));
 }
 
+export function calculateCost(listPrice = 0, vat = 0, discounts = []) {
+    const totalDiscount = sumBy(discounts, 'amount');
+    const cost = listPrice*(1 + vat/100 - totalDiscount/100).toFixed(2);
+    return parseFloat(cost);
+}
 
+export function calculatePrice(cost, utility, transport) {
+    parseFloat(cost*(1 + utility/100 + transport/100).toFixed(2));
+}
+
+export function calculateCardPrice(price, card) {
+    parseFloat(price*(1 + card/100).toFixed(2));
+}
