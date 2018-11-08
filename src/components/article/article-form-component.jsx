@@ -3,15 +3,8 @@ import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 import {SwitchableInputComponent} from '../../components/switchable-input/switchable-input'
 import SelectComponent from '../select/select-component';
-import { PercentageInput, CurrencyInput } from '../inputs/inputs';
-const required = value => (value || typeof value === "number" ? undefined : "Required")
-const renderField = ({ input, label, type, className, meta: { touched, error, warning } }) => (
-  <div>
-      <input {...input} placeholder={label} type={type} className={className}/>
-      {touched && ((error && <span className="text-danger">{error}</span>) || (warning && <span>{warning}</span>))}
-  </div>
-)
-
+import { PercentageInput, CurrencyInput, CodeInput } from '../inputs/inputs';
+import { required } from '../inputs/validators';
 
 class ArticleFormComponent extends Component{
 
@@ -27,7 +20,7 @@ class ArticleFormComponent extends Component{
                 <div className="form-group col">
                   <label className="text-secondary">Code</label>
                   <SwitchableInputComponent edit={true} value={formData.code} >
-                    <Field name="code" component={renderField} type="text" className="form-control" placeholder="00.00.00.00" validate={[required]} />
+                    <CodeInput name="code" placeholder="00.00.00.00" validate={[required]} />
                   </SwitchableInputComponent>
                 </div>
                 <div className="form-group col">
@@ -55,19 +48,19 @@ class ArticleFormComponent extends Component{
                 <div className="form-group col">
                   <label className="text-secondary">Value added tax</label>
                   <SwitchableInputComponent edit={true} value={formData.vat} >
-                    <Field name="vat" component="input" type="number" className="form-control" min={0} max={100} />
+                    <PercentageInput name="vat" />
                   </SwitchableInputComponent>
                 </div> 
                 <div className="form-group col">
                   <label className="text-secondary">Transport</label>
                   <SwitchableInputComponent edit={true} value={formData.transport} >
-                    <Field name="transport" component="input" type="number" className="form-control" min={0} max={100} />
+                    <PercentageInput name="transport" />
                   </SwitchableInputComponent>
                 </div> 
                 <div className="form-group col">
                   <label className="text-secondary">Card</label>
                   <SwitchableInputComponent edit={true} value={formData.card} >
-                    <Field name="card" component="input" type="number" className="form-control" min={0} max={100} />
+                    <PercentageInput name="card" />
                   </SwitchableInputComponent>
                 </div> 
               </div>
@@ -83,7 +76,7 @@ const selector = formValueSelector('articleForm');
 export default connect(
   (state, ownProps) => {
     return {
-      initialValues: ownProps.initialValues || {vat: 21, transport: 14, card: 23},
+      initialValues: ownProps.initialValues || {vat: '21%', transport: '14%', card: '23%'},
       formData: selector(state, 'code', 'listPrice', 'utility', 'price', 'description','transport', 'vat', 'card')
     }
   },
