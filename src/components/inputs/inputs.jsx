@@ -7,14 +7,14 @@ const input = ({ input, type, placeholder,readOnly, className, append, prepend, 
   <div>
       <div className={(append || prepend) ? 'input-group' : ''}>
         { prepend &&
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">{prepend}</span>
+        <div className="input-group-prepend">
+            <span className="input-group-text" id="basic-addon1">{prepend}</span>
         </div>
         }
         <input {...input} readOnly={readOnly} placeholder={placeholder} type={type} className={className}/>
         { append && 
-        <div class="input-group-append">
-            <span class="input-group-text" >{append}</span>
+        <div className="input-group-append">
+            <span className="input-group-text" >{append}</span>
         </div>
         }        
         </div>

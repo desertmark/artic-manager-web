@@ -5,16 +5,38 @@ import {SwitchableInputComponent} from '../../components/switchable-input/switch
 import SelectComponent from '../select/select-component';
 import { PercentageInput, CurrencyInput, CodeInput } from '../inputs/inputs';
 import { required } from '../inputs/validators';
-import { calculateCost } from '../../util/util';
+import { calculateCost, calculatePrice, calculateCardPrice } from '../../util/util';
 
 class ArticleFormComponent extends Component{
   constructor() {
     super();
     this.updateCost = this.updateCost.bind(this);
+    this.updateCalculatedValues = this.updateCalculatedValues.bind(this);
   }
 
-  updateCost() {
-    this.props.changeFieldValue('cost', calculateCost(this.props.formData.listPrice, this.props.formData.vat))
+  updateCost(formData) {
+    const { listPrice, vat } = formData;
+    this.props.changeFieldValue('cost', calculateCost(listPrice, vat))
+  }
+
+  updatePrice(formData) {
+    const { cost, utility, transport } = formData;
+    this.props.changeFieldValue('price', calculatePrice(cost, utility, transport))
+  }
+
+  updateCardPrice(formData) {
+    const { price, card } = formData;
+    this.props.changeFieldValue('cardPrice', calculateCardPrice(price, card));
+  }
+
+  updateCalculatedValues(formData) {
+    this.updatePrice(formData);
+    this.updateCost(formData);
+    this.updateCardPrice(formData);
+  }
+
+  componentWillUpdate(nextProps) {
+    this.updateCalculatedValues(nextProps.formData);
   }
   render(){
     const { formData } = this.props;
@@ -54,7 +76,20 @@ class ArticleFormComponent extends Component{
                     <CurrencyInput name="cost" placeholder="0" readOnly />
                   </SwitchableInputComponent>
                 </div>
-                <button className="mt-2 btn btn-default" onClick={this.updateCost} type="button">Calculate</button>
+
+                <div className="form-group col">
+                  <label className="text-secondary">Price</label>
+                  <SwitchableInputComponent edit={true} value={formData.price} >
+                    <CurrencyInput name="price" placeholder="0" readOnly />
+                  </SwitchableInputComponent>
+                </div>
+
+                <div className="form-group col">
+                  <label className="text-secondary">Card Price</label>
+                  <SwitchableInputComponent edit={true} value={formData.cardPrice} >
+                    <CurrencyInput name="cardPrice" placeholder="0" readOnly />
+                  </SwitchableInputComponent>
+                </div>
               </div>
               
             
@@ -62,7 +97,7 @@ class ArticleFormComponent extends Component{
               <div className="form-row">
                 <label className="text-secondary">Description</label>
                 <SwitchableInputComponent edit={true} value={formData.description} >
-                  <Field className="form-control" component="textarea" row="4" type="text" name="description" placeholder="Enter a description..." />
+                  <Field className="form-control" component="textarea" rows="4" type="text" name="description" placeholder="Enter a description..." />
                 </SwitchableInputComponent>
               </div>
             
@@ -99,7 +134,15 @@ const selector = formValueSelector('articleForm');
 export default connect(
   (state, ownProps) => {
     return {
-      initialValues: ownProps.initialValues || {vat: 21, transport: 14, card: 23},
+      initialValues: ownProps.initialValues || {
+        vat: 21, 
+        transport: 14, 
+        card: 23,
+        cost: 0,
+        price: 0,
+        cardPrice: 0,
+        listPrice: 0
+      },
       formData: selector(state, 'code', 'listPrice', 'utility', 'price', 'description','transport', 'vat', 'card', 'cardPrice', 'cost')
     }
   },
