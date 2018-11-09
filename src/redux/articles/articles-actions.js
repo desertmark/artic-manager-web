@@ -1,5 +1,19 @@
 import articlesService from './articles-service';
-import { GET_ARTICLES, DELETE_ARTICLE } from './articles-constants';
+import { GET_ARTICLES, DELETE_ARTICLE, GET_ARTICLE } from './articles-constants';
+
+export function getArticle(articleId) {
+    return dispatch => {
+        const promise = articlesService.getArticle(articleId);
+        dispatch({
+            type: GET_ARTICLE,
+            payload: promise,
+            meta: {
+                showSpinner: true,
+                promise
+            }
+        });
+    }
+}
 
 export function getArticles(params, filters) {
     return dispatch => {

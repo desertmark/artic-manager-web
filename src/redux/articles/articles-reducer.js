@@ -1,4 +1,7 @@
 import {
+    GET_ARTICLE_PENDING,
+    GET_ARTICLE_FULFILLED,
+    GET_ARTICLE_REJECTED,
     GET_ARTICLES_PENDING,
     GET_ARTICLES_FULFILLED,
     GET_ARTICLES_REJECTED,
@@ -8,6 +11,7 @@ import {
 } from './articles-constants';
 
 const defaultState = {
+    article: null,
     articles: [],
     pagination: {
         page: 0,
@@ -20,7 +24,20 @@ const defaultState = {
 }
 
 export function articlesReducer(currentState = defaultState, action) {
-    switch(action.type) {        
+    switch(action.type) {
+        case GET_ARTICLE_PENDING:
+            return Object.assign({}, currentState, {
+                loading: true,
+            });
+        case GET_ARTICLE_FULFILLED:
+            return Object.assign({}, currentState, { 
+                article: action.payload, 
+                loading: false,
+                error: null
+            });
+        case GET_ARTICLE_REJECTED:
+            return Object.assign({}, currentState, { error: action.payload, loading: false } );
+
         case GET_ARTICLES_PENDING:
             return Object.assign({}, currentState, {
                 articles: [],

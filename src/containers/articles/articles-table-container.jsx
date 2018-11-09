@@ -10,6 +10,8 @@ import { get } from 'lodash';
 import { codeFormatter, currencyFormatter, percentageFormatter } from '../../util/articles-formatters';
 import { parseCode } from '../../util/util';
 import ConfirmComponent from '../../components/confirm/confirm-component';
+import { Link } from 'react-router-dom';
+import { withRouter } from "react-router";
 
 class ArticlesTableContainer extends Component{
   constructor() {
@@ -19,6 +21,7 @@ class ArticlesTableContainer extends Component{
     this.deleteArticle = this.deleteArticle.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.articleAboutToDelete = null;
+    this.viewArticle = this.viewArticle.bind(this);
   }
 
   componentWillMount() {
@@ -122,6 +125,10 @@ class ArticlesTableContainer extends Component{
     this.articleAboutToDelete = null;
   }
 
+  viewArticle(article) {
+    this.props.history.push(`/articles/${article._id}` );
+  }
+
   render(){
     const { pagination, articles, isEmpty } = this.props;
     return(
@@ -129,14 +136,15 @@ class ArticlesTableContainer extends Component{
             <div className="card border mb-3">
               <div className="card-header border">List of articles</div>
               <div className="card-body text">
-                <button data-target="" data-toggle="modal" className="btn btn-success mb-2">
+                <Link to="/articles/create" className="btn btn-success mb-2">
                   <i className="fas fa-plus pr-1"></i>
                   New Article
-                </button>
+                </Link>
                 <TableComponent
                   columns={ this.getColumns() }
                   pagination={ pagination }
                   data={ articles }
+                  onView= { this.viewArticle }
                   onDelete={ this.confirmDelete }
                   deleteConfirmModalName="delete-article"
                   handleTableChange={ this.handleTableChange }
@@ -172,4 +180,4 @@ export default connect(
     currentUser: state.userReducer.currentUser,
   }), // mapStateToProps
   dispatch => bindActionCreators({ getArticles, deleteArticle }, dispatch) // mapDispatchToProps
-)(ArticlesTableContainer)
+)(withRouter(ArticlesTableContainer))

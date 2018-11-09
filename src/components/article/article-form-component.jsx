@@ -12,6 +12,9 @@ class ArticleFormComponent extends Component{
     super();
     this.updateCost = this.updateCost.bind(this);
     this.updateCalculatedValues = this.updateCalculatedValues.bind(this);
+    this.isEdit = this.isEdit.bind(this);
+    this.isCreate = this.isCreate.bind(this);
+    this.isView = this.isView.bind(this);
   }
 
   updateCost(formData) {
@@ -38,6 +41,18 @@ class ArticleFormComponent extends Component{
   componentWillUpdate(nextProps) {
     this.updateCalculatedValues(nextProps.formData);
   }
+
+  isEdit() {
+    return this.props.mode.toLowerCase() === 'edit';
+  }
+
+  isCreate() {
+    return this.props.mode.toLowerCase() === 'create';
+  }
+
+  isView() {
+    return this.props.mode.toLowerCase() === 'view';
+  }
   render(){
     const { formData } = this.props;
     return(
@@ -50,19 +65,19 @@ class ArticleFormComponent extends Component{
               <div className="form-row">
                 <div className="form-group col">
                   <label className="text-secondary">Code</label>
-                  <SwitchableInputComponent edit={true} value={formData.code} >
+                  <SwitchableInputComponent edit={this.isEdit() || this.isCreate()} value={formData.code} >
                     <CodeInput name="code" placeholder="00.00.00.00" validate={[required]} />
                   </SwitchableInputComponent>
                 </div>
                 <div className="form-group col">
                   <label className="text-secondary">List Price</label>
-                  <SwitchableInputComponent edit={true} value={formData.listPrice} >
+                  <SwitchableInputComponent edit={this.isEdit() || this.isCreate()} value={formData.listPrice} >
                     <CurrencyInput name="listPrice" placeholder="0" validate={[required]} />
                   </SwitchableInputComponent>
                 </div>
                 <div className="form-group col">
                   <label className="text-secondary">Utility</label>
-                  <SwitchableInputComponent edit={true} value={formData.utility} >
+                  <SwitchableInputComponent edit={this.isEdit() || this.isCreate()} value={formData.utility} >
                     <PercentageInput name="utility" placeholder="0" validate={[required]} />
                   </SwitchableInputComponent>
                 </div> 
@@ -72,21 +87,21 @@ class ArticleFormComponent extends Component{
               <div className="form-row">
                 <div className="form-group col">
                   <label className="text-secondary">Cost</label>
-                  <SwitchableInputComponent edit={true} value={formData.cost} >
+                  <SwitchableInputComponent edit={this.isEdit() || this.isCreate()} value={formData.cost} >
                     <CurrencyInput name="cost" placeholder="0" readOnly />
                   </SwitchableInputComponent>
                 </div>
 
                 <div className="form-group col">
                   <label className="text-secondary">Price</label>
-                  <SwitchableInputComponent edit={true} value={formData.price} >
+                  <SwitchableInputComponent edit={this.isEdit() || this.isCreate()} value={formData.price} >
                     <CurrencyInput name="price" placeholder="0" readOnly />
                   </SwitchableInputComponent>
                 </div>
 
                 <div className="form-group col">
                   <label className="text-secondary">Card Price</label>
-                  <SwitchableInputComponent edit={true} value={formData.cardPrice} >
+                  <SwitchableInputComponent edit={this.isEdit() || this.isCreate()} value={formData.cardPrice} >
                     <CurrencyInput name="cardPrice" placeholder="0" readOnly />
                   </SwitchableInputComponent>
                 </div>
@@ -96,7 +111,7 @@ class ArticleFormComponent extends Component{
             {/* ROW 3 */}
               <div className="form-row">
                 <label className="text-secondary">Description</label>
-                <SwitchableInputComponent edit={true} value={formData.description} >
+                <SwitchableInputComponent edit={this.isEdit() || this.isCreate()} value={formData.description} >
                   <Field className="form-control" component="textarea" rows="4" type="text" name="description" placeholder="Enter a description..." />
                 </SwitchableInputComponent>
               </div>
@@ -105,19 +120,19 @@ class ArticleFormComponent extends Component{
               <div className="form-row">
                 <div className="form-group col">
                   <label className="text-secondary">Value added tax</label>
-                  <SwitchableInputComponent edit={true} value={formData.vat} >
+                  <SwitchableInputComponent edit={this.isEdit() || this.isCreate()} value={formData.vat} >
                     <PercentageInput name="vat" />
                   </SwitchableInputComponent>
                 </div> 
                 <div className="form-group col">
                   <label className="text-secondary">Transport</label>
-                  <SwitchableInputComponent edit={true} value={formData.transport} >
+                  <SwitchableInputComponent edit={this.isEdit() || this.isCreate()} value={formData.transport} >
                     <PercentageInput name="transport" />
                   </SwitchableInputComponent>
                 </div> 
                 <div className="form-group col">
                   <label className="text-secondary">Card</label>
-                  <SwitchableInputComponent edit={true} value={formData.card} >
+                  <SwitchableInputComponent edit={this.isEdit() || this.isCreate()} value={formData.card} >
                     <PercentageInput name="card" />
                   </SwitchableInputComponent>
                 </div> 

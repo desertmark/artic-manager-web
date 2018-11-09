@@ -10,21 +10,29 @@ class TableComponent extends Component {
     constructor() {
         super();
         this.getDeleteBtn = this.getDeleteBtn.bind(this);
+        this.getViewBtn = this.getViewBtn.bind(this);
         this.getData = this.getData.bind(this);
         this.filter = this.filter.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
     }
     getDeleteBtn(onDelete, item) { 
-        return <button onClick={ () => onDelete(item) } key='delete' data-target={`#${this.props.deleteConfirmModalName}`} data-toggle="modal" className="btn btn-outline-danger btn-block">
+        return <button onClick={ () => onDelete(item) } key='delete' data-target={`#${this.props.deleteConfirmModalName}`} data-toggle="modal" className="btn btn-outline-danger mx-1">
             <i className="fa fa-trash"></i>
         </button>
     }
 
+    getViewBtn(onView, item) {
+        return <button onClick={ () => onView(item) } key='view' className="btn btn-outline-info mx-1">
+            <i className="fa fa-info-circle"></i>
+        </button>
+    }
+
     getData() {
-      const { onDelete } = this.props;
+      const { onDelete, onView } = this.props;
       return this.props.data.length === 0 ?  [] :
       this.props.data.map(item => {
         item.actions = [];
+        onView ? item.actions.push(this.getViewBtn(onView, item)) : null;
         onDelete ? item.actions.push(this.getDeleteBtn(onDelete, item)) : null;
         return item;
       });

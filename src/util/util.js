@@ -69,7 +69,7 @@ export function parseCode(code) {
 }
 
 export function calculateCost(listPrice = 0, vat = 0, discounts = []) {
-    listPrice = parseInt(listPrice);
+    listPrice = parseFloat(listPrice);
     vat = parseInt(vat);
     discounts = discounts.forEach(parseInt);
     const totalDiscount = sumBy(discounts, 'amount');
@@ -78,14 +78,14 @@ export function calculateCost(listPrice = 0, vat = 0, discounts = []) {
 }
 
 export function calculatePrice(cost = 0, utility = 0, transport = 0) {
-    cost = parseInt(cost);
+    cost = parseFloat(cost);
     utility = parseInt(utility);
     transport = parseInt(transport);
     return parseFloat(cost*(1 + utility/100 + transport/100).toFixed(2));
 }
 
 export function calculateCardPrice(price = 0, card = 0) {
-    price = parseInt(price);
-    card = parseInt(card);
+    price = parseFloat(price);
+    card = parseFloat(card);
     return parseFloat(price*(1 + card/100).toFixed(2));
 }
