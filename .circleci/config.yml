@@ -35,6 +35,9 @@ jobs:
         
       # - run test!
       - run: npm run build:prod
+      - run:
+          name: Create tag
+          command: node version.js
   
   # deploy stuff!
   deploy:
