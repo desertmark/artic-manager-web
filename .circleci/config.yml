@@ -36,6 +36,9 @@ jobs:
       # - run test!
       - run: npm run build:prod
       - run:
+          name: Configure git
+          command: git config --global user.email $GIT_USER_EMAIL && git config --global user.name $GIT_USER_NAME && git branch -u origin/$CIRCLE_BRANCH
+      - run:
           name: Create tag
           command: node version.js
   
