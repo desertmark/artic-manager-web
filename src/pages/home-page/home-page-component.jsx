@@ -5,7 +5,7 @@ class HomePageComponent extends Component{
     return(
       <div id="home-page-component">
         <div className="jumbotron">
-          <h1 className="display-4">Artic Manager Web!</h1>
+          <h1 className="display-4">Artic Manager Web! CircleCI for CI/CD</h1>
           <p className="lead">A simple tool for managing articles with categories and login.</p>
           <hr className="my-4" />
           <p>It uses a NodeJS back-end with mongoDb for data storage.</p>
