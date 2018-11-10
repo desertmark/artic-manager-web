@@ -34,7 +34,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       # - run test!
-      - run: npm run build:prod
+      # - run: npm run build:prod
   
   # deploy stuff!
   deploy:
