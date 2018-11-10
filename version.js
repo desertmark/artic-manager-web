@@ -10,8 +10,9 @@ exec('git tag', (err, tag) => {
     const newTag = generateNewTag(tag);
     updatePackageJson(newTag)
     .then(() => commitPackageJson(newTag))
+    .then(()=>gitPush())
     .then(() => gitTag(newTag))
-    .then(()=>gitPush(newTag))
+    .then(() => gitPushTag(newTag))
     .then(() => {
         console.log('New version generated :)')
         process.exit(0);
@@ -46,7 +47,21 @@ function gitTag(tag) {
     });
 }
 
-function gitPush(tag) {
+function gitPush() {
+    return new Promise((res, rej) => {
+        exec(`git push origin`, (err, stdout) => {
+            if (err) {
+                console.error(err);
+                process.exit(-1);
+            } else {
+                console.log(stdout);
+                res();
+            }
+        });
+    });
+}
+
+function gitPushTag(tag) {
     return new Promise((res, rej) => {
         exec(`git push origin ${tag}`, (err, stdout) => {
             if (err) {
