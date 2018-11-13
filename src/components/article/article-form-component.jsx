@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Field, reduxForm, formValueSelector, change } from 'redux-form';
 import { connect } from 'react-redux';
-import {SwitchableInputComponent} from '../../components/switchable-input/switchable-input'
-import SelectComponent from '../select/select-component';
+import { SwitchableInputComponent } from '../../components/switchable-input/switchable-input'
 import { PercentageInput, CurrencyInput, CodeInput } from '../inputs/inputs';
 import { required } from '../inputs/validators';
 import { calculateCost, calculatePrice, calculateCardPrice } from '../../util/util';
+import SelectSearchComponent from '../../components/select/select-search-component';
+
+const mockResults = [{"_id":"5b5e53dc9bf56042fc82778a","description":"Abrazaderas","__v":0},{"_id":"5bb132c7ef10ab142cf56b5e","description":"Abrazaderas","__v":0},{"_id":"5bb28e5e6877d00bd000a785","description":"Abrazaderas","__v":0},{"_id":"5b5e53dc9bf56042fc82771a","description":"Abrazaderas Carbiz","__v":0},{"_id":"5bb132c7ef10ab142cf56aee","description":"Abrazaderas Carbiz","__v":0},{"_id":"5bb28e5e6877d00bd000a715","description":"Abrazaderas Carbiz","__v":0},{"_id":"5b5e53dc9bf56042fc82796c","description":"Abrazaderas Hierro Fundido","__v":0},{"_id":"5bb132c7ef10ab142cf56d40","description":"Abrazaderas Hierro Fundido","__v":0},{"_id":"5bb28e5e6877d00bd000a967","description":"Abrazaderas Hierro Fundido","__v":0},{"_id":"5b5e53dc9bf56042fc8279a8","description":"Abrazaderas P.V.C.","__v":0},{"_id":"5bb132c7ef10ab142cf56d7c","description":"Abrazaderas P.V.C.","__v":0},{"_id":"5bb28e5e6877d00bd000a9a3","description":"Abrazaderas P.V.C.","__v":0},{"_id":"5b5e53dc9bf56042fc82796d","description":"Aros De Goma P/Abrazaderas","__v":0},{"_id":"5bb132c7ef10ab142cf56d41","description":"Aros De Goma P/Abrazaderas","__v":0},{"_id":"5bb28e5e6877d00bd000a968","description":"Aros De Goma P/Abrazaderas","__v":0}];
 
 class ArticleFormComponent extends Component{
   constructor() {
@@ -106,9 +108,20 @@ class ArticleFormComponent extends Component{
                   </SwitchableInputComponent>
                 </div>
               </div>
-              
             
             {/* ROW 3 */}
+              <div className="form-row">
+                
+                <div className="form-group col-4">
+                  <label className="text-secondary">Category</label>
+                  <SelectSearchComponent onSearch={text => console.log(text)}>
+                    {mockResults.map(c => ({value: c._id, text: c.description}))}
+                  </SelectSearchComponent>
+                </div>
+                
+              </div>
+            
+            {/* ROW 4 */}
               <div className="form-row">
                 <label className="text-secondary">Description</label>
                 <SwitchableInputComponent edit={this.isEdit() || this.isCreate()} value={formData.description} >
@@ -116,7 +129,7 @@ class ArticleFormComponent extends Component{
                 </SwitchableInputComponent>
               </div>
             
-            {/* ROW 4 */}
+            {/* ROW 5 */}
               <div className="form-row">
                 <div className="form-group col">
                   <label className="text-secondary">Value added tax</label>
