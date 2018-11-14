@@ -8,6 +8,7 @@ import { calculateCost, calculatePrice, calculateCardPrice } from '../../util/ut
 import SelectSearchComponent from '../../components/select/select-search-component';
 import { bindActionCreators } from 'redux';
 import { getCategories } from '../../redux/categories/categories-actions';
+import { get } from 'lodash';
 const mockResults = [{"_id":"5b5e53dc9bf56042fc82778a","description":"Abrazaderas","__v":0},{"_id":"5bb132c7ef10ab142cf56b5e","description":"Abrazaderas","__v":0},{"_id":"5bb28e5e6877d00bd000a785","description":"Abrazaderas","__v":0},{"_id":"5b5e53dc9bf56042fc82771a","description":"Abrazaderas Carbiz","__v":0},{"_id":"5bb132c7ef10ab142cf56aee","description":"Abrazaderas Carbiz","__v":0},{"_id":"5bb28e5e6877d00bd000a715","description":"Abrazaderas Carbiz","__v":0},{"_id":"5b5e53dc9bf56042fc82796c","description":"Abrazaderas Hierro Fundido","__v":0},{"_id":"5bb132c7ef10ab142cf56d40","description":"Abrazaderas Hierro Fundido","__v":0},{"_id":"5bb28e5e6877d00bd000a967","description":"Abrazaderas Hierro Fundido","__v":0},{"_id":"5b5e53dc9bf56042fc8279a8","description":"Abrazaderas P.V.C.","__v":0},{"_id":"5bb132c7ef10ab142cf56d7c","description":"Abrazaderas P.V.C.","__v":0},{"_id":"5bb28e5e6877d00bd000a9a3","description":"Abrazaderas P.V.C.","__v":0},{"_id":"5b5e53dc9bf56042fc82796d","description":"Aros De Goma P/Abrazaderas","__v":0},{"_id":"5bb132c7ef10ab142cf56d41","description":"Aros De Goma P/Abrazaderas","__v":0},{"_id":"5bb28e5e6877d00bd000a968","description":"Aros De Goma P/Abrazaderas","__v":0}];
 
 class ArticleFormComponent extends Component{
@@ -21,7 +22,9 @@ class ArticleFormComponent extends Component{
   }
 
   componentWillMount() {
-    this.props.getCategories();
+    this.props.getCategories({
+      size:10,
+    });
   }
   updateCost(formData) {
     const { listPrice, vat } = formData;
@@ -118,7 +121,13 @@ class ArticleFormComponent extends Component{
                 
                 <div className="form-group col-4">
                   <label className="text-secondary">Category</label>
-                  <SelectSearchComponent loading={this.props.loadingCategories} onSearch={text => console.log(text)}>
+                  <SelectSearchComponent 
+                    loading={this.props.loadingCategories} 
+                    onSearch={q => this.props.getCategories({size: 10, q})}
+                    selected={get(formData,'category.description')}
+                    placeholder="Select category"
+                    onSelect={item => this.props.changeFieldValue('category', {_id: item.value, description: item.text})}
+                  >
                     {this.props.categories.map(c => ({value: c._id, text: c.description}))}
                   </SelectSearchComponent>
                 </div>
@@ -155,6 +164,7 @@ class ArticleFormComponent extends Component{
                 </div> 
               </div>
             </form>
+            <pre>{JSON.stringify(this.props.formData, null, 2)}</pre>
           </div>
           </div>
       </div>
@@ -173,9 +183,10 @@ export default connect(
         cost: 0,
         price: 0,
         cardPrice: 0,
-        listPrice: 0
+        listPrice: 0,
+        category: null
       },
-      formData: selector(state, 'code', 'listPrice', 'utility', 'price', 'description','transport', 'vat', 'card', 'cardPrice', 'cost'),
+      formData: selector(state, 'code', 'listPrice', 'utility', 'price', 'description','transport', 'vat', 'card', 'cardPrice', 'cost', 'category'),
       categories: state.categoriesReducer.categories,
       loadingCategories: state.categoriesReducer.loading,
 
