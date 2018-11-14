@@ -6,13 +6,15 @@ import { appReducer } from './app/app-reducer';
 import { authReducer } from './redux/auth/auth-container-reducer';
 import { userReducer } from './redux/users/user-reducer';
 import { articlesReducer } from './redux/articles/articles-reducer';
+import { categoriesReducer } from './redux/categories/categories-reducer';
 
 const rootReducer = combineReducers({
     appReducer,
     form: formReducer, // redux form
     authReducer,
     userReducer,
-    articlesReducer
+    articlesReducer,
+    categoriesReducer
 });
 
 export default rootReducer;

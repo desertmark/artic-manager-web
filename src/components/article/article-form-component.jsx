@@ -6,7 +6,8 @@ import { PercentageInput, CurrencyInput, CodeInput } from '../inputs/inputs';
 import { required } from '../inputs/validators';
 import { calculateCost, calculatePrice, calculateCardPrice } from '../../util/util';
 import SelectSearchComponent from '../../components/select/select-search-component';
-
+import { bindActionCreators } from 'redux';
+import { getCategories } from '../../redux/categories/categories-actions';
 const mockResults = [{"_id":"5b5e53dc9bf56042fc82778a","description":"Abrazaderas","__v":0},{"_id":"5bb132c7ef10ab142cf56b5e","description":"Abrazaderas","__v":0},{"_id":"5bb28e5e6877d00bd000a785","description":"Abrazaderas","__v":0},{"_id":"5b5e53dc9bf56042fc82771a","description":"Abrazaderas Carbiz","__v":0},{"_id":"5bb132c7ef10ab142cf56aee","description":"Abrazaderas Carbiz","__v":0},{"_id":"5bb28e5e6877d00bd000a715","description":"Abrazaderas Carbiz","__v":0},{"_id":"5b5e53dc9bf56042fc82796c","description":"Abrazaderas Hierro Fundido","__v":0},{"_id":"5bb132c7ef10ab142cf56d40","description":"Abrazaderas Hierro Fundido","__v":0},{"_id":"5bb28e5e6877d00bd000a967","description":"Abrazaderas Hierro Fundido","__v":0},{"_id":"5b5e53dc9bf56042fc8279a8","description":"Abrazaderas P.V.C.","__v":0},{"_id":"5bb132c7ef10ab142cf56d7c","description":"Abrazaderas P.V.C.","__v":0},{"_id":"5bb28e5e6877d00bd000a9a3","description":"Abrazaderas P.V.C.","__v":0},{"_id":"5b5e53dc9bf56042fc82796d","description":"Aros De Goma P/Abrazaderas","__v":0},{"_id":"5bb132c7ef10ab142cf56d41","description":"Aros De Goma P/Abrazaderas","__v":0},{"_id":"5bb28e5e6877d00bd000a968","description":"Aros De Goma P/Abrazaderas","__v":0}];
 
 class ArticleFormComponent extends Component{
@@ -19,6 +20,9 @@ class ArticleFormComponent extends Component{
     this.isView = this.isView.bind(this);
   }
 
+  componentWillMount() {
+    this.props.getCategories();
+  }
   updateCost(formData) {
     const { listPrice, vat } = formData;
     this.props.changeFieldValue('cost', calculateCost(listPrice, vat))
@@ -114,8 +118,8 @@ class ArticleFormComponent extends Component{
                 
                 <div className="form-group col-4">
                   <label className="text-secondary">Category</label>
-                  <SelectSearchComponent onSearch={text => console.log(text)}>
-                    {mockResults.map(c => ({value: c._id, text: c.description}))}
+                  <SelectSearchComponent loading={this.props.loadingCategories} onSearch={text => console.log(text)}>
+                    {this.props.categories.map(c => ({value: c._id, text: c.description}))}
                   </SelectSearchComponent>
                 </div>
                 
@@ -171,13 +175,17 @@ export default connect(
         cardPrice: 0,
         listPrice: 0
       },
-      formData: selector(state, 'code', 'listPrice', 'utility', 'price', 'description','transport', 'vat', 'card', 'cardPrice', 'cost')
+      formData: selector(state, 'code', 'listPrice', 'utility', 'price', 'description','transport', 'vat', 'card', 'cardPrice', 'cost'),
+      categories: state.categoriesReducer.categories,
+      loadingCategories: state.categoriesReducer.loading,
+
     }
   },
   dispatch => ({
     changeFieldValue: (field, value) => {
       dispatch(change('articleForm', field, value))
-    }
+    },
+    ...bindActionCreators({getCategories}, dispatch)
   }))(reduxForm({
     form: 'articleForm',
   })(ArticleFormComponent))

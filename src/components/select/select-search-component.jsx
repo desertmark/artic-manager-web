@@ -46,8 +46,11 @@ export default class SelectSearchComponent extends Component {
                     <div className="position-absolute"  style={{zIndex:999, width:'98%'}}>
                         {this.props.children && 
                         <div className="list-group">
-                            {
+                            {!this.props.loading &&  
                                 this.props.children.map(c => <button type="button" className="list-group-item list-group-item-action" key={c.value}>{c.text}</button>)
+                            }
+                            {
+                                this.props.loading && <button type="button" className="list-group-item list-group-item-action">loading...</button>
                             }
                         </div>
                         }

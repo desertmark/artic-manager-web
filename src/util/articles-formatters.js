@@ -8,5 +8,5 @@ export function percentageFormatter(cell) {
 }
 
 export function currencyFormatter(cell) {
-    return `$${cell.toFixed(2)}`;
+    return `$${cell ? cell.toFixed(2) : 0}`;
 }
