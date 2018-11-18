@@ -70,7 +70,7 @@ export default class SelectSearchComponent extends Component {
                         {this.props.children && 
                         <div className="list-group" >
                             {!this.props.loading &&  
-                                this.props.children.map(item => <button   type="button" onClick={() => this.onSelect(item)} className="list-group-item list-group-item-action" key={item.value}>{item.text}</button>)
+                                this.props.children.map(item => <button type="button" onClick={() => this.onSelect(item)} className="list-group-item list-group-item-action" key={item.value}>{item.text || item.value}</button>)
                             }
                             {
                                 this.props.loading && 
