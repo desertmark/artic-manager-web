@@ -2,7 +2,6 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getCategories } from '../../redux/categories/categories-actions';
-import { get } from 'lodash';
 import SelectSearchComponent from '../select/select-search-component';
 class CategorySelect extends React.Component {
     constructor() {
