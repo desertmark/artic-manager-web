@@ -8,15 +8,22 @@ export default class SelectSearchComponent extends Component {
         this.state = {
             showOptions: false,
         }
-        this.onFocus = this.onFocus.bind(this);
+        this.onClick = this.onClick.bind(this);
         this.onBlur = this.onBlur.bind(this);
         this.onChange = this.onChange.bind(this);
         this.search = debounce(this.search.bind(this), 1000);
         this.onSelect = this.onSelect.bind(this);
+        this.searchBox = React.createRef();
     }
 
-    onFocus() {
-        this.setState({showOptions: true})
+    onClick() {
+        this.setState({showOptions: true});
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.showOptions && !prevState.showOptions) {
+            this.searchBox.current.focus();
+        }
     }
 
     onBlur() {
@@ -34,16 +41,25 @@ export default class SelectSearchComponent extends Component {
 
     onSelect(item) {
         this.props.onSelect ? this.props.onSelect(item) : undefined;
+        this.searchBox.current.value = item.text;
     }
 
     render() {
         return (
-            <div>
+            <div onClick={this.onClick}>
                 <div>
                     <div className="">
                         <div className="form-control">
                             <div className="d-flex">
-                                <input type="text" style={{border:'none', outline: 'none', width:'100%'}} onFocus={this.onFocus}  onBlur={this.onBlur}onChange={this.onChange} value={this.props.selected}/>
+                                <input
+                                    className={this.state.showOptions ? 'visible' : 'invisible'} 
+                                    type="text" 
+                                    style={{border:'none', outline: 'none', width:'100%'}}
+                                    onBlur={this.onBlur}
+                                    onChange={this.onChange}
+                                    ref={this.searchBox}
+                                />
+                                {!this.state.showOptions && <p className="w-100 position-absolute" >{this.props.selected}</p>}
                                 <div><i className="fa fa-search text-secondary"></i></div>
                             </div>
                         </div>
