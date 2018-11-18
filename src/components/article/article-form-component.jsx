@@ -7,6 +7,7 @@ import { required } from '../inputs/validators';
 import { calculateCost, calculatePrice, calculateCardPrice } from '../../util/util';
 import { get } from 'lodash';
 import CategorySelect from '../category/category-select';
+import DiscountTableContainer from '../../containers/discounts/discount-table-container';
 
 class ArticleFormComponent extends Component{
   constructor() {
@@ -149,6 +150,8 @@ class ArticleFormComponent extends Component{
                   </SwitchableInputComponent>
                 </div> 
               </div>
+              <h3>Discount List</h3>
+              <DiscountTableContainer/>
             </form>
             <pre>{JSON.stringify(this.props.formData, null, 2)}</pre>
           </div>
