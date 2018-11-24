@@ -10,7 +10,7 @@ class DiscountFormComponent extends Component {
     render() {
         const { formData } = this.props;
         return <div id="discount-form-component">
-            <form onSubmit={this.props.handleSumbit}>
+            <form onSubmit={this.props.handleSubmit}>
                 <div className="form-row">
                     <div className="form-group col">
                         <label className="text-secondary">Amount</label>
@@ -29,8 +29,8 @@ class DiscountFormComponent extends Component {
 
                 <div className="form-row">
                     <div className="col text-right">
-                        <button data-target="#add-discount-modal" data-toggle="modal" className="btn btn-primary mt-3 mr-2">Save</button>
-                        <button data-target="#add-discount-modal" data-toggle="modal" className="btn btn-default mt-3">Cancel</button>
+                        <button type="submit" data-target="#add-discount-modal" data-toggle="modal" className="btn btn-primary mt-3 mr-2">Save</button>
+                        <button type="button" data-target="#add-discount-modal" data-toggle="modal" className="btn btn-default mt-3">Cancel</button>
                     </div>                    
                 </div>
             </form>

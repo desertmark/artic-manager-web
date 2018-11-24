@@ -41,7 +41,7 @@ class DiscountTableContainer extends Component {
               name="add-discount-modal"
               title="New discount"
             >
-              <DiscountFormComponent/>
+              <DiscountFormComponent onSubmit={console.log}/>
             </ModalComponent>
         </div>
     }
