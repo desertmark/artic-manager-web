@@ -150,9 +150,12 @@ class ArticleFormComponent extends Component{
                   </SwitchableInputComponent>
                 </div> 
               </div>
-              <h3>Discount List</h3>
-              <DiscountTableContainer/>
             </form>
+            <h3>Discount List</h3>
+            <DiscountTableContainer
+              discounts={formData.discounts}
+              onDelete={disc => console.log('remove discount', disc)}
+            />
             <pre>{JSON.stringify(this.props.formData, null, 2)}</pre>
           </div>
           </div>
@@ -173,10 +176,10 @@ export default connect(
         price: 0,
         cardPrice: 0,
         listPrice: 0,
-        category: null
+        category: null,
+        discounts: []
       },
-      formData: selector(state, 'code', 'listPrice', 'utility', 'price', 'description','transport', 'vat', 'card', 'cardPrice', 'cost', 'category'),
-
+      formData: selector(state, 'code', 'listPrice', 'utility', 'price', 'description','transport', 'vat', 'card', 'cardPrice', 'cost', 'category', 'discounts'),
     }
   },
   dispatch => ({

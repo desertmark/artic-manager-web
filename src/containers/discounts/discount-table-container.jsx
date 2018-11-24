@@ -1,5 +1,7 @@
 import TableComponent from '../../components/table/table-component';
 import React, { Component } from 'react';
+import ModalComponent from '../../components/modal/modal-component';
+import DiscountFormComponent from '../../components/discount/discount-form-component';
 
 class DiscountTableContainer extends Component {
     getColumns() {
@@ -21,13 +23,26 @@ class DiscountTableContainer extends Component {
     }
     render() {
         return <div id="discount-table-container">
+            <div className="col text-right p-0">
+                <button className="btn btn-info mb-1 btn-sm" data-target="#add-discount-modal" data-toggle="modal">
+                    <i className="fas fa-plus pr-1"></i>
+                    Add Discount
+                </button>
+            </div>
             <TableComponent
                 columns={ this.getColumns() }
-                data={ [{_id:1, amount: 0.1, description: 'Caja 1'}] }
+                data={ this.props.discounts || [] }
                 onDelete={ this.confirmDelete }
                 isEmpty = { true }
             >
             </TableComponent>
+
+            <ModalComponent 
+              name="add-discount-modal"
+              title="New discount"
+            >
+              <DiscountFormComponent/>
+            </ModalComponent>
         </div>
     }
 }
