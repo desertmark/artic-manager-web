@@ -19,7 +19,7 @@ class DiscountTableContainer extends Component {
           }]
     }
     confirmDelete(item) {
-        console.log('DELETE', item);
+        this.props.onDelete ? this.props.onDelete(item) : undefined;
     }
     render() {
         return <div id="discount-table-container">

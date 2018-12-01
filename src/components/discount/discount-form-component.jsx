@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { reduxForm, formValueSelector, Field } from 'redux-form';
-import { PercentageInput } from '../inputs/inputs';
+import { PercentageInput, textarea } from '../inputs/inputs';
 import { required } from '../inputs/validators';
 import { SwitchableInputComponent } from '../../components/switchable-input/switchable-input';
 import { connect } from 'react-redux';
@@ -15,7 +15,7 @@ class DiscountFormComponent extends Component {
                     <div className="form-group col">
                         <label className="text-secondary">Amount</label>
                         <SwitchableInputComponent edit={true} value={formData.amount} >
-                            <PercentageInput name="amount" placeholder="0" validate={[required]} />
+                            <PercentageInput name="amount" placeholder="0" validate={[required]}/>
                         </SwitchableInputComponent>
                     </div>
                 </div>
@@ -23,7 +23,7 @@ class DiscountFormComponent extends Component {
                 <div className="form-row">
                     <label className="text-secondary">Description</label>
                     <SwitchableInputComponent edit={true} value={formData.description} >
-                        <Field className="form-control" component="textarea" rows="2" type="text" name="description" placeholder="Enter a description..." />
+                        <Field component={textarea} rows="2" type="text" name="description" placeholder="Enter a description..." validate={required} />
                     </SwitchableInputComponent>
                 </div>
 
