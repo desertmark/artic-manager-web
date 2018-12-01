@@ -4,6 +4,11 @@ import ModalComponent from '../../components/modal/modal-component';
 import DiscountFormComponent from '../../components/discount/discount-form-component';
 
 class DiscountTableContainer extends Component {
+    constructor() {
+        super();
+        this.addDiscount = this.addDiscount.bind(this);
+        this.confirmDelete = this.confirmDelete.bind(this);
+    }
     getColumns() {
         return [{
             dataField: '_id',
@@ -16,10 +21,19 @@ class DiscountTableContainer extends Component {
           {
             dataField: 'description',
             text: 'Description',
+          },
+          {
+            dataField: 'actions',
+            text: 'Actions',
+            classes:'d-flex justify-content-start'
           }]
     }
     confirmDelete(item) {
         this.props.onDelete ? this.props.onDelete(item) : undefined;
+    }
+
+    addDiscount(discount) {
+        this.props.onAdd ? this.props.onAdd(discount) : undefined;
     }
     render() {
         return <div id="discount-table-container">
@@ -30,6 +44,7 @@ class DiscountTableContainer extends Component {
                 </button>
             </div>
             <TableComponent
+                tempId="tempId"
                 columns={ this.getColumns() }
                 data={ this.props.discounts || [] }
                 onDelete={ this.confirmDelete }
@@ -41,7 +56,7 @@ class DiscountTableContainer extends Component {
               name="add-discount-modal"
               title="New discount"
             >
-              <DiscountFormComponent onSubmit={console.log}/>
+              <DiscountFormComponent onSubmit={this.addDiscount}/>
             </ModalComponent>
         </div>
     }

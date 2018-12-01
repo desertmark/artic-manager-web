@@ -1,16 +1,27 @@
 import React, { Component } from 'react';
-import { reduxForm, formValueSelector, Field } from 'redux-form';
+import { reduxForm, formValueSelector, Field, reset } from 'redux-form';
 import { PercentageInput, textarea } from '../inputs/inputs';
 import { required } from '../inputs/validators';
 import { SwitchableInputComponent } from '../../components/switchable-input/switchable-input';
 import { connect } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+import { bindActionCreators } from '../../../../../AppData/Local/Microsoft/TypeScript/3.1/node_modules/redux';
 
 class DiscountFormComponent extends Component {
+    constructor() {
+        super();
+        this.submit = this.submit.bind(this);
+    }
+
+    submit(e) {
+        this.props.handleSubmit(e);
+        this.props.resetForm();
+    }
 
     render() {
         const { formData } = this.props;
         return <div id="discount-form-component">
-            <form onSubmit={this.props.handleSubmit}>
+            <form onSubmit={this.submit}>
                 <div className="form-row">
                     <div className="form-group col">
                         <label className="text-secondary">Amount</label>
@@ -38,15 +49,17 @@ class DiscountFormComponent extends Component {
     }
 }
 const selector = formValueSelector('discountForm');
+const resetForm = () => reset('discountForm');
 export default connect(
     (state, ownProps) => ({
         initialValues: ownProps.initialValues || {
+            tempId: uuidv4(),
             amount:0,
             description: null
         },
         formData: selector(state, 'amount','description', '_id'),
     }),
-    null
+    dispatch => bindActionCreators({resetForm}, dispatch)
 )(reduxForm({
     form: 'discountForm'
 })(DiscountFormComponent));

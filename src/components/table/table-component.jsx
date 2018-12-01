@@ -49,10 +49,10 @@ class TableComponent extends Component {
     }
 
     render() {
-        const { columns, pagination, isLoading, isEmpty } = this.props;
+        const { columns, pagination, tempId, isEmpty } = this.props;
        return <BootstrapTable
           remote
-          keyField='_id' 
+          keyField={tempId || '_id'}
           data={this.getData()} 
           striped hover bootstrap4
           pagination={ paginationFactory( toTablePagination(pagination) ) }

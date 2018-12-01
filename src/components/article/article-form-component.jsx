@@ -5,7 +5,7 @@ import { SwitchableInputComponent } from '../../components/switchable-input/swit
 import { PercentageInput, CurrencyInput, CodeInput } from '../inputs/inputs';
 import { required } from '../inputs/validators';
 import { calculateCost, calculatePrice, calculateCardPrice } from '../../util/util';
-import { get } from 'lodash';
+import { get, isEqual } from 'lodash';
 import CategorySelect from '../category/category-select';
 import DiscountTableContainer from '../../containers/discounts/discount-table-container';
 
@@ -17,6 +17,8 @@ class ArticleFormComponent extends Component{
     this.isEdit = this.isEdit.bind(this);
     this.isCreate = this.isCreate.bind(this);
     this.isView = this.isView.bind(this);
+    this.addDiscount = this.addDiscount.bind(this);
+    this.deleteDiscount = this.deleteDiscount.bind(this);
   }
 
   updateCost(formData) {
@@ -55,6 +57,16 @@ class ArticleFormComponent extends Component{
   isView() {
     return this.props.mode.toLowerCase() === 'view';
   }
+
+  addDiscount(discount) {
+    this.props.formData.discounts.push(discount);
+    this.props.changeFieldValue('discounts', this.props.formData.discounts);
+  }
+
+  deleteDiscount(discount) {
+    this.props.changeFieldValue('discounts', this.props.formData.discounts.filter(d => !isEqual(d, discount)));
+  }
+
   render(){
     const { formData } = this.props;
     return(
@@ -154,9 +166,10 @@ class ArticleFormComponent extends Component{
             <h3>Discount List</h3>
             <DiscountTableContainer
               discounts={formData.discounts}
-              onDelete={disc => console.log('remove discount', disc)}
+              onAdd={this.addDiscount}
+              onDelete={this.deleteDiscount}
             />
-            <pre>{JSON.stringify(this.props.formData, null, 2)}</pre>
+            {/* <pre>{JSON.stringify(this.props.formData, null, 2)}</pre> */}
           </div>
           </div>
       </div>
