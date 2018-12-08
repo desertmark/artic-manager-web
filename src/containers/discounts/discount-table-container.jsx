@@ -6,6 +6,7 @@ import DiscountFormComponent from '../../components/discount/discount-form-compo
 class DiscountTableContainer extends Component {
     constructor() {
         super();
+        this.state = { modalOpen: false };
         this.addDiscount = this.addDiscount.bind(this);
         this.confirmDelete = this.confirmDelete.bind(this);
     }
@@ -34,11 +35,12 @@ class DiscountTableContainer extends Component {
 
     addDiscount(discount) {
         this.props.onAdd ? this.props.onAdd(discount) : undefined;
+        this.setState({ modalOpen: false});
     }
     render() {
         return <div id="discount-table-container">
             <div className="col text-right p-0">
-                <button className="btn btn-info mb-1 btn-sm" data-target="#add-discount-modal" data-toggle="modal">
+                <button className="btn btn-info mb-1 btn-sm" onClick={()=> this.setState({ modalOpen: true })}>
                     <i className="fas fa-plus pr-1"></i>
                     Add Discount
                 </button>
@@ -52,11 +54,12 @@ class DiscountTableContainer extends Component {
             >
             </TableComponent>
 
-            <ModalComponent 
-              name="add-discount-modal"
-              title="New discount"
+            <ModalComponent
+                isOpen={this.state.modalOpen}
+                name="add-discount-modal"
+                title="New discount"
             >
-              <DiscountFormComponent onSubmit={this.addDiscount}/>
+              <DiscountFormComponent onSubmit={this.addDiscount} onCancel={()=> this.setState({ modalOpen: false})}/>
             </ModalComponent>
         </div>
     }

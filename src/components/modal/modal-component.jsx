@@ -1,10 +1,24 @@
 import React, {Component} from 'react';
+import $ from 'jquery';
 
 export default class ModalComponent extends Component {
+    constructor() {
+        super();
+        this.modalRef = React.createRef();
+    }
+
+    componentDidUpdate() {
+        if(this.props.isOpen) {
+            $(this.modalRef.current).modal('show');
+        } else {
+            $(this.modalRef.current).modal('hide');
+        }
+    }
+
     render() {
         const { buttons } = this.props;
         return (
-            <div className="modal fade" id={this.props.name} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div ref={this.modalRef} className="modal fade" id={this.props.name} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                     <div className="modal-header">

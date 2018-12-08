@@ -8,6 +8,7 @@ import { calculateCost, calculatePrice, calculateCardPrice } from '../../util/ut
 import { get, isEqual } from 'lodash';
 import CategorySelect from '../category/category-select';
 import DiscountTableContainer from '../../containers/discounts/discount-table-container';
+import { decycle } from 'cycle';
 
 class ArticleFormComponent extends Component{
   constructor() {
@@ -169,7 +170,7 @@ class ArticleFormComponent extends Component{
               onAdd={this.addDiscount}
               onDelete={this.deleteDiscount}
             />
-            {/* <pre>{JSON.stringify(this.props.formData, null, 2)}</pre> */}
+            <pre>{JSON.stringify(decycle(this.props.formData), null, 2)}</pre>
           </div>
           </div>
       </div>

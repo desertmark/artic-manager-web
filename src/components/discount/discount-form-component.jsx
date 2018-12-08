@@ -4,24 +4,26 @@ import { PercentageInput, textarea } from '../inputs/inputs';
 import { required } from '../inputs/validators';
 import { SwitchableInputComponent } from '../../components/switchable-input/switchable-input';
 import { connect } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
-import { bindActionCreators } from '../../../../../AppData/Local/Microsoft/TypeScript/3.1/node_modules/redux';
+import { bindActionCreators } from 'redux';
 
 class DiscountFormComponent extends Component {
     constructor() {
         super();
         this.submit = this.submit.bind(this);
+        this.cancel = this.cancel.bind(this);
     }
 
     submit(e) {
         this.props.handleSubmit(e);
         this.props.resetForm();
     }
-
+    cancel() {
+        this.props.onCancel ? this.props.onCancel() : null;
+    }
     render() {
         const { formData } = this.props;
         return <div id="discount-form-component">
-            <form onSubmit={this.submit}>
+            <form onSubmit={this.props.handleSubmit}>
                 <div className="form-row">
                     <div className="form-group col">
                         <label className="text-secondary">Amount</label>
@@ -40,8 +42,8 @@ class DiscountFormComponent extends Component {
 
                 <div className="form-row">
                     <div className="col text-right">
-                        <button type="submit" data-target="#add-discount-modal" data-toggle="modal" className="btn btn-primary mt-3 mr-2">Save</button>
-                        <button type="button" data-target="#add-discount-modal" data-toggle="modal" className="btn btn-default mt-3">Cancel</button>
+                        <button type="submit" className="btn btn-primary mt-3 mr-2">Save</button>
+                        <button type="button" className="btn btn-default mt-3" onClick={this.cancel}>Cancel</button>
                     </div>                    
                 </div>
             </form>
@@ -53,7 +55,6 @@ const resetForm = () => reset('discountForm');
 export default connect(
     (state, ownProps) => ({
         initialValues: ownProps.initialValues || {
-            tempId: uuidv4(),
             amount:0,
             description: null
         },
