@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { bindActionCreators  } from 'redux';
 import { connect } from 'react-redux';
 import ArticleFormComponent from '../../components/article/article-form-component';
-import { getArticle } from '../../redux/articles/articles-actions';
+import { getArticle, createArticle } from '../../redux/articles/articles-actions';
+import { withRouter } from "react-router";
 
 class ArticleFormContainer extends Component{
   constructor() {
@@ -19,6 +20,10 @@ class ArticleFormContainer extends Component{
 
   save(values) {
     console.log(values);
+    this.props.createArticle(values)
+    .then(() => {
+      this.props.history.push('/articles');
+    });
   }
   render(){
     const { loading, error, article, mode, articleId } = this.props;
@@ -43,5 +48,5 @@ export default connect(
     error: state.articlesReducer.error,
     loading: state.articlesReducer.loading
   }), // mapStateToProps
-  dispatch => bindActionCreators({ getArticle }, dispatch) // mapDispatchToProps
-)(ArticleFormContainer)
+  dispatch => bindActionCreators({ getArticle, createArticle }, dispatch) // mapDispatchToProps
+)(withRouter(ArticleFormContainer))

@@ -1,5 +1,6 @@
 import articlesService from './articles-service';
-import { GET_ARTICLES, DELETE_ARTICLE, GET_ARTICLE } from './articles-constants';
+import { articleVmToApiArticle } from '../../util/util';
+import { GET_ARTICLES, DELETE_ARTICLE, GET_ARTICLE, CREATE_ARTICLE } from './articles-constants';
 
 export function getArticle(articleId) {
     return dispatch => {
@@ -25,6 +26,27 @@ export function getArticles(params, filters) {
                 pagination: params,
                 showSpinner: true,
                 promise
+            }
+        });
+    }
+}
+
+export function createArticle(article) {
+    return (dispatch, getState) => {
+        const apiArticle = articleVmToApiArticle(article);
+        console.log('API ARTICLE', apiArticle);
+        const promise = articlesService.createArticle(apiArticle);
+        return dispatch({
+            type: CREATE_ARTICLE,
+            payload: promise,
+            meta: {
+                article: apiArticle,
+                showSpinner: true,
+                promise,
+                alertConfig:{
+                    alertType: 'success',
+                    message:'Article created.'
+                },
             }
         });
     }

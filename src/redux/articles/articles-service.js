@@ -24,6 +24,18 @@ function getArticle(articleId) {
     });
 }
 
+function createArticle(article) {
+    return axios({
+        url: `${API_URL}/articles/`,
+        method:'POST',
+        data: article
+    }).then(res => res.data)
+    .catch(error => {
+        console.error(error);
+        throw error;
+    }); 
+}
+
 function deleteArticle(articleId) {
     return axios({
         url: `${API_URL}/articles/${articleId}`,
@@ -38,5 +50,6 @@ function deleteArticle(articleId) {
 export default {
     getArticle,
     getArticles,
+    createArticle,
     deleteArticle
 }

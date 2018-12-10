@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Field, reduxForm, formValueSelector, change } from 'redux-form';
+import { Field, reduxForm, formValueSelector, change, submit } from 'redux-form';
 import { connect } from 'react-redux';
 import { SwitchableInputComponent } from '../../components/switchable-input/switchable-input'
 import { PercentageInput, CurrencyInput, CodeInput } from '../inputs/inputs';
@@ -8,11 +8,13 @@ import { calculateCost, calculatePrice, calculateCardPrice } from '../../util/ut
 import { get, isEqual } from 'lodash';
 import CategorySelect from '../category/category-select';
 import DiscountTableContainer from '../../containers/discounts/discount-table-container';
-import { decycle } from 'cycle';
+import { Link } from 'react-router-dom';
+
 
 class ArticleFormComponent extends Component{
   constructor() {
     super();
+    this.formRef = React.createRef();
     this.updateCost = this.updateCost.bind(this);
     this.updateCalculatedValues = this.updateCalculatedValues.bind(this);
     this.isEdit = this.isEdit.bind(this);
@@ -68,6 +70,7 @@ class ArticleFormComponent extends Component{
     this.props.changeFieldValue('discounts', this.props.formData.discounts.filter(d => !isEqual(d, discount)));
   }
 
+
   render(){
     const { formData } = this.props;
     return(
@@ -75,7 +78,7 @@ class ArticleFormComponent extends Component{
         <div className="card border mb-3">
           <div className="card-header border">Article's Form</div>
           <div className="card-body text">
-            <form onSubmit={this.props.handleSubmit} >
+            <form ref={this.formRef} onSubmit={this.props.handleSubmit} >
             {/* ROW 1 */}
               <div className="form-row">
                 <div className="form-group col">
@@ -170,9 +173,14 @@ class ArticleFormComponent extends Component{
               onAdd={this.addDiscount}
               onDelete={this.deleteDiscount}
             />
-            <pre>{JSON.stringify(decycle(this.props.formData), null, 2)}</pre>
           </div>
+          <div className="card-footer text-right">
+            <div className="row">
+              <div className="col"><button type="button" onClick={this.props.submit} className="btn btn-primary btn-block m-2">Save</button></div>
+              <div className="col"><Link to="/articles"className="btn btn-default btn-block m-2">Cancel</Link></div>
+            </div>
           </div>
+        </div>
       </div>
     );
   }

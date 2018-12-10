@@ -62,7 +62,7 @@ class App extends Component{
     const { showSpinner, isAuthenticated, isInitializing } = this.props;
     return(
       <BrowserRouter>
-        <div className="App">
+        <div className="app">
           <HeaderComponent showAuthRoutes={ isAuthenticated }></HeaderComponent>
           { showSpinner && <ProgressBarComponent></ProgressBarComponent> }
           <AlertContainer></AlertContainer>
@@ -76,7 +76,6 @@ class App extends Component{
               <AuthRoute exact path='/profile' show={ isAuthenticated }component={ ProfilePageComponent }/>
               <AuthRoute exact path='/login' show={ !isAuthenticated } component={ LoginPageComponent }/>
               <AuthRoute exact path='/manage' show={ isAuthenticated } component={ ManagePageComponent }/>
-              { ENV_NAME === 'Development' && <Route exact path='/debug' component={ DebugPageComponent }></Route> }
             </Switch>
           }
         </div>

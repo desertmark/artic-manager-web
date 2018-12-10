@@ -1,4 +1,5 @@
 import { set, get, sumBy } from 'lodash';
+import axios from 'axios';
 /**
  * Transforms the table filter to pass it to the body of the request.
  * @param {*} tableFilter is the react-bootstrap-table2 filter event payload property.
@@ -88,4 +89,28 @@ export function calculateCardPrice(price = 0, card = 0) {
     price = parseFloat(price);
     card = parseFloat(card);
     return parseFloat(price*(1 + card/100).toFixed(2));
+}
+
+/**
+ * Takes an article from the article-form-component & maps it into json the api understands.
+ * @param {*} article 
+ */
+export function articleVmToApiArticle(article) {
+    return {
+        ...article,
+        code: parseCode(article.code),
+        listPrice: parseInt(article.listPrice),
+        discounts: article.discounts.map(({ amount, description, ...rest }) => ({ amount, description })),
+        vat: article.vat/100,
+        transport: article.transport/100,
+        card: article.card/100,
+        utility: article.utility/100,
+        categoryId: article.category._id,
+        dolar: 1
+    } 
+}
+
+export function getExchange(type="USD_ARS") {
+    return axios({URL:`http://free.currencyconverterapi.com/api/v5/convert?q=${type}&compact=ultra`, method:'GET'})
+    .then(ex => ex[type]);
 }

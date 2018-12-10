@@ -7,7 +7,10 @@ import {
     GET_ARTICLES_REJECTED,
     DELETE_ARTICLE_PENDING,
     DELETE_ARTICLE_FULFILLED,
-    DELETE_ARTICLE_REJECTED
+    DELETE_ARTICLE_REJECTED,
+    CREATE_ARTICLE_PENDING,
+    CREATE_ARTICLE_FULFILLED,
+    CREATE_ARTICLE_REJECTED
 } from './articles-constants';
 
 const defaultState = {
@@ -25,6 +28,7 @@ const defaultState = {
 
 export function articlesReducer(currentState = defaultState, action) {
     switch(action.type) {
+        // ---------------------------------- GET ONE ----------------------------------
         case GET_ARTICLE_PENDING:
             return Object.assign({}, currentState, {
                 loading: true,
@@ -37,7 +41,7 @@ export function articlesReducer(currentState = defaultState, action) {
             });
         case GET_ARTICLE_REJECTED:
             return Object.assign({}, currentState, { error: action.payload, loading: false } );
-
+        // ---------------------------------- LIST ----------------------------------
         case GET_ARTICLES_PENDING:
             return Object.assign({}, currentState, {
                 articles: [],
@@ -57,19 +61,32 @@ export function articlesReducer(currentState = defaultState, action) {
         case GET_ARTICLES_REJECTED:
             return Object.assign({}, currentState, { error: action.payload, loading: false } );
 
-
+        // ---------------------------------- DELETE ----------------------------------
         case DELETE_ARTICLE_PENDING:
             return Object.assign({}, currentState, {
                 loading: true,
             });
         case DELETE_ARTICLE_FULFILLED:
-            const articles = currentState.articles.filter(art => art._id !== action.meta.article._id);
             return Object.assign({}, currentState, { 
-                articles,
+                articles: currentState.articles.filter(art => art._id !== action.meta.article._id),
                 loading: false,
                 error: null,
             });
         case DELETE_ARTICLE_REJECTED:
+            return Object.assign({}, currentState, { error: action.payload, loading: false } );
+
+        // ---------------------------------- CREATE ----------------------------------
+        case CREATE_ARTICLE_PENDING:
+            return Object.assign({}, currentState, {
+                loading: true,
+            });
+        case CREATE_ARTICLE_FULFILLED:
+            return Object.assign({}, currentState, { 
+                articles: currentState.articles.push(action.meta.article),
+                loading: false,
+                error: null,
+            });
+        case CREATE_ARTICLE_REJECTED:
             return Object.assign({}, currentState, { error: action.payload, loading: false } );
         default:
             return currentState;
