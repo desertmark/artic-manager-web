@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { debounce } from 'lodash';
 import { SpinnerDots } from '../spinner/spinner';
+import { get } from 'lodash';
 
 export default class SelectSearchComponent extends Component {
     constructor() {
         super();
         this.state = {
             showOptions: false,
+            touched: false,
         }
         this.onClick = this.onClick.bind(this);
         this.onBlur = this.onBlur.bind(this);
@@ -28,7 +30,7 @@ export default class SelectSearchComponent extends Component {
 
     onBlur() {
         // timeout gives time to click event on options to happens otherwise the click event is not even fired.
-        setTimeout(() => this.setState({showOptions: false}), 200);
+        setTimeout(() => this.setState({showOptions: false, touched: true}), 200);
     }
 
     search(searchTerm) {
@@ -45,6 +47,8 @@ export default class SelectSearchComponent extends Component {
     }
 
     render() {
+        const { error, warning } = get(this.props,'meta', {});
+        const { touched, showOptions } = this.state;
         return (
             <div onClick={this.onClick}>
                 <div>
@@ -52,20 +56,24 @@ export default class SelectSearchComponent extends Component {
                         <div className="form-control">
                             <div className="d-flex">
                                 <input
-                                    className={this.state.showOptions ? 'visible' : 'invisible'} 
+                                    className={showOptions ? 'visible' : 'invisible'} 
                                     type="text" 
                                     style={{border:'none', outline: 'none', width:'100%'}}
                                     onBlur={this.onBlur}
                                     onChange={this.onChange}
                                     ref={this.searchBox}
                                 />
-                                {!this.state.showOptions && <p className="w-100 position-absolute" >{this.props.selected}</p>}
+                                {!showOptions && <p className="w-100 position-absolute" >{this.props.selected}</p>}
                                 <div><i className="fa fa-search text-secondary"></i></div>
                             </div>
                         </div>
+                        {!showOptions && touched && (
+                          (error && <span className="text-danger">*{error}</span>) || 
+                          (warning && <span className="text-warning">{warning}</span>)
+                        )}
                     </div>
                 </div>
-                <div className={this.state.showOptions ? '' : 'd-none'}>
+                <div className={showOptions ? '' : 'd-none'}>
                     <div className="position-absolute" style={{zIndex:1, width:'98%'}}>
                         {this.props.children && 
                         <div className="list-group" >

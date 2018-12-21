@@ -82,7 +82,7 @@ export function articlesReducer(currentState = defaultState, action) {
             });
         case CREATE_ARTICLE_FULFILLED:
             return Object.assign({}, currentState, { 
-                articles: currentState.articles.push(action.meta.article),
+                articles: currentState.articles.concat(action.payload),
                 loading: false,
                 error: null,
             });

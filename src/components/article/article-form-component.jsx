@@ -130,9 +130,11 @@ class ArticleFormComponent extends Component{
                 <div className="form-group col-4">
                   <label className="text-secondary">Category</label>
                   <CategorySelect 
+                    name="category"
                     selected={get(formData,'category.description')}
                     placeholder="Select category"
                     onSelect={category => this.props.changeFieldValue('category', category)}
+                    validate={required}
                   />
                 </div>
               </div>

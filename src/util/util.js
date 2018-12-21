@@ -105,7 +105,7 @@ export function articleVmToApiArticle(article) {
         transport: article.transport/100,
         card: article.card/100,
         utility: article.utility/100,
-        categoryId: article.category._id,
+        categoryId: get(article,'category._id'),
         dolar: 1
     } 
 }
