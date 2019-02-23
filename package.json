@@ -54,7 +54,7 @@
     "start": "npm run serve",
     "serve": "node server/index.js",
     "local": "webpack-dev-server --mode development",
-    "build:prod": "webpack --mode production",
+    "build:prod": "node node_modules/webpack/bin/webpack --mode production",
     "publish:qa": "heroku container:push web --arg NODE_ENV=qa -a artic-manager-web",
     "release:qa": "heroku container:release web -a artic-manager-web",
     "publish:prod": "heroku container:push web --arg NODE_ENV=prod -a artic-manager-web"
