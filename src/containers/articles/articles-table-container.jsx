@@ -35,7 +35,7 @@ class ArticlesTableContainer extends Component{
       hidden: true
     },
     {
-      dataField: 'code',
+      dataField: 'codeString',
       text: 'Code',
       filter: textFilter(),
       formatter: codeFormatter

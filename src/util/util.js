@@ -98,9 +98,8 @@ export function calculateCardPrice(price = 0, card = 0) {
 export function articleVmToApiArticle(article) {
     return {
         ...article,
-        code: parseCode(article.code),
         listPrice: parseInt(article.listPrice),
-        discounts: article.discounts.map(({ amount, description, ...rest }) => ({ amount, description })),
+        discounts: article.discounts.map(({ amount, description, ...rest }) => ({ amount: amount/100, description })),
         vat: article.vat/100,
         transport: article.transport/100,
         card: article.card/100,

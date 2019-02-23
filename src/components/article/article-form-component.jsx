@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Field, reduxForm, formValueSelector, change, submit } from 'redux-form';
 import { connect } from 'react-redux';
 import { SwitchableInputComponent } from '../../components/switchable-input/switchable-input'
-import { PercentageInput, CurrencyInput, CodeInput } from '../inputs/inputs';
+import { PercentageInput, CurrencyInput, CodeInput, textarea } from '../inputs/inputs';
 import { required } from '../inputs/validators';
 import { calculateCost, calculatePrice, calculateCardPrice } from '../../util/util';
 import { get, isEqual } from 'lodash';
@@ -83,8 +83,8 @@ class ArticleFormComponent extends Component{
               <div className="form-row">
                 <div className="form-group col">
                   <label className="text-secondary">Code</label>
-                  <SwitchableInputComponent edit={this.isEdit() || this.isCreate()} value={formData.code} >
-                    <CodeInput name="code" placeholder="00.00.00.00" validate={[required]} />
+                  <SwitchableInputComponent edit={this.isEdit() || this.isCreate()} value={formData.codeString} >
+                    <CodeInput name="codeString" placeholder="00.00.00.00" validate={[required]} />
                   </SwitchableInputComponent>
                 </div>
                 <div className="form-group col">
@@ -143,7 +143,15 @@ class ArticleFormComponent extends Component{
               <div className="form-row">
                 <label className="text-secondary">Description</label>
                 <SwitchableInputComponent edit={this.isEdit() || this.isCreate()} value={formData.description} >
-                  <Field className="form-control" component="textarea" rows="4" type="text" name="description" placeholder="Enter a description..." />
+                  <Field 
+                    className="form-control" 
+                    component={textarea} 
+                    rows="4" 
+                    type="text" 
+                    name="description" 
+                    placeholder="Enter a description..." 
+                    validate={required}
+                  />
                 </SwitchableInputComponent>
               </div>
             
@@ -203,7 +211,7 @@ export default connect(
         category: null,
         discounts: []
       },
-      formData: selector(state, 'code', 'listPrice', 'utility', 'price', 'description','transport', 'vat', 'card', 'cardPrice', 'cost', 'category', 'discounts'),
+      formData: selector(state, 'codeString', 'listPrice', 'utility', 'price', 'description','transport', 'vat', 'card', 'cardPrice', 'cost', 'category', 'discounts'),
     }
   },
   dispatch => ({
