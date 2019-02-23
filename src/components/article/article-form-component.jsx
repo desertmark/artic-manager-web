@@ -30,8 +30,8 @@ class ArticleFormComponent extends Component{
   }
 
   updatePrice(formData) {
-    const { cost, utility, transport } = formData;
-    this.props.changeFieldValue('price', calculatePrice(cost, utility, transport))
+    const { cost, utility, transport, discounts } = formData;
+    this.props.changeFieldValue('price', calculatePrice(cost, utility, transport, discounts))
   }
 
   updateCardPrice(formData) {
@@ -64,6 +64,7 @@ class ArticleFormComponent extends Component{
   addDiscount(discount) {
     this.props.formData.discounts.push(discount);
     this.props.changeFieldValue('discounts', this.props.formData.discounts);
+    this.forceUpdate();
   }
 
   deleteDiscount(discount) {
