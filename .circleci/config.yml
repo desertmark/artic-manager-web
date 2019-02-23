@@ -22,6 +22,7 @@ jobs:
       - checkout
 
       - run: npm install
+      - run: npm install webpack -g
 
       # - run test!
       - run: npm run build:prod
