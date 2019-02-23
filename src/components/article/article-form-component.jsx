@@ -25,8 +25,8 @@ class ArticleFormComponent extends Component{
   }
 
   updateCost(formData) {
-    const { listPrice, vat } = formData;
-    this.props.changeFieldValue('cost', calculateCost(listPrice, vat))
+    const { listPrice, vat, discounts } = formData;
+    this.props.changeFieldValue('cost', calculateCost(listPrice, vat, discounts))
   }
 
   updatePrice(formData) {
@@ -64,6 +64,7 @@ class ArticleFormComponent extends Component{
   addDiscount(discount) {
     this.props.formData.discounts.push(discount);
     this.props.changeFieldValue('discounts', this.props.formData.discounts);
+    this.forceUpdate();
   }
 
   deleteDiscount(discount) {

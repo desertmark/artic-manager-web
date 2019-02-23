@@ -72,7 +72,6 @@ export function parseCode(code) {
 export function calculateCost(listPrice = 0, vat = 0, discounts = []) {
     listPrice = parseFloat(listPrice);
     vat = parseInt(vat);
-    discounts = discounts.forEach(parseInt);
     const totalDiscount = sumBy(discounts, 'amount');
     const cost = listPrice*(1 + vat/100 - totalDiscount/100).toFixed(2);
     return parseFloat(cost);
