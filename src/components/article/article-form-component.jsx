@@ -25,13 +25,13 @@ class ArticleFormComponent extends Component{
   }
 
   updateCost(formData) {
-    const { listPrice, vat } = formData;
-    this.props.changeFieldValue('cost', calculateCost(listPrice, vat))
+    const { listPrice, vat, discounts } = formData;
+    this.props.changeFieldValue('cost', calculateCost(listPrice, vat, discounts))
   }
 
   updatePrice(formData) {
-    const { cost, utility, transport, discounts } = formData;
-    this.props.changeFieldValue('price', calculatePrice(cost, utility, transport, discounts))
+    const { cost, utility, transport } = formData;
+    this.props.changeFieldValue('price', calculatePrice(cost, utility, transport))
   }
 
   updateCardPrice(formData) {
