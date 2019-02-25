@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import ArticleFormComponent from '../../components/article/article-form-component';
 import { getArticle, createArticle } from '../../redux/articles/articles-actions';
 import { withRouter } from "react-router";
+import { apiArticleToVmArticle } from '../../util/util';
 
 class ArticleFormContainer extends Component{
   constructor() {
@@ -26,13 +27,13 @@ class ArticleFormContainer extends Component{
     });
   }
   render(){
-    const { loading, error, article, mode, articleId } = this.props;
+    const { loading, error, article, articleId } = this.props;
     return(
       <div id="articles-form-container">
           {!loading && !error &&
             <ArticleFormComponent
               onSubmit={ this.save }
-              initialValues={ article }
+              initialValues={ apiArticleToVmArticle(article) }
               mode={articleId ? 'view' : 'create'}
             >
             </ArticleFormComponent>

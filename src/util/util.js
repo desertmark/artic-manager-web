@@ -108,6 +108,19 @@ export function articleVmToApiArticle(article) {
     } 
 }
 
+export function apiArticleToVmArticle(article) {
+    return {
+        ...article,
+        // listPrice: parseInt(article.listPrice),
+        discounts: article.discounts.map(({ amount, description, ...rest }) => ({ amount: amount*100, description })),
+        vat: article.vat*100,
+        transport: article.transport*100,
+        card: article.card*100,
+        utility: article.utility*100,
+        dolar: 1
+    }
+}
+
 export function getExchange(type="USD_ARS") {
     return axios({URL:`http://free.currencyconverterapi.com/api/v5/convert?q=${type}&compact=ultra`, method:'GET'})
     .then(ex => ex[type]);
