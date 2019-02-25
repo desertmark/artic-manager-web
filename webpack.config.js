@@ -1,5 +1,6 @@
 // config docs in https://blog.usejournal.com/creating-a-react-app-from-scratch-f3c693b84658
-require('dotenv').config()
+require('dotenv').config();
+const package = require('./package.json');
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -90,7 +91,8 @@ const commonConfig = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       API_URL: JSON.stringify(config.API_URL),
-      ENV_NAME: JSON.stringify(config.name)
+      ENV_NAME: JSON.stringify(config.name),
+      VERSION: JSON.stringify(package.version)
     })
   ]
   

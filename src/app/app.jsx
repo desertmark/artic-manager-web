@@ -4,6 +4,7 @@ import {hot} from 'react-hot-loader';
 import './app.scss';
 
 import HeaderComponent from '../components/header/header-component';
+import FooterComponent from '../components/footer/footer-component';
 import ProgressBarComponent from '../components/progress-bar/progress-bar-component';
 
 import { bindActionCreators } from 'redux';
@@ -14,7 +15,6 @@ import { appInit } from './app-actions';
 import HomePageComponent from '../pages/home-page/home-page-component';
 import ContactPageComponent from '../pages/contact-page/contact-page-component';
 import LoginPageComponent from '../pages/login-page/login-page-component';
-import DebugPageComponent from '../pages/debug-page/debug-page-component';
 import ProfilePageComponent from '../pages/profile-page/profile-page-component';
 import ManagePageComponent from '../pages/manage-page/manage-page-component';
 import ArticlesPageComponent from '../pages/articles-page/articles-page-component';
@@ -45,6 +45,7 @@ class App extends Component{
     console.log({
       ENV_NAME: ENV_NAME,
       API_URL: API_URL,
+      VERSION: VERSION
     });
   }
 
@@ -62,7 +63,7 @@ class App extends Component{
     const { showSpinner, isAuthenticated, isInitializing } = this.props;
     return(
       <BrowserRouter>
-        <div className="app">
+        <div className="app d-flex flex-column h-100">
           <HeaderComponent showAuthRoutes={ isAuthenticated }></HeaderComponent>
           { showSpinner && <ProgressBarComponent></ProgressBarComponent> }
           <AlertContainer></AlertContainer>
@@ -78,6 +79,7 @@ class App extends Component{
               <AuthRoute exact path='/manage' show={ isAuthenticated } component={ ManagePageComponent }/>
             </Switch>
           }
+          <FooterComponent></FooterComponent>
         </div>
       </BrowserRouter>
     );

@@ -1,9 +1,11 @@
+html {
+    height: 100%;
+}
+#root, .app {
+    height: 100vh;
+}
 $blue: #3b5998;
 
 .bg-facebook-color {
     background-color: $blue;
-}
-
-.app {
-    margin-bottom: 100px;
 }

@@ -21,7 +21,7 @@ class HeaderComponent extends Component {
   }
   render(){
     return(
-      <div id="header-component-component">
+      <div id="header-component">
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <a className="navbar-brand" href="#">Navbar</a>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
