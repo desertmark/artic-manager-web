@@ -102,10 +102,13 @@ class ArticlesTableContainer extends Component{
       }]);
     }
 
-    columns.push({
-      dataField: 'actions',
-      text: 'Actions',
-    });
+    if(role) {
+      columns.push({
+        dataField: 'actions',
+        text: 'Actions',
+      });
+    }
+
     return columns;
   }
 

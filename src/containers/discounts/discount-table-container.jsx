@@ -11,23 +11,27 @@ class DiscountTableContainer extends Component {
         this.confirmDelete = this.confirmDelete.bind(this);
     }
     getColumns() {
-        return [{
-            dataField: '_id',
-            hidden: true
-          },
-          {
-            dataField: 'amount',
-            text: 'Amount',
-          },
-          {
+        const columns = [{
+          dataField: '_id',
+          hidden: true
+        },
+        {
+          dataField: 'amount',
+          text: 'Amount',
+        },
+        {
             dataField: 'description',
             text: 'Description',
-          },
-          {
-            dataField: 'actions',
-            text: 'Actions',
-            classes:'d-flex justify-content-start'
-          }]
+        }];
+        if (this.props.actions) {
+            columns.push({
+                dataField: 'actions',
+                text: 'Actions',
+                classes:'d-flex justify-content-start'
+            });
+        }
+        return columns;
+        
     }
     confirmDelete(item) {
         this.props.onDelete ? this.props.onDelete(item) : undefined;
@@ -39,12 +43,14 @@ class DiscountTableContainer extends Component {
     }
     render() {
         return <div id="discount-table-container">
-            <div className="col text-right p-0">
-                <button className="btn btn-info mb-1 btn-sm" onClick={()=> this.setState({ modalOpen: true })}>
-                    <i className="fas fa-plus pr-1"></i>
-                    Add Discount
-                </button>
-            </div>
+            {this.props.actions && 
+                <div className="col text-right p-0">
+                    <button className="btn btn-info mb-1 btn-sm" onClick={()=> this.setState({ modalOpen: true })}>
+                        <i className="fas fa-plus pr-1"></i>
+                        Add Discount
+                    </button>
+                </div>
+            }
             <TableComponent
                 tempId="tempId"
                 columns={ this.getColumns() }
