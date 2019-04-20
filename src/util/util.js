@@ -1,5 +1,7 @@
 import { set, get, sumBy } from 'lodash';
 import axios from 'axios';
+import $ from 'jquery';
+
 /**
  * Transforms the table filter to pass it to the body of the request.
  * @param {*} tableFilter is the react-bootstrap-table2 filter event payload property.
@@ -67,6 +69,20 @@ export function getBoostrapColor(colorName) {
  */
 export function parseCode(code) {
     return parseInt(code.replace(/[.]+/gm,''));
+}
+export const CODE_INPUT_MASK_CLASS = 'code-input-mask';
+/**
+ * registers a keyup handler to format articles code while user types it.
+ * When user types `xxxxxxxx` input shows `xx.xx.xx.xx`
+ */
+export function registerCodeInputMask() {
+    const $codeFilterInput = $(`.${CODE_INPUT_MASK_CLASS}`);
+    $codeFilterInput.attr('maxLength', 11);
+    $codeFilterInput.keyup(e => {
+      const val = $(e.target).val();
+      let formattedVal = val.match(/[0-9][0-9]?/gm).join('.');
+      $(e.target).val(formattedVal);
+    });
 }
 
 export function calculateCost(listPrice = 0, vat = 0, discounts = []) {

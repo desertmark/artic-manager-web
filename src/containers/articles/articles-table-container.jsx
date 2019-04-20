@@ -8,7 +8,7 @@ import { textFilter } from 'react-bootstrap-table2-filter';
 import TableComponent from '../../components/table/table-component';
 import { get } from 'lodash';
 import { codeFormatter, currencyFormatter, percentageFormatter } from '../../util/articles-formatters';
-import { parseCode } from '../../util/util';
+import { registerCodeInputMask, CODE_INPUT_MASK_CLASS } from '../../util/util';
 import ConfirmComponent from '../../components/confirm/confirm-component';
 import { Link } from 'react-router-dom';
 import { withRouter } from "react-router";
@@ -22,10 +22,15 @@ class ArticlesTableContainer extends Component{
     this.confirmDelete = this.confirmDelete.bind(this);
     this.articleAboutToDelete = null;
     this.viewArticle = this.viewArticle.bind(this);
+    this.tableRef = React.createRef();
   }
 
   componentWillMount() {
     this.props.getArticles()
+  }
+
+  componentDidMount() {
+    registerCodeInputMask();
   }
 
   getColumns() {
@@ -37,7 +42,7 @@ class ArticlesTableContainer extends Component{
     {
       dataField: 'codeString',
       text: 'Code',
-      filter: textFilter(),
+      filter: textFilter({className: CODE_INPUT_MASK_CLASS}),
       formatter: codeFormatter
     },
     {
@@ -113,9 +118,6 @@ class ArticlesTableContainer extends Component{
   }
 
   handleTableChange(type, params, filters) {
-    if(filters.code) {
-      filters.code = parseCode(filters.code);
-    }
     this.props.getArticles(params, filters);
   }
   
@@ -144,6 +146,7 @@ class ArticlesTableContainer extends Component{
                   New Article
                 </Link>
                 <TableComponent
+                  ref={this.tableRef}
                   columns={ this.getColumns() }
                   pagination={ pagination }
                   data={ articles }
