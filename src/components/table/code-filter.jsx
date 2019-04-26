@@ -10,9 +10,10 @@ class CodeFilter extends Component {
     }
     filter() {
       let val = this.getValue();
-      val = val.match(/[0-9][0-9]?/gm).join('.');
+      val = val.match(/[0-9][0-9]?/gm);
+      val = val ? val.join('.') : '';
       this.input.value = val;
-      this.props.onFilter(val)
+      this.props.onFilter(val);
     }
     render() {
       return [
