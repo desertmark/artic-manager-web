@@ -10,11 +10,7 @@ export function toApiFilter(tableFilter) {
     let apiFilter = {};
     Object.keys(tableFilter).forEach(k =>  {
         let value = get(tableFilter[k], 'filterVal', '');
-        // if (!Number.isNaN(parseInt(value))) {
-            // value = parseInt(value);
-        // } else {
-            value = value.replace(/[\s]+/g,'.*');
-        // }
+        value = value.replace(/[\s]+/g,'.*');
         set(apiFilter, k, value);
     });
     return apiFilter;
@@ -69,20 +65,6 @@ export function getBoostrapColor(colorName) {
  */
 export function parseCode(code) {
     return parseInt(code.replace(/[.]+/gm,''));
-}
-export const CODE_INPUT_MASK_CLASS = 'code-input-mask';
-/**
- * registers a keyup handler to format articles code while user types it.
- * When user types `xxxxxxxx` input shows `xx.xx.xx.xx`
- */
-export function registerCodeInputMask() {
-    const $codeFilterInput = $(`.${CODE_INPUT_MASK_CLASS}`);
-    $codeFilterInput.attr('maxLength', 11);
-    $codeFilterInput.keyup(e => {
-      const val = $(e.target).val();
-      let formattedVal = val.match(/[0-9][0-9]?/gm).join('.');
-      $(e.target).val(formattedVal);
-    });
 }
 
 export function calculateCost(listPrice = 0, vat = 0, discounts = []) {

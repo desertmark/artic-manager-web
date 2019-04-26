@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { getArticles, deleteArticle } from '../../redux/articles/articles-actions'
 import ModalComponent from '../../components/modal/modal-component';
 import ProfileFormComponent from '../../components/profile/profile-form-component';
-import { textFilter } from 'react-bootstrap-table2-filter';
+import { textFilter, customFilter } from 'react-bootstrap-table2-filter';
 import TableComponent from '../../components/table/table-component';
+import CodeFilter from '../../components/table/code-filter';
 import { get } from 'lodash';
 import { codeFormatter, currencyFormatter, percentageFormatter } from '../../util/articles-formatters';
 import { registerCodeInputMask, CODE_INPUT_MASK_CLASS } from '../../util/util';
@@ -29,10 +30,6 @@ class ArticlesTableContainer extends Component{
     this.props.getArticles()
   }
 
-  componentDidMount() {
-    registerCodeInputMask();
-  }
-
   getColumns() {
     let columns = [{
       dataField: '_id',
@@ -42,7 +39,10 @@ class ArticlesTableContainer extends Component{
     {
       dataField: 'codeString',
       text: 'Code',
-      filter: textFilter({className: CODE_INPUT_MASK_CLASS}),
+      delay: 1000,
+      filter: customFilter(),
+      filterRenderer:(onFilter, column) =>
+        <CodeFilter onFilter={ onFilter } column={ column } />,
       formatter: codeFormatter
     },
     {
