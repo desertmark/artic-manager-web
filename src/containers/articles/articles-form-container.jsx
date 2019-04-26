@@ -33,7 +33,7 @@ class ArticleFormContainer extends Component{
           {!loading && !error &&
             <ArticleFormComponent
               onSubmit={ this.save }
-              initialValues={ articleId ? apiArticleToVmArticle(article) : article }
+              initialValues={ article ? apiArticleToVmArticle(article) : article }
               mode={articleId ? 'view' : 'create'}
             >
             </ArticleFormComponent>
