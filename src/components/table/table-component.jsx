@@ -27,12 +27,19 @@ class TableComponent extends Component {
         </button>
     }
 
+    getEditBtn(onEdit, item) {
+        return <button onClick={ () => onEdit(item) } key='edit' className="btn btn-outline-info mx-1">
+            <i className="fa fa-edit"></i>
+        </button>
+    }
+
     getData() {
-      const { onDelete, onView, tempId } = this.props;
+      const { onDelete, onView, onEdit, tempId } = this.props;
       return this.props.data.length === 0 ?  [] :
       this.props.data.map(item => {
         item.actions = [];
         onView ? item.actions.push(this.getViewBtn(onView, item)) : null;
+        onEdit ? item.actions.push(this.getEditBtn(onEdit, item)) : null;
         onDelete ? item.actions.push(this.getDeleteBtn(onDelete, item)) : null;
         tempId ? item[tempId] = uuidv4() : null
         return item;

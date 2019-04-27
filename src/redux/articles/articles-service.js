@@ -36,6 +36,18 @@ function createArticle(article) {
     }); 
 }
 
+function editArticle(article) {
+    return axios({
+        url: `${API_URL}/articles/${article._id}`,
+        method:'PUT',
+        data: article
+    }).then(res => res.data)
+    .catch(error => {
+        console.error(error);
+        throw error;
+    }); 
+}
+
 function deleteArticle(articleId) {
     return axios({
         url: `${API_URL}/articles/${articleId}`,
@@ -51,5 +63,6 @@ export default {
     getArticle,
     getArticles,
     createArticle,
+    editArticle,
     deleteArticle
 }

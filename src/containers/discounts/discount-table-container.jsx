@@ -16,13 +16,13 @@ class DiscountTableContainer extends Component {
           hidden: true
         },
         {
-          dataField: 'amount',
-          text: 'Amount',
-        },
-        {
             dataField: 'description',
             text: 'Description',
-        }];
+        },
+        {
+            dataField: 'amount',
+            text: 'Amount',
+          }];
         if (this.props.actions) {
             columns.push({
                 dataField: 'actions',

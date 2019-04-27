@@ -14,6 +14,9 @@ import { Link } from 'react-router-dom';
 class ArticleFormComponent extends Component{
   constructor() {
     super();
+    this.state = {
+      mode: 'view' 
+    };
     this.formRef = React.createRef();
     this.updateCost = this.updateCost.bind(this);
     this.updateCalculatedValues = this.updateCalculatedValues.bind(this);
@@ -46,16 +49,20 @@ class ArticleFormComponent extends Component{
     this.updateCardPrice(formData);
   }
 
+  componentWillMount() {
+    this.setState({mode: this.props.mode});
+  }
+
   componentWillUpdate(nextProps) {
     this.updateCalculatedValues(nextProps.formData);
   }
 
   isEdit() {
-    return this.props.mode.toLowerCase() === 'edit';
+    return this.state.mode.toLowerCase() === 'edit';
   }
 
   isCreate() {
-    return this.props.mode.toLowerCase() === 'create';
+    return this.state.mode.toLowerCase() === 'create';
   }
 
   isEditOrCreate() {
@@ -63,7 +70,7 @@ class ArticleFormComponent extends Component{
   }
 
   isView() {
-    return this.props.mode.toLowerCase() === 'view';
+    return this.state.mode.toLowerCase() === 'view';
   }
 
   addDiscount(discount) {
@@ -82,7 +89,18 @@ class ArticleFormComponent extends Component{
     return(
       <div id="article-form-component" className="container-fluid">
         <div className="card border mb-3">
-          <div className="card-header border">Article's Form</div>
+          <div className="card-header border">
+            <div className="row">
+              <div className="text-left col">
+                Article's Form
+              </div>
+              <div className="col text-right">
+                <button onClick={() => this.setState({mode: 'edit'})}className="btn btn-outline-info">
+                  <i className="fa fa-edit"></i>
+                </button>
+              </div>
+            </div>
+          </div>
           <div className="card-body text">
             <form ref={this.formRef} onSubmit={this.props.handleSubmit} >
             {/* ROW 1 */}

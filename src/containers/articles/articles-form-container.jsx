@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators  } from 'redux';
 import { connect } from 'react-redux';
 import ArticleFormComponent from '../../components/article/article-form-component';
-import { getArticle, createArticle } from '../../redux/articles/articles-actions';
+import { getArticle, createArticle, editArticle } from '../../redux/articles/articles-actions';
 import { withRouter } from "react-router";
 import { apiArticleToVmArticle } from '../../util/util';
 
@@ -20,12 +20,17 @@ class ArticleFormContainer extends Component{
   }
 
   save(values) {
-    console.log(values);
-    this.props.createArticle(values)
-    .then(() => {
-      this.props.history.push('/articles');
+    let operation;
+    if (values._id) {
+      operation = this.props.editArticle(values);
+    } else {
+      operation = this.props.createArticle(values);
+    }
+    operation.then(() => {
+      // this.props.history.push('/articles');
     });
   }
+
   render(){
     const { loading, error, article, articleId } = this.props;
     return(
@@ -49,5 +54,5 @@ export default connect(
     error: state.articlesReducer.error,
     loading: state.articlesReducer.loading
   }), // mapStateToProps
-  dispatch => bindActionCreators({ getArticle, createArticle }, dispatch) // mapDispatchToProps
+  dispatch => bindActionCreators({ getArticle, createArticle, editArticle }, dispatch) // mapDispatchToProps
 )(withRouter(ArticleFormContainer))

@@ -1,6 +1,12 @@
 import articlesService from './articles-service';
 import { articleVmToApiArticle } from '../../util/util';
-import { GET_ARTICLES, DELETE_ARTICLE, GET_ARTICLE, CREATE_ARTICLE } from './articles-constants';
+import { 
+    GET_ARTICLES,
+    DELETE_ARTICLE,
+    GET_ARTICLE,
+    CREATE_ARTICLE,
+    EDIT_ARTICLE
+} from './articles-constants';
 
 export function getArticle(articleId) {
     return dispatch => {
@@ -46,6 +52,27 @@ export function createArticle(article) {
                 alertConfig:{
                     alertType: 'success',
                     message:'Article created.'
+                },
+            }
+        });
+    }
+}
+
+export function editArticle(article) {
+    return (dispatch, getState) => {
+        const apiArticle = articleVmToApiArticle(article);
+        console.log('API ARTICLE', apiArticle);
+        const promise = articlesService.editArticle(apiArticle);
+        return dispatch({
+            type: EDIT_ARTICLE,
+            payload: promise,
+            meta: {
+                article: apiArticle,
+                showSpinner: true,
+                promise,
+                alertConfig:{
+                    alertType: 'success',
+                    message:'Article saved.'
                 },
             }
         });

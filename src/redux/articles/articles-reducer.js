@@ -10,8 +10,13 @@ import {
     DELETE_ARTICLE_REJECTED,
     CREATE_ARTICLE_PENDING,
     CREATE_ARTICLE_FULFILLED,
-    CREATE_ARTICLE_REJECTED
+    CREATE_ARTICLE_REJECTED,
+    EDIT_ARTICLE_PENDING,
+    EDIT_ARTICLE_FULFILLED,
+    EDIT_ARTICLE_REJECTED,
 } from './articles-constants';
+
+import { findIndex } from 'lodash'
 
 const defaultState = {
     article: null,
@@ -87,6 +92,20 @@ export function articlesReducer(currentState = defaultState, action) {
                 error: null,
             });
         case CREATE_ARTICLE_REJECTED:
+            return Object.assign({}, currentState, { error: action.payload, loading: false } );
+
+        // ---------------------------------- EDIT ONE ----------------------------------
+        case EDIT_ARTICLE_PENDING:
+            return Object.assign({}, currentState, {
+                loading: true,
+            });
+        case EDIT_ARTICLE_FULFILLED:
+            return Object.assign({}, currentState, { 
+                article: action.meta.article,
+                loading: false,
+                error: null,
+            });
+        case EDIT_ARTICLE_REJECTED:
             return Object.assign({}, currentState, { error: action.payload, loading: false } );
         default:
             return currentState;
