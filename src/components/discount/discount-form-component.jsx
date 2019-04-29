@@ -53,8 +53,8 @@ class DiscountFormComponent extends Component {
 const selector = formValueSelector('discountForm');
 const resetForm = () => reset('discountForm');
 export default connect(
-    (state, ownProps) => ({
-        initialValues: ownProps.initialValues || {
+    state => ({
+        initialValues: {
             amount:0,
             description: null
         },

@@ -2,7 +2,7 @@ import TableComponent from '../../components/table/table-component';
 import React, { Component } from 'react';
 import ModalComponent from '../../components/modal/modal-component';
 import DiscountFormComponent from '../../components/discount/discount-form-component';
-
+import { pick } from 'lodash';
 class DiscountTableContainer extends Component {
     constructor() {
         super();
@@ -38,7 +38,8 @@ class DiscountTableContainer extends Component {
     }
 
     addDiscount(discount) {
-        this.props.onAdd ? this.props.onAdd(discount) : undefined;
+        const newDiscount = pick(discount, 'amount', 'description');
+        this.props.onAdd ? this.props.onAdd(newDiscount) : undefined;
         this.setState({ modalOpen: false});
     }
     render() {
@@ -52,7 +53,6 @@ class DiscountTableContainer extends Component {
                 </div>
             }
             <TableComponent
-                tempId="tempId"
                 columns={ this.getColumns() }
                 data={ this.props.discounts || [] }
                 onDelete={ this.confirmDelete }

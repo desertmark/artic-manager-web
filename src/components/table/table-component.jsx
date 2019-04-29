@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory from 'react-bootstrap-table2-filter';
@@ -34,14 +33,14 @@ class TableComponent extends Component {
     }
 
     getData() {
-      const { onDelete, onView, onEdit, tempId } = this.props;
-      return this.props.data.length === 0 ?  [] :
-      this.props.data.map(item => {
+      const { onDelete, onView, onEdit, data } = this.props;
+      return data.length === 0 ?  [] :
+      data.slice(0).map((item, ix) => {
         item.actions = [];
         onView ? item.actions.push(this.getViewBtn(onView, item)) : null;
         onEdit ? item.actions.push(this.getEditBtn(onEdit, item)) : null;
         onDelete ? item.actions.push(this.getDeleteBtn(onDelete, item)) : null;
-        tempId ? item[tempId] = uuidv4() : null
+        item.tableId = ix;
         return item;
       });
     }
@@ -57,10 +56,10 @@ class TableComponent extends Component {
     }
 
     render() {
-        const { columns, pagination, tempId, isEmpty } = this.props;
+        const { columns, pagination, isEmpty } = this.props;
        return <BootstrapTable
           remote
-          keyField={tempId || '_id'}
+          keyField="tableId"
           data={this.getData()} 
           striped hover bootstrap4
           pagination={ pagination ? paginationFactory( toTablePagination(pagination) ) : undefined}
