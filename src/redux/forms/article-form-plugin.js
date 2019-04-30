@@ -3,7 +3,6 @@ import { calculateCost, calculatePrice, calculateCardPrice } from '../../util/ut
 export default function articleFormReducer(state, action) {
     switch(action.type) {
       case '@@redux-form/CHANGE': 
-        console.log(action);
         return Object.assign({}, state, {
             values: newValues(state.values, action.meta.field)
         })
@@ -16,6 +15,7 @@ function newValues(values, field) {
     if (isUpdateCalculatedValuesNeeded(field)) {
         return Object.assign({}, values, updateCalculatedValues(values));
     }
+    return values;
 }
 
 function updateCalculatedValues({ listPrice, vat, discounts, utility, transport, card }) {
@@ -27,5 +27,5 @@ function updateCalculatedValues({ listPrice, vat, discounts, utility, transport,
 
 function isUpdateCalculatedValuesNeeded(field) {
     const trigerCalculationFields = ['listPrice', 'vat', 'discounts', 'cost', 'utility', 'price', 'card'];
-    return trigerCalculationFields.includes(field);
+    return trigerCalculationFields.findIndex(fieldName => field.match(fieldName));
 }

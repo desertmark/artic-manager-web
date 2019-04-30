@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react'
-import { Field } from 'redux-form';
+import { Field, FieldArray } from 'redux-form';
 import { min, max  } from './validators';
 import { percentage, currency, code as codeNormalizer } from './normalizers';
 
@@ -74,3 +74,45 @@ export const CodeInput = ({name, className, validate = [() => undefined], ...res
         validate={[...validate]}
         normalize={codeNormalizer}
     />
+
+export const TableField = ({ fields, columns }) => (
+  <div className="d-none">
+    {fields.map((field, fieldIndex) => (
+      <div key={fieldIndex}>
+      {field}
+      {columns.map(({name, CustomComponent, type, component, ...options}, colIndex) => (
+        <div key={colIndex}>
+          {CustomComponent && 
+            <CustomComponent
+              name={`${field}.${name}`}
+              {...options}
+            ></CustomComponent>
+          }
+          {!CustomComponent && 
+            <Field
+              name={`${field}.${name}`}
+              type={type}
+              component={component}
+            />}
+        </div> 
+      ))}
+      </div>
+    ))}
+  </div>
+)
+
+export const DiscountTableField = () => (
+  <FieldArray
+    component={TableField}
+    name="discounts"
+    columns={[{
+      name:'amount',
+      CustomComponent: PercentageInput
+    },
+    {
+      name:'description',
+      type:'text',
+      component:textarea
+    }]}
+  ></FieldArray>
+)

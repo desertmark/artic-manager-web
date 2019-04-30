@@ -1,4 +1,4 @@
-import { set, get, sumBy } from 'lodash';
+import { set, get, sum } from 'lodash';
 import axios from 'axios';
 import $ from 'jquery';
 
@@ -70,7 +70,8 @@ export function parseCode(code) {
 export function calculateCost(listPrice = 0, vat = 0, discounts = []) {
     listPrice = parseFloat(listPrice);
     vat = parseInt(vat);
-    const totalDiscount = sumBy(discounts, 'amount');
+    const amounts = discounts.map(discount => parseInt(discount.amount));
+    const totalDiscount = sum(amounts) || 0;
     const cost = listPrice*(1 + vat/100 - totalDiscount/100).toFixed(2);
     return parseFloat(cost);
 }

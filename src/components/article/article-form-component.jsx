@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Field, reduxForm, formValueSelector, change, submit } from 'redux-form';
+import { Field, reduxForm, formValueSelector, change, submit, FieldArray } from 'redux-form';
 import { connect } from 'react-redux';
 import { SwitchableInputComponent } from '../../components/switchable-input/switchable-input'
-import { PercentageInput, CurrencyInput, CodeInput, textarea } from '../inputs/inputs';
+import { PercentageInput, CurrencyInput, CodeInput, textarea, DiscountTableField } from '../inputs/inputs';
 import { required } from '../inputs/validators';
 import { get, isEqual, pick } from 'lodash';
 import CategorySelect from '../category/category-select';
@@ -16,55 +16,17 @@ class ArticleFormComponent extends Component{
       mode: 'view' 
     };
     this.formRef = React.createRef();
-    // this.updateCost = this.updateCost.bind(this);
-    // this.updateCalculatedValues = this.updateCalculatedValues.bind(this);
     this.isEdit = this.isEdit.bind(this);
     this.isCreate = this.isCreate.bind(this);
     this.isEditOrCreate = this.isEditOrCreate.bind(this);
     this.isView = this.isView.bind(this);
     this.addDiscount = this.addDiscount.bind(this);
     this.deleteDiscount = this.deleteDiscount.bind(this);
-    // this.isUpdateCalculatedValuesNeeded = this.isUpdateCalculatedValuesNeeded.bind(this);
   }
-
-  // updateCost({ listPrice, vat, discounts }) {
-  //   this.props.changeFieldValue('cost', calculateCost(listPrice, vat, discounts))
-  // }
-
-  // updatePrice({ cost, utility, transport }) {
-  //   this.props.changeFieldValue('price', calculatePrice(cost, utility, transport))
-  // }
-
-  // updateCardPrice({ price, card } ) {
-  //   this.props.changeFieldValue('cardPrice', calculateCardPrice(price, card));
-  // }
-
-  // updateCalculatedValues(formData) {
-  //   this.updatePrice(formData);
-  //   this.updateCost(formData);
-  //   this.updateCardPrice(formData);
-  // }
-
-  // isUpdateCalculatedValuesNeeded({ listPrice, vat, discounts, cost, utility, price, card }) {
-  //   return !isEqual(listPrice, this.props.formData.listPrice) ||
-  //     !isEqual(listPrice, this.props.formData.listPrice) ||
-  //     !isEqual(vat, this.props.formData.vat) ||
-  //     !isEqual(discounts, this.props.formData.discounts) ||
-  //     !isEqual(cost, this.props.formData.cost) ||
-  //     !isEqual(utility, this.props.formData.utility) ||
-  //     !isEqual(price, this.props.formData.price) ||
-  //     !isEqual(card, this.props.formData.card);
-  // }
 
   componentWillMount() {
     this.setState({mode: this.props.mode});
   }
-
-  // componentWillUpdate(nextProps) {
-  //   if (this.isUpdateCalculatedValuesNeeded(nextProps.formData)) {
-  //     this.updateCalculatedValues(nextProps.formData);
-  //   }
-  // }
 
   isEdit() {
     return this.state.mode.toLowerCase() === 'edit';
@@ -84,9 +46,8 @@ class ArticleFormComponent extends Component{
 
   addDiscount(discount) {
     // clone array to trigger an update cycle.
-    const discounts = this.props.formData.discounts.slice(0);
-    discounts.push(discount);
-    this.props.changeFieldValue('discounts', discounts);
+    this.props.formData.discounts.push(discount);
+    this.props.changeFieldValue('discounts', this.props.formData.discounts);
   }
 
   deleteDiscount(discount) {
@@ -220,6 +181,7 @@ class ArticleFormComponent extends Component{
               onDelete={this.deleteDiscount}
               actions={this.isEditOrCreate()}
             />
+            <DiscountTableField></DiscountTableField>
           </div>
           {this.isEditOrCreate() && 
             <div className="card-footer text-right">
