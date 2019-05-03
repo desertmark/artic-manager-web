@@ -3,17 +3,15 @@ import { bindActionCreators  } from 'redux';
 import { connect } from 'react-redux';
 import { getArticles, deleteArticle } from '../../redux/articles/articles-actions'
 import ModalComponent from '../../components/modal/modal-component';
-import ProfileFormComponent from '../../components/profile/profile-form-component';
 import { textFilter, customFilter } from 'react-bootstrap-table2-filter';
 import TableComponent from '../../components/table/table-component';
 import CodeFilter from '../../components/table/code-filter';
 import { get } from 'lodash';
 import { codeFormatter, currencyFormatter, percentageFormatter } from '../../util/articles-formatters';
-import { registerCodeInputMask, CODE_INPUT_MASK_CLASS } from '../../util/util';
 import ConfirmComponent from '../../components/confirm/confirm-component';
 import { Link } from 'react-router-dom';
 import { withRouter } from "react-router";
-
+import ArticleBulkEditComponent from '../../components/article/article-bulk-edit-component';
 class ArticlesTableContainer extends Component{
   constructor() {
     super();
@@ -141,12 +139,18 @@ class ArticlesTableContainer extends Component{
             <div className="card border mb-3">
               <div className="card-header border">List of articles</div>
               <div className="card-body text">
-                <Link to="/articles/create" className="btn btn-success mb-2">
+                <div className="mb-2">
+                <Link to="/articles/create" className="btn btn-success mr-2">
                   <i className="fas fa-plus pr-1"></i>
                   New Article
                 </Link>
+                <button className="btn btn-info mr-2" data-target="#bulk-edit-modal" data-toggle="modal">
+                  <i className="fa fa-edit pr-1" ></i>
+                  Bulk Edit
+                </button>
+                </div>
                 <TableComponent
-                  ref={this.tableRef}
+                  ref={ this.tableRef }
                   columns={ this.getColumns() }
                   pagination={ pagination }
                   data={ articles }
@@ -159,12 +163,6 @@ class ArticlesTableContainer extends Component{
                 </TableComponent>
               </div>
             </div>
-            <ModalComponent 
-              name="add-user-modal"
-              title="CREATE USER"
-            >
-              <ProfileFormComponent onSubmit={this.createUser} mode="create" buttonsPosition="end"></ProfileFormComponent>
-            </ModalComponent>
             <ConfirmComponent 
               name="delete-article"
               title="Delete Article"
@@ -172,6 +170,12 @@ class ArticlesTableContainer extends Component{
               onAccept={ this.deleteArticle }
               onCancel={ () => console.log('cancel') }
             />
+            <ModalComponent 
+              name="bulk-edit-modal"
+              title="Bulk Edit"
+            >
+              <ArticleBulkEditComponent></ArticleBulkEditComponent>
+            </ModalComponent>
         </div>
     );
   }
