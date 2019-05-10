@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators  } from 'redux';
 import { connect } from 'react-redux';
-import { getArticles, deleteArticle } from '../../redux/articles/articles-actions'
+import { getArticles, deleteArticle, bulkEditArticles } from '../../redux/articles/articles-actions'
 import ModalComponent from '../../components/modal/modal-component';
 import { textFilter, customFilter } from 'react-bootstrap-table2-filter';
 import TableComponent from '../../components/table/table-component';
@@ -19,6 +19,7 @@ class ArticlesTableContainer extends Component{
     this.handleTableChange = this.handleTableChange.bind(this);
     this.deleteArticle = this.deleteArticle.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
+    this.bulkEdit = this.bulkEdit.bind(this);
     this.articleAboutToDelete = null;
     this.viewArticle = this.viewArticle.bind(this);
     this.tableRef = React.createRef();
@@ -132,6 +133,10 @@ class ArticlesTableContainer extends Component{
     this.props.history.push(`/articles/${article._id}` );
   }
 
+  bulkEdit(values) {
+    this.props.bulkEditArticles(values);
+  }
+
   render(){
     const { pagination, articles, isEmpty } = this.props;
     return(
@@ -174,7 +179,9 @@ class ArticlesTableContainer extends Component{
               name="bulk-edit-modal"
               title="Bulk Edit"
             >
-              <ArticleBulkEditComponent></ArticleBulkEditComponent>
+              <ArticleBulkEditComponent
+                onSubmit={this.bulkEdit}
+              ></ArticleBulkEditComponent>
             </ModalComponent>
         </div>
     );
@@ -189,5 +196,5 @@ export default connect(
     isEmpty: state.articlesReducer.isEmpty,
     currentUser: state.userReducer.currentUser,
   }), // mapStateToProps
-  dispatch => bindActionCreators({ getArticles, deleteArticle }, dispatch) // mapDispatchToProps
+  dispatch => bindActionCreators({ getArticles, deleteArticle, bulkEditArticles }, dispatch) // mapDispatchToProps
 )(withRouter(ArticlesTableContainer))

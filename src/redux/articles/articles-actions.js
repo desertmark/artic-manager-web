@@ -5,7 +5,8 @@ import {
     DELETE_ARTICLE,
     GET_ARTICLE,
     CREATE_ARTICLE,
-    EDIT_ARTICLE
+    EDIT_ARTICLE,
+    BULK_EDIT_ARTICLE
 } from './articles-constants';
 
 export function getArticle(articleId) {
@@ -73,6 +74,24 @@ export function editArticle(article) {
                 alertConfig:{
                     alertType: 'success',
                     message:'Article saved.'
+                },
+            }
+        });
+    }
+}
+
+export function bulkEditArticles(values) {
+    return (dispatch, getState) => {
+        const promise = articlesService.bulkEditArticles(values);
+        return dispatch({
+            type: BULK_EDIT_ARTICLE,
+            payload: promise,
+            meta: {
+                showSpinner: true,
+                promise,
+                alertConfig:{
+                    alertType: 'success',
+                    message:'Bulk operation completed.'
                 },
             }
         });

@@ -48,6 +48,18 @@ function editArticle(article) {
     }); 
 }
 
+function bulkEditArticles(data) {
+    return axios({
+        url: `${API_URL}/articles`,
+        method:'PUT',
+        data
+    }).then(res => res.data)
+    .catch(error => {
+        console.error(error);
+        throw error;
+    }); 
+}
+
 function deleteArticle(articleId) {
     return axios({
         url: `${API_URL}/articles/${articleId}`,
@@ -64,5 +76,6 @@ export default {
     getArticles,
     createArticle,
     editArticle,
+    bulkEditArticles,
     deleteArticle
 }
