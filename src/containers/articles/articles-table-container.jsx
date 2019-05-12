@@ -15,6 +15,9 @@ import ArticleBulkEditComponent from '../../components/article/article-bulk-edit
 class ArticlesTableContainer extends Component{
   constructor() {
     super();
+    this.state = {
+      bulkEditOpen: false
+    }
     this.getColumns = this.getColumns.bind(this);
     this.handleTableChange = this.handleTableChange.bind(this);
     this.deleteArticle = this.deleteArticle.bind(this);
@@ -134,6 +137,7 @@ class ArticlesTableContainer extends Component{
   }
 
   bulkEdit(values) {
+    this.setState({ bulkEditOpen: false });
     this.props.bulkEditArticles(values);
   }
 
@@ -149,7 +153,7 @@ class ArticlesTableContainer extends Component{
                   <i className="fas fa-plus pr-1"></i>
                   New Article
                 </Link>
-                <button className="btn btn-info mr-2" data-target="#bulk-edit-modal" data-toggle="modal">
+                <button className="btn btn-info mr-2" onClick={() => this.setState({bulkEditOpen: true})}>
                   <i className="fa fa-edit pr-1" ></i>
                   Bulk Edit
                 </button>
@@ -178,9 +182,11 @@ class ArticlesTableContainer extends Component{
             <ModalComponent 
               name="bulk-edit-modal"
               title="Bulk Edit"
+              isOpen={this.state.bulkEditOpen}
             >
               <ArticleBulkEditComponent
                 onSubmit={this.bulkEdit}
+                onCancel={() => this.setState({ bulkEditOpen: false })}
               ></ArticleBulkEditComponent>
             </ModalComponent>
         </div>

@@ -8,7 +8,7 @@ import { get, isEqual, pick } from 'lodash';
 import CategorySelect from '../category/category-select';
 import DiscountTableContainer from '../../containers/discounts/discount-table-container';
 import { Link } from 'react-router-dom';
- 
+import EditPriceComponent from '../article/edit-price-component';
 class ArticleBulkEditComponent extends Component{
   constructor() {
     super();
@@ -25,6 +25,7 @@ class ArticleBulkEditComponent extends Component{
               <CodeInput
                   name="from"
                   placeholder="00.00.00.00"
+                  validate={[required]}
               ></CodeInput>
             </div>
             <div className="form-group col">
@@ -32,30 +33,43 @@ class ArticleBulkEditComponent extends Component{
               <CodeInput
                   name="to"
                   placeholder="00.00.00.00"
+                  validate={[required]}
               ></CodeInput>
             </div>
           </div>
           <div className="row">
             <div className="form-group col">
-              <label className="text-secondary font-weight-light">Description</label>
-              <Field 
-                  className="form-control" 
-                  component={textarea} 
-                  rows="4" 
-                  type="text" 
-                  name="fields.description" 
-                  placeholder="Enter a description..." 
-                  validate={required}
-              />
+              <label className="text-secondary">Price</label>
+              <div className="border rounded p-2">
+                <EditPriceComponent
+                  percentageName="fields.price.percentage"
+                  absoluteName="fields.price.absolute"
+                ></EditPriceComponent>
+              </div>
+            </div>
+          </div>
+
+        <div className="row">
+          <div className="form-group col">
+              <label className="text-secondary font-weight-light">V.A.T.</label>
+              <PercentageInput name="fields.vat" placeholder="0" />
+            </div>
+            <div className="form-group col">
+              <label className="text-secondary font-weight-light">Transport</label>
+              <PercentageInput name="fields.transport" placeholder="0" />
+            </div>
+            <div className="form-group col">
+              <label className="text-secondary font-weight-light">Card</label>
+              <PercentageInput name="fields.card" placeholder="0" />
             </div>
           </div>
 
           <div className="row">
             <div className="col">
-              <button type="submit" data-target="#bulk-edit-modal" data-toggle="modal" className="btn btn-block btn-primary">Edit</button>
+              <button type="submit" className="btn btn-block btn-primary">Edit</button>
             </div>
             <div className="col">
-              <button data-dismiss="modal" type="button" className="btn btn-block btn-default">Cancel</button>
+              <button onClick={this.props.onCancel} type="button" className="btn btn-block btn-default">Cancel</button>
             </div>
           </div>
         </form>
@@ -68,6 +82,11 @@ export default connect(
   (state, ownProps) => {
     return {
       initialValues: ownProps.initialValues || {
+        fields: {
+          vat: 21,
+          transport: 14,
+          card: 23
+        }
       },
     }
   },
