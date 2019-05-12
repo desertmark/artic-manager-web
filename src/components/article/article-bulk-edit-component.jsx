@@ -12,6 +12,16 @@ import EditPriceComponent from '../article/edit-price-component';
 class ArticleBulkEditComponent extends Component{
   constructor() {
     super();
+    this.resetAbsolutePrice = this.resetAbsolutePrice.bind(this);
+    this.resetPercentagePrice = this.resetPercentagePrice.bind(this);
+  }
+
+  resetAbsolutePrice() {
+    this.props.changeFieldValue('fields.price', {});
+  }
+
+  resetPercentagePrice() {
+    this.props.changeFieldValue('fields.price', {});
   }
 
   render(){
@@ -44,6 +54,8 @@ class ArticleBulkEditComponent extends Component{
                 <EditPriceComponent
                   percentageName="fields.price.percentage"
                   absoluteName="fields.price.absolute"
+                  onPercentage={this.resetAbsolutePrice}
+                  onAbsolute={this.resetPercentagePrice}
                 ></EditPriceComponent>
               </div>
             </div>
@@ -78,6 +90,8 @@ class ArticleBulkEditComponent extends Component{
   }
 }
 
+const selector = formValueSelector('articleBulkEditForm');
+
 export default connect(
   (state, ownProps) => {
     return {
@@ -86,11 +100,16 @@ export default connect(
           vat: 21,
           transport: 14,
           card: 23
-        }
+        },
       },
+      formData: selector(state, 'fields.price')
     }
   },
-  null
+  dispatch => ({
+    changeFieldValue: (field, value) => {
+      dispatch(change('articleBulkEditForm', field, value))
+    },
+  })
   )(reduxForm({
     form: 'articleBulkEditForm',
   })(ArticleBulkEditComponent))
