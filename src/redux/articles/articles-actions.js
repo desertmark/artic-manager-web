@@ -1,5 +1,5 @@
 import articlesService from './articles-service';
-import { articleVmToApiArticle } from '../../util/util';
+import { articleVmToApiArticle, bulkEditVmToApiBulkEdit } from '../../util/util';
 import { 
     GET_ARTICLES,
     DELETE_ARTICLE,
@@ -62,7 +62,6 @@ export function createArticle(article) {
 export function editArticle(article) {
     return (dispatch, getState) => {
         const apiArticle = articleVmToApiArticle(article);
-        console.log('API ARTICLE', apiArticle);
         const promise = articlesService.editArticle(apiArticle);
         return dispatch({
             type: EDIT_ARTICLE,
@@ -82,7 +81,8 @@ export function editArticle(article) {
 
 export function bulkEditArticles(values) {
     return (dispatch, getState) => {
-        const promise = articlesService.bulkEditArticles(values);
+        const apiBulkEditModel = bulkEditVmToApiBulkEdit(values);
+        const promise = articlesService.bulkEditArticles(apiBulkEditModel);
         return dispatch({
             type: BULK_EDIT_ARTICLE,
             payload: promise,

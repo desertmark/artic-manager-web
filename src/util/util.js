@@ -124,3 +124,19 @@ export function getExchange(type="USD_ARS") {
     return axios({URL:`http://free.currencyconverterapi.com/api/v5/convert?q=${type}&compact=ultra`, method:'GET'})
     .then(ex => ex[type]);
 }
+
+export function bulkEditVmToApiBulkEdit(bulkEditVm) {
+    const apiBulkEdit = {
+        ...bulkEditVm,
+        fields: {
+            vat: get(bulkEditVm, 'fileds.vat', 0) / 100,
+            transport: get(bulkEditVm, 'fileds.transport', 0) / 100,
+            card: get(bulkEditVm, 'fileds.card', 0) / 100,
+        }
+    };
+    const percentage = get(bulkEditVm, 'fields.price.percentage');
+    const absolute = get(bulkEditVm, 'fields.price.absolute');
+    if (percentage) set(apiBulkEdit, 'fields.price.percentage', percentage/100);
+    if (absolute) set(apiBulkEdit, 'fields.price.absolute', absolute);
+    return apiBulkEdit;
+}
