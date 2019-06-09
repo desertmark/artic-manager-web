@@ -60,19 +60,24 @@ class ArticleBulkEditComponent extends Component{
               </div>
             </div>
           </div>
-
-        <div className="row">
-          <div className="form-group col">
+          <div className="row">
+            <div className="form-group col">
+              <label className="text-secondary font-weight">Utility</label>
+              <PercentageInput name="fields.utility" placeholder="20"/>
+            </div>
+          </div>
+          <div className="row">
+            <div className="form-group col">
               <label className="text-secondary font-weight-light">V.A.T.</label>
-              <PercentageInput name="fields.vat" placeholder="0" />
+              <PercentageInput name="fields.vat" placeholder="21" />
             </div>
             <div className="form-group col">
               <label className="text-secondary font-weight-light">Transport</label>
-              <PercentageInput name="fields.transport" placeholder="0" />
+              <PercentageInput name="fields.transport" placeholder="14" />
             </div>
             <div className="form-group col">
               <label className="text-secondary font-weight-light">Card</label>
-              <PercentageInput name="fields.card" placeholder="0" />
+              <PercentageInput name="fields.card" placeholder="23" />
             </div>
           </div>
 
@@ -95,13 +100,6 @@ const selector = formValueSelector('articleBulkEditForm');
 export default connect(
   (state, ownProps) => {
     return {
-      initialValues: ownProps.initialValues || {
-        fields: {
-          vat: 21,
-          transport: 14,
-          card: 23
-        },
-      },
       formData: selector(state, 'fields.price')
     }
   },

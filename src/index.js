@@ -31,7 +31,7 @@ const logger = createLogger({
 })
 const middlewares = composeEnhancers(applyMiddleware(
   ReduxThunk, 
-  logger, 
+  // logger, 
   promiseMiddleware(), 
   spinnerMiddleware, 
   getCurrentUserMiddleware,

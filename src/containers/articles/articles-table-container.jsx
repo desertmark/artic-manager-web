@@ -16,7 +16,8 @@ class ArticlesTableContainer extends Component{
   constructor() {
     super();
     this.state = {
-      bulkEditOpen: false
+      bulkEditOpen: false,
+      columns: null,
     }
     this.getColumns = this.getColumns.bind(this);
     this.handleTableChange = this.handleTableChange.bind(this);
@@ -29,7 +30,9 @@ class ArticlesTableContainer extends Component{
   }
 
   componentWillMount() {
-    this.props.getArticles()
+    const columns = this.getColumns();
+    this.setState({ columns });
+    this.props.getArticles();
   }
 
   getColumns() {
@@ -120,6 +123,7 @@ class ArticlesTableContainer extends Component{
   }
 
   handleTableChange(type, params, filters) {
+    console.log(this.state.codeFilter);
     this.props.getArticles(params, filters);
   }
   
@@ -138,7 +142,8 @@ class ArticlesTableContainer extends Component{
 
   bulkEdit(values) {
     this.setState({ bulkEditOpen: false });
-    this.props.bulkEditArticles(values);
+    this.props.bulkEditArticles(values)
+      .then(this.props.getArticles);
   }
 
   render(){
@@ -160,7 +165,7 @@ class ArticlesTableContainer extends Component{
                 </div>
                 <TableComponent
                   ref={ this.tableRef }
-                  columns={ this.getColumns() }
+                  columns={ this.state.columns }
                   pagination={ pagination }
                   data={ articles }
                   onView= { this.viewArticle }

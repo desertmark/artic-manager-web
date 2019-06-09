@@ -1,4 +1,4 @@
-import { set, get, sum } from 'lodash';
+import { set, get, sum, mapValues } from 'lodash';
 import axios from 'axios';
 import $ from 'jquery';
 
@@ -128,11 +128,7 @@ export function getExchange(type="USD_ARS") {
 export function bulkEditVmToApiBulkEdit(bulkEditVm) {
     const apiBulkEdit = {
         ...bulkEditVm,
-        fields: {
-            vat: get(bulkEditVm, 'fileds.vat', 0) / 100,
-            transport: get(bulkEditVm, 'fileds.transport', 0) / 100,
-            card: get(bulkEditVm, 'fileds.card', 0) / 100,
-        }
+        fields: mapValues(bulkEditVm.fields, value => value/100)
     };
     const percentage = get(bulkEditVm, 'fields.price.percentage');
     const absolute = get(bulkEditVm, 'fields.price.absolute');
