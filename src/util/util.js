@@ -1,4 +1,4 @@
-import { set, get, sum } from 'lodash';
+import { set, get, sum, mapValues } from 'lodash';
 import axios from 'axios';
 import $ from 'jquery';
 
@@ -123,4 +123,16 @@ export function apiArticleToVmArticle(article) {
 export function getExchange(type="USD_ARS") {
     return axios({URL:`http://free.currencyconverterapi.com/api/v5/convert?q=${type}&compact=ultra`, method:'GET'})
     .then(ex => ex[type]);
+}
+
+export function bulkEditVmToApiBulkEdit(bulkEditVm) {
+    const apiBulkEdit = {
+        ...bulkEditVm,
+        fields: mapValues(bulkEditVm.fields, value => value/100)
+    };
+    const percentage = get(bulkEditVm, 'fields.price.percentage');
+    const absolute = get(bulkEditVm, 'fields.price.absolute');
+    if (percentage) set(apiBulkEdit, 'fields.price.percentage', percentage/100);
+    if (absolute) set(apiBulkEdit, 'fields.price.absolute', absolute);
+    return apiBulkEdit;
 }

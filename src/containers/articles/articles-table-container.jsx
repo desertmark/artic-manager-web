@@ -1,33 +1,38 @@
 import React, { Component } from 'react';
 import { bindActionCreators  } from 'redux';
 import { connect } from 'react-redux';
-import { getArticles, deleteArticle } from '../../redux/articles/articles-actions'
+import { getArticles, deleteArticle, bulkEditArticles } from '../../redux/articles/articles-actions'
 import ModalComponent from '../../components/modal/modal-component';
-import ProfileFormComponent from '../../components/profile/profile-form-component';
 import { textFilter, customFilter } from 'react-bootstrap-table2-filter';
 import TableComponent from '../../components/table/table-component';
 import CodeFilter from '../../components/table/code-filter';
 import { get } from 'lodash';
 import { codeFormatter, currencyFormatter, percentageFormatter } from '../../util/articles-formatters';
-import { registerCodeInputMask, CODE_INPUT_MASK_CLASS } from '../../util/util';
 import ConfirmComponent from '../../components/confirm/confirm-component';
 import { Link } from 'react-router-dom';
 import { withRouter } from "react-router";
-
+import ArticleBulkEditComponent from '../../components/article/article-bulk-edit-component';
 class ArticlesTableContainer extends Component{
   constructor() {
     super();
+    this.state = {
+      bulkEditOpen: false,
+      columns: null,
+    }
     this.getColumns = this.getColumns.bind(this);
     this.handleTableChange = this.handleTableChange.bind(this);
     this.deleteArticle = this.deleteArticle.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
+    this.bulkEdit = this.bulkEdit.bind(this);
     this.articleAboutToDelete = null;
     this.viewArticle = this.viewArticle.bind(this);
     this.tableRef = React.createRef();
   }
 
   componentWillMount() {
-    this.props.getArticles()
+    const columns = this.getColumns();
+    this.setState({ columns });
+    this.props.getArticles();
   }
 
   getColumns() {
@@ -83,27 +88,37 @@ class ArticlesTableContainer extends Component{
       {
         dataField: 'utility',
         text: 'Utility',
-        formatter: percentageFormatter
+        formatter: percentageFormatter,
+        classes: 'd-md-none d-lg-table-cell',
+        headerClasses: 'd-md-none d-lg-table-cell'
       },
       {
         dataField: 'dolar',
         text: 'Dolar Price',
-        formatter: currencyFormatter
+        formatter: currencyFormatter,
+        classes: 'd-md-none d-lg-table-cell',
+        headerClasses: 'd-md-none d-lg-table-cell'
       },
       {
         dataField: 'vat',
         text: 'V.A.T.',
-        formatter: percentageFormatter
+        formatter: percentageFormatter,
+        classes: 'd-md-none d-xl-table-cell',
+        headerClasses: 'd-md-none d-xl-table-cell'
       },
       {
         dataField: 'transport',
         text: 'Transport',
-        formatter: percentageFormatter
+        formatter: percentageFormatter,
+        classes: 'd-md-none d-xl-table-cell',
+        headerClasses: 'd-md-none d-xl-table-cell'
       },
       {
         dataField: 'card',
         text: 'Card',
-        formatter: percentageFormatter
+        formatter: percentageFormatter,
+        classes: 'd-md-none d-xl-table-cell',
+        headerClasses: 'd-md-none d-xl-table-cell'
       }]);
     }
 
@@ -118,6 +133,7 @@ class ArticlesTableContainer extends Component{
   }
 
   handleTableChange(type, params, filters) {
+    console.log(this.state.codeFilter);
     this.props.getArticles(params, filters);
   }
   
@@ -134,6 +150,12 @@ class ArticlesTableContainer extends Component{
     this.props.history.push(`/articles/${article._id}` );
   }
 
+  bulkEdit(values) {
+    this.setState({ bulkEditOpen: false });
+    this.props.bulkEditArticles(values)
+      .then(this.props.getArticles);
+  }
+
   render(){
     const { pagination, articles, isEmpty } = this.props;
     return(
@@ -141,13 +163,19 @@ class ArticlesTableContainer extends Component{
             <div className="card border mb-3">
               <div className="card-header border">List of articles</div>
               <div className="card-body text">
-                <Link to="/articles/create" className="btn btn-success mb-2">
+                <div className="mb-2">
+                <Link to="/articles/create" className="btn btn-success mr-2">
                   <i className="fas fa-plus pr-1"></i>
                   New Article
                 </Link>
+                <button className="btn btn-info mr-2" onClick={() => this.setState({bulkEditOpen: true})}>
+                  <i className="fa fa-edit pr-1" ></i>
+                  Bulk Edit
+                </button>
+                </div>
                 <TableComponent
-                  ref={this.tableRef}
-                  columns={ this.getColumns() }
+                  ref={ this.tableRef }
+                  columns={ this.state.columns }
                   pagination={ pagination }
                   data={ articles }
                   onView= { this.viewArticle }
@@ -159,12 +187,6 @@ class ArticlesTableContainer extends Component{
                 </TableComponent>
               </div>
             </div>
-            <ModalComponent 
-              name="add-user-modal"
-              title="CREATE USER"
-            >
-              <ProfileFormComponent onSubmit={this.createUser} mode="create" buttonsPosition="end"></ProfileFormComponent>
-            </ModalComponent>
             <ConfirmComponent 
               name="delete-article"
               title="Delete Article"
@@ -172,6 +194,16 @@ class ArticlesTableContainer extends Component{
               onAccept={ this.deleteArticle }
               onCancel={ () => console.log('cancel') }
             />
+            <ModalComponent 
+              name="bulk-edit-modal"
+              title="Bulk Edit"
+              isOpen={this.state.bulkEditOpen}
+            >
+              <ArticleBulkEditComponent
+                onSubmit={this.bulkEdit}
+                onCancel={() => this.setState({ bulkEditOpen: false })}
+              ></ArticleBulkEditComponent>
+            </ModalComponent>
         </div>
     );
   }
@@ -185,5 +217,5 @@ export default connect(
     isEmpty: state.articlesReducer.isEmpty,
     currentUser: state.userReducer.currentUser,
   }), // mapStateToProps
-  dispatch => bindActionCreators({ getArticles, deleteArticle }, dispatch) // mapDispatchToProps
+  dispatch => bindActionCreators({ getArticles, deleteArticle, bulkEditArticles }, dispatch) // mapDispatchToProps
 )(withRouter(ArticlesTableContainer))

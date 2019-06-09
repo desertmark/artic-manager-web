@@ -14,6 +14,9 @@ import {
     EDIT_ARTICLE_PENDING,
     EDIT_ARTICLE_FULFILLED,
     EDIT_ARTICLE_REJECTED,
+    BULK_EDIT_ARTICLE_PENDING,
+    BULK_EDIT_ARTICLE_FULFILLED,
+    BULK_EDIT_ARTICLE_REJECTED,
 } from './articles-constants';
 
 import { findIndex } from 'lodash'
@@ -107,6 +110,18 @@ export function articlesReducer(currentState = defaultState, action) {
             });
         case EDIT_ARTICLE_REJECTED:
             return Object.assign({}, currentState, { error: action.payload, loading: false } );
+        // ---------------------------------- BULK EDIT ----------------------------------
+        case BULK_EDIT_ARTICLE_PENDING:
+            return Object.assign({}, currentState, {
+                loading: true,
+            });
+        case BULK_EDIT_ARTICLE_FULFILLED:
+            return Object.assign({}, currentState, {
+                loading: false,
+                error: null,
+            });
+        case BULK_EDIT_ARTICLE_REJECTED:
+                return Object.assign({}, currentState, { error: action.payload, loading: false } );
         default:
             return currentState;
     }

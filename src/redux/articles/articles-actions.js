@@ -1,11 +1,12 @@
 import articlesService from './articles-service';
-import { articleVmToApiArticle } from '../../util/util';
+import { articleVmToApiArticle, bulkEditVmToApiBulkEdit } from '../../util/util';
 import { 
     GET_ARTICLES,
     DELETE_ARTICLE,
     GET_ARTICLE,
     CREATE_ARTICLE,
-    EDIT_ARTICLE
+    EDIT_ARTICLE,
+    BULK_EDIT_ARTICLE
 } from './articles-constants';
 
 export function getArticle(articleId) {
@@ -61,7 +62,6 @@ export function createArticle(article) {
 export function editArticle(article) {
     return (dispatch, getState) => {
         const apiArticle = articleVmToApiArticle(article);
-        console.log('API ARTICLE', apiArticle);
         const promise = articlesService.editArticle(apiArticle);
         return dispatch({
             type: EDIT_ARTICLE,
@@ -73,6 +73,25 @@ export function editArticle(article) {
                 alertConfig:{
                     alertType: 'success',
                     message:'Article saved.'
+                },
+            }
+        });
+    }
+}
+
+export function bulkEditArticles(values) {
+    return (dispatch, getState) => {
+        const apiBulkEditModel = bulkEditVmToApiBulkEdit(values);
+        const promise = articlesService.bulkEditArticles(apiBulkEditModel);
+        return dispatch({
+            type: BULK_EDIT_ARTICLE,
+            payload: promise,
+            meta: {
+                showSpinner: true,
+                promise,
+                alertConfig:{
+                    alertType: 'success',
+                    message:'Bulk operation completed.'
                 },
             }
         });
