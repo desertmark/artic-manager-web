@@ -51,7 +51,7 @@ function editArticle(article) {
 function bulkEditArticles(data) {
     return axios({
         url: `${API_URL}/articles`,
-        method:'PUT',
+        method:'PATCH',
         data
     }).then(res => res.data)
     .catch(error => {
