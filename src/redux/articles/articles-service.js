@@ -39,7 +39,7 @@ function createArticle(article) {
 function editArticle(article) {
     return axios({
         url: `${API_URL}/articles/${article._id}`,
-        method:'PUT',
+        method:'PATCH',
         data: article
     }).then(res => res.data)
     .catch(error => {
