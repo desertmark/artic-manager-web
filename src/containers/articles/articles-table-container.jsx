@@ -88,27 +88,37 @@ class ArticlesTableContainer extends Component{
       {
         dataField: 'utility',
         text: 'Utility',
-        formatter: percentageFormatter
+        formatter: percentageFormatter,
+        classes: 'd-md-none d-lg-table-cell',
+        headerClasses: 'd-md-none d-lg-table-cell'
       },
       {
         dataField: 'dolar',
         text: 'Dolar Price',
-        formatter: currencyFormatter
+        formatter: currencyFormatter,
+        classes: 'd-md-none d-lg-table-cell',
+        headerClasses: 'd-md-none d-lg-table-cell'
       },
       {
         dataField: 'vat',
         text: 'V.A.T.',
-        formatter: percentageFormatter
+        formatter: percentageFormatter,
+        classes: 'd-md-none d-xl-table-cell',
+        headerClasses: 'd-md-none d-xl-table-cell'
       },
       {
         dataField: 'transport',
         text: 'Transport',
-        formatter: percentageFormatter
+        formatter: percentageFormatter,
+        classes: 'd-md-none d-xl-table-cell',
+        headerClasses: 'd-md-none d-xl-table-cell'
       },
       {
         dataField: 'card',
         text: 'Card',
-        formatter: percentageFormatter
+        formatter: percentageFormatter,
+        classes: 'd-md-none d-xl-table-cell',
+        headerClasses: 'd-md-none d-xl-table-cell'
       }]);
     }
 
