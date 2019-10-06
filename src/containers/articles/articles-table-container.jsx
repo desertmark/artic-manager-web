@@ -157,22 +157,25 @@ class ArticlesTableContainer extends Component{
   }
 
   render(){
-    const { pagination, articles, isEmpty } = this.props;
+    const { pagination, articles, isEmpty, currentUser } = this.props;
     return(
         <div className="container-fluid">
             <div className="card border mb-3">
               <div className="card-header border">List of articles</div>
               <div className="card-body text">
-                <div className="mb-2">
-                <Link to="/articles/create" className="btn btn-success mr-2">
-                  <i className="fas fa-plus pr-1"></i>
-                  New Article
-                </Link>
-                <button className="btn btn-info mr-2" onClick={() => this.setState({bulkEditOpen: true})}>
-                  <i className="fa fa-edit pr-1" ></i>
-                  Bulk Edit
-                </button>
-                </div>
+                {
+                  currentUser === 'ADMIN' &&
+                  <div className="mb-2">
+                    <Link to="/articles/create" className="btn btn-success mr-2">
+                      <i className="fas fa-plus pr-1"></i>
+                      New Article
+                    </Link>
+                    <button className="btn btn-info mr-2" onClick={() => this.setState({bulkEditOpen: true})}>
+                      <i className="fa fa-edit pr-1" ></i>
+                      Bulk Edit
+                    </button>
+                  </div>
+                }
                 <TableComponent
                   ref={ this.tableRef }
                   columns={ this.state.columns }
