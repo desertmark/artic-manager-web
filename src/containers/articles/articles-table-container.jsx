@@ -29,6 +29,16 @@ class ArticlesTableContainer extends Component{
     this.tableRef = React.createRef();
   }
 
+  isAdmin() {
+    const role = get(this.props.currentUser,'role');
+    return role === 'ADMIN';
+  }
+
+  isUser() {
+    const role = get(this.props.currentUser,'role');
+    return role === 'USER' || role === 'ADMIN';
+  }
+
   componentWillMount() {
     const columns = this.getColumns();
     this.setState({ columns });
@@ -61,8 +71,7 @@ class ArticlesTableContainer extends Component{
       filter: textFilter()
     }];
 
-    const role = get(this.props.currentUser,'role');
-    if (role) {
+    if (this.isUser()) {
       columns = columns.concat([
         {
           dataField: 'price',
@@ -78,7 +87,7 @@ class ArticlesTableContainer extends Component{
       ]);
     }
 
-    if(role === 'ADMIN') {
+    if(this.isAdmin()) {
       columns = columns.concat([
       {
         dataField: 'listPrice',
@@ -122,7 +131,7 @@ class ArticlesTableContainer extends Component{
       }]);
     }
 
-    if(role) {
+    if(this.isUser()) {
       columns.push({
         dataField: 'actions',
         text: 'Actions',
@@ -163,16 +172,19 @@ class ArticlesTableContainer extends Component{
             <div className="card border mb-3">
               <div className="card-header border">List of articles</div>
               <div className="card-body text">
-                <div className="mb-2">
-                <Link to="/articles/create" className="btn btn-success mr-2">
-                  <i className="fas fa-plus pr-1"></i>
-                  New Article
-                </Link>
-                <button className="btn btn-info mr-2" onClick={() => this.setState({bulkEditOpen: true})}>
-                  <i className="fa fa-edit pr-1" ></i>
-                  Bulk Edit
-                </button>
-                </div>
+                {
+                  this.isAdmin() &&
+                  <div className="mb-2">
+                    <Link to="/articles/create" className="btn btn-success mr-2">
+                      <i className="fas fa-plus pr-1"></i>
+                      New Article
+                    </Link>
+                    <button className="btn btn-info mr-2" onClick={() => this.setState({bulkEditOpen: true})}>
+                      <i className="fa fa-edit pr-1" ></i>
+                      Bulk Edit
+                    </button>
+                  </div>
+                }
                 <TableComponent
                   ref={ this.tableRef }
                   columns={ this.state.columns }
