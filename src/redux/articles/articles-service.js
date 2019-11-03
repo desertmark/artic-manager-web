@@ -60,6 +60,24 @@ function bulkEditArticles(data) {
     }); 
 }
 
+function fileEditArticles(file) {
+    let form = new FormData();
+    form.set('bulk', file);
+    return axios({
+        url: `${API_URL}/articles`,
+        method:'PATCH',
+        data: form,
+        config: { 
+            headers: {
+                'Content-Type': 'multipart/form-data' 
+            }
+        }
+    }).catch(error => {
+        console.error(error);
+        throw error;
+    });
+}
+
 function deleteArticle(articleId) {
     return axios({
         url: `${API_URL}/articles/${articleId}`,
@@ -77,5 +95,6 @@ export default {
     createArticle,
     editArticle,
     bulkEditArticles,
-    deleteArticle
+    deleteArticle,
+    fileEditArticles
 }

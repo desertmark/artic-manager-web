@@ -29,6 +29,41 @@ export const input = ({ input, type, placeholder,readOnly, className, append, pr
   </div>
 );
 
+export const fileInput = props => 
+<input 
+  {...props}
+  type="file"
+  onChange={e => {
+    e.preventDefault();
+    const file = Array.from(e.target.files);
+    props.input.onChange(file);
+  }}
+/>
+
+export class FileField extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      value: "Select a file"
+    }
+  }
+
+  render() {
+    return (
+      <div className="mt-2 custom-file">
+        <Field 
+          name={this.props.name}
+          onChange={e => this.setState({ value: e[0].name })}
+          component={fileInput}
+          type="file"
+          className="custom-file-input"
+        />
+        <label className="custom-file-label" htmlFor="validatedCustomFile">{this.state.value}</label>
+      </div>
+    )
+  }
+}
+
 export const textarea = ({ input, type, placeholder,readOnly, className, meta: { touched, error, warning } }) => (
     <Fragment>
         <textarea className="form-control" {...input} readOnly={readOnly} placeholder={placeholder} type={type} ></textarea>

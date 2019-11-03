@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators  } from 'redux';
 import { connect } from 'react-redux';
-import { getArticles, deleteArticle, bulkEditArticles } from '../../redux/articles/articles-actions'
+import { getArticles, deleteArticle, bulkEditArticles, fileEditArticles } from '../../redux/articles/articles-actions'
 import ModalComponent from '../../components/modal/modal-component';
 import { textFilter, customFilter } from 'react-bootstrap-table2-filter';
 import TableComponent from '../../components/table/table-component';
@@ -12,6 +12,7 @@ import ConfirmComponent from '../../components/confirm/confirm-component';
 import { Link } from 'react-router-dom';
 import { withRouter } from "react-router";
 import ArticleBulkEditComponent from '../../components/article/article-bulk-edit-component';
+import  FileFormComponent from '../../components/file-form/file-form-component';
 class ArticlesTableContainer extends Component{
   constructor() {
     super();
@@ -24,6 +25,7 @@ class ArticlesTableContainer extends Component{
     this.deleteArticle = this.deleteArticle.bind(this);
     this.confirmDelete = this.confirmDelete.bind(this);
     this.bulkEdit = this.bulkEdit.bind(this);
+    this.fileEdit = this.fileEdit.bind(this);
     this.articleAboutToDelete = null;
     this.viewArticle = this.viewArticle.bind(this);
     this.tableRef = React.createRef();
@@ -156,6 +158,11 @@ class ArticlesTableContainer extends Component{
       .then(this.props.getArticles);
   }
 
+  fileEdit(values) {
+    const file = values.bulk[0];
+    this.props.fileEditArticles(file);
+  }
+
   render(){
     const { pagination, articles, isEmpty } = this.props;
     return(
@@ -164,14 +171,15 @@ class ArticlesTableContainer extends Component{
               <div className="card-header border">List of articles</div>
               <div className="card-body text">
                 <div className="mb-2">
-                <Link to="/articles/create" className="btn btn-success mr-2">
-                  <i className="fas fa-plus pr-1"></i>
-                  New Article
-                </Link>
-                <button className="btn btn-info mr-2" onClick={() => this.setState({bulkEditOpen: true})}>
-                  <i className="fa fa-edit pr-1" ></i>
-                  Bulk Edit
-                </button>
+                  <Link to="/articles/create" className="btn btn-success mr-2">
+                    <i className="fas fa-plus pr-1"></i>
+                    New Article
+                  </Link>
+                  <button className=" btn btn-info mr-2" onClick={() => this.setState({bulkEditOpen: true})}>
+                    <i className="fa fa-edit pr-1" ></i>
+                    Bulk Edit
+                  </button>
+                  <FileFormComponent fieldName="bulk"onSubmit={this.fileEdit}></FileFormComponent>
                 </div>
                 <TableComponent
                   ref={ this.tableRef }
@@ -217,5 +225,5 @@ export default connect(
     isEmpty: state.articlesReducer.isEmpty,
     currentUser: state.userReducer.currentUser,
   }), // mapStateToProps
-  dispatch => bindActionCreators({ getArticles, deleteArticle, bulkEditArticles }, dispatch) // mapDispatchToProps
+  dispatch => bindActionCreators({ getArticles, deleteArticle, bulkEditArticles, fileEditArticles }, dispatch) // mapDispatchToProps
 )(withRouter(ArticlesTableContainer))

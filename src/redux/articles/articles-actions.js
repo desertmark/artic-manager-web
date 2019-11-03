@@ -98,6 +98,24 @@ export function bulkEditArticles(values) {
     }
 }
 
+export function fileEditArticles(file) {
+    return (dispatch, getState) => {
+        const promise = articlesService.fileEditArticles(file);
+        return dispatch({
+            type: BULK_EDIT_ARTICLE,
+            payload: promise,
+            meta: {
+                showSpinner: true,
+                promise,
+                alertConfig:{
+                    alertType: 'success',
+                    message:'Bulk operation completed.'
+                },
+            }
+        });
+    }
+}
+
 export function deleteArticle(article) {
     return (dispatch, getState) => {
         const promise = articlesService.deleteArticle(article._id)
