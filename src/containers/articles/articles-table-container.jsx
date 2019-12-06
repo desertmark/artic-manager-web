@@ -210,22 +210,23 @@ class ArticlesTableContainer extends Component{
               <div className="card-body text">
                 {
                   this.isAdmin() &&
-                  <div className="mb-2">
-                    <Link to="/articles/create" className="btn btn-success mr-2">
+                  <div className="mb-2 row">
+                    <div className="col d-md-flex">
+                    <Link to="/articles/create" className="btn btn-success mr-2 mt-2">
                       <i className="fas fa-plus pr-1"></i>
                       New Article
                     </Link>
-                    <button className="btn btn-info mr-2" onClick={() => this.setState({bulkEditOpen: true})}>
+                    <button className="btn btn-info mr-2 mt-2" onClick={() => this.setState({bulkEditOpen: true})}>
                       <i className="fa fa-edit pr-1" ></i>
                       Bulk Edit
                     </button>
                     {
                       !this.props.updateStatus.inProgress && 
-                      <FileFormComponent fieldName="bulk"onSubmit={this.fileEdit}></FileFormComponent>
+                      <div className="mt-2">
+                        <FileFormComponent fieldName="bulk"onSubmit={this.fileEdit}></FileFormComponent>
+                      </div>
                     }
-                    <pre>
-                      {JSON.stringify(this.props.updateStatus, null, 2)}
-                    </pre>
+                    </div>
                   </div>
                 }
                 <TableComponent

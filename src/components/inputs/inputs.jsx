@@ -50,7 +50,7 @@ export class FileField extends React.Component {
 
   render() {
     return (
-      <div className="mt-2 custom-file">
+      <div className="custom-file">
         <Field 
           name={this.props.name}
           onChange={e => this.setState({ value: e[0].name })}
