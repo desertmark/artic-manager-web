@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators  } from 'redux';
 import { connect } from 'react-redux';
-import { getArticles, deleteArticle, bulkEditArticles, fileEditArticles } from '../../redux/articles/articles-actions'
+import { getArticles, deleteArticle, bulkEditArticles, fileEditArticles, getUpdateStatus } from '../../redux/articles/articles-actions'
 import ModalComponent from '../../components/modal/modal-component';
 import { textFilter, customFilter } from 'react-bootstrap-table2-filter';
 import TableComponent from '../../components/table/table-component';
@@ -19,6 +19,8 @@ class ArticlesTableContainer extends Component{
     this.state = {
       bulkEditOpen: false,
       columns: null,
+      intervalId: undefined,
+      longPollingStarted: false
     }
     this.getColumns = this.getColumns.bind(this);
     this.handleTableChange = this.handleTableChange.bind(this);
@@ -28,6 +30,8 @@ class ArticlesTableContainer extends Component{
     this.fileEdit = this.fileEdit.bind(this);
     this.articleAboutToDelete = null;
     this.viewArticle = this.viewArticle.bind(this);
+    this.startLongPolling = this.startLongPolling.bind(this);
+    this.handleLongPolling = this.handleLongPolling.bind(this);
     this.tableRef = React.createRef();
   }
 
@@ -45,6 +49,10 @@ class ArticlesTableContainer extends Component{
     const columns = this.getColumns();
     this.setState({ columns });
     this.props.getArticles();
+  }
+
+  componentDidUpdate() {
+    this.handleLongPolling();
   }
 
   getColumns() {
@@ -168,8 +176,29 @@ class ArticlesTableContainer extends Component{
   }
 
   fileEdit(values) {
-    const file = values.bulk[0];
-    this.props.fileEditArticles(file);
+    const file = get(values,'bulk',[])[0];
+    this.props.fileEditArticles(file).then(() => {
+      setTimeout(() => this.startLongPolling(), 3000  )
+    });
+  }
+
+  startLongPolling() {
+    const intervalId = setInterval(() => {
+      console.log('Polling...')
+      if (!this.props.loadingUpdateStatus) {
+        this.props.getUpdateStatus().then(() => {
+          this.setState({ longPollingStarted: true });
+        });
+      }
+    }, 1000);
+    this.setState({ intervalId });
+  }
+
+  handleLongPolling() {
+    if (this.state.longPollingStarted && !this.props.updateStatus.inProgress) {
+      clearInterval(this.state.intervalId);
+      this.setState({ intervalId: undefined, longPollingStarted: false });
+    }
   }
 
   render(){
@@ -190,7 +219,13 @@ class ArticlesTableContainer extends Component{
                       <i className="fa fa-edit pr-1" ></i>
                       Bulk Edit
                     </button>
-                    <FileFormComponent fieldName="bulk"onSubmit={this.fileEdit}></FileFormComponent>
+                    {
+                      !this.props.updateStatus.inProgress && 
+                      <FileFormComponent fieldName="bulk"onSubmit={this.fileEdit}></FileFormComponent>
+                    }
+                    <pre>
+                      {JSON.stringify(this.props.updateStatus, null, 2)}
+                    </pre>
                   </div>
                 }
                 <TableComponent
@@ -236,6 +271,8 @@ export default connect(
     pagination: state.articlesReducer.pagination,
     isEmpty: state.articlesReducer.isEmpty,
     currentUser: state.userReducer.currentUser,
+    updateStatus: state.articlesReducer.updateStatus,
+    loadingUpdateStatus: state.articlesReducer.loadingUpdateStatus,
   }), // mapStateToProps
-  dispatch => bindActionCreators({ getArticles, deleteArticle, bulkEditArticles, fileEditArticles }, dispatch) // mapDispatchToProps
+  dispatch => bindActionCreators({ getArticles, deleteArticle, bulkEditArticles, fileEditArticles, getUpdateStatus }, dispatch) // mapDispatchToProps
 )(withRouter(ArticlesTableContainer))
