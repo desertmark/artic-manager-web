@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { bindActionCreators  } from 'redux';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { getArticles, deleteArticle, bulkEditArticles, fileEditArticles } from '../../redux/articles/articles-actions'
+import { getArticles, deleteArticle, bulkEditArticles, fileEditArticles, getUpdateStatus } from '../../redux/articles/articles-actions'
 import ModalComponent from '../../components/modal/modal-component';
 import { textFilter, customFilter } from 'react-bootstrap-table2-filter';
 import TableComponent from '../../components/table/table-component';
@@ -12,13 +12,18 @@ import ConfirmComponent from '../../components/confirm/confirm-component';
 import { Link } from 'react-router-dom';
 import { withRouter } from "react-router";
 import ArticleBulkEditComponent from '../../components/article/article-bulk-edit-component';
-import  FileFormComponent from '../../components/file-form/file-form-component';
-class ArticlesTableContainer extends Component{
+import FileFormComponent from '../../components/file-form/file-form-component';
+import ProgressBarComponent from '../../components/progress-bar/progress-bar-component';
+import { Spinner } from '../../components/spinner/spinner';
+class ArticlesTableContainer extends Component {
   constructor() {
     super();
     this.state = {
       bulkEditOpen: false,
       columns: null,
+      intervalId: undefined,
+      longPollingStarted: false,
+      waitingForProgressInfo: false,
     }
     this.getColumns = this.getColumns.bind(this);
     this.handleTableChange = this.handleTableChange.bind(this);
@@ -28,16 +33,18 @@ class ArticlesTableContainer extends Component{
     this.fileEdit = this.fileEdit.bind(this);
     this.articleAboutToDelete = null;
     this.viewArticle = this.viewArticle.bind(this);
+    this.startLongPolling = this.startLongPolling.bind(this);
+    this.handleLongPolling = this.handleLongPolling.bind(this);
     this.tableRef = React.createRef();
   }
 
   isAdmin() {
-    const role = get(this.props.currentUser,'role');
+    const role = get(this.props.currentUser, 'role');
     return role === 'ADMIN';
   }
 
   isUser() {
-    const role = get(this.props.currentUser,'role');
+    const role = get(this.props.currentUser, 'role');
     return role === 'USER' || role === 'ADMIN';
   }
 
@@ -45,6 +52,11 @@ class ArticlesTableContainer extends Component{
     const columns = this.getColumns();
     this.setState({ columns });
     this.props.getArticles();
+    this.startLongPolling();
+  }
+
+  componentDidUpdate() {
+    this.handleLongPolling();
   }
 
   getColumns() {
@@ -58,8 +70,8 @@ class ArticlesTableContainer extends Component{
       text: 'Code',
       delay: 1000,
       filter: customFilter(),
-      filterRenderer:(onFilter, column) =>
-        <CodeFilter onFilter={ onFilter } column={ column } />,
+      filterRenderer: (onFilter, column) =>
+        <CodeFilter onFilter={onFilter} column={column} />,
       formatter: codeFormatter
     },
     {
@@ -80,7 +92,7 @@ class ArticlesTableContainer extends Component{
           text: 'Price',
           formatter: currencyFormatter,
           classes: 'text-success'
-        },{
+        }, {
           dataField: 'cardPrice',
           text: 'Card Price',
           formatter: currencyFormatter,
@@ -89,51 +101,51 @@ class ArticlesTableContainer extends Component{
       ]);
     }
 
-    if(this.isAdmin()) {
+    if (this.isAdmin()) {
       columns = columns.concat([
-      {
-        dataField: 'listPrice',
-        text: 'List Price',
-        formatter: currencyFormatter,
-      },
-      {
-        dataField: 'utility',
-        text: 'Utility',
-        formatter: percentageFormatter,
-        classes: 'd-md-none d-lg-table-cell',
-        headerClasses: 'd-md-none d-lg-table-cell'
-      },
-      {
-        dataField: 'dolar',
-        text: 'Dolar Price',
-        formatter: currencyFormatter,
-        classes: 'd-md-none d-lg-table-cell',
-        headerClasses: 'd-md-none d-lg-table-cell'
-      },
-      {
-        dataField: 'vat',
-        text: 'V.A.T.',
-        formatter: percentageFormatter,
-        classes: 'd-md-none d-xl-table-cell',
-        headerClasses: 'd-md-none d-xl-table-cell'
-      },
-      {
-        dataField: 'transport',
-        text: 'Transport',
-        formatter: percentageFormatter,
-        classes: 'd-md-none d-xl-table-cell',
-        headerClasses: 'd-md-none d-xl-table-cell'
-      },
-      {
-        dataField: 'card',
-        text: 'Card',
-        formatter: percentageFormatter,
-        classes: 'd-md-none d-xl-table-cell',
-        headerClasses: 'd-md-none d-xl-table-cell'
-      }]);
+        {
+          dataField: 'listPrice',
+          text: 'List Price',
+          formatter: currencyFormatter,
+        },
+        {
+          dataField: 'utility',
+          text: 'Utility',
+          formatter: percentageFormatter,
+          classes: 'd-md-none d-lg-table-cell',
+          headerClasses: 'd-md-none d-lg-table-cell'
+        },
+        {
+          dataField: 'dolar',
+          text: 'Dolar Price',
+          formatter: currencyFormatter,
+          classes: 'd-md-none d-lg-table-cell',
+          headerClasses: 'd-md-none d-lg-table-cell'
+        },
+        {
+          dataField: 'vat',
+          text: 'V.A.T.',
+          formatter: percentageFormatter,
+          classes: 'd-md-none d-xl-table-cell',
+          headerClasses: 'd-md-none d-xl-table-cell'
+        },
+        {
+          dataField: 'transport',
+          text: 'Transport',
+          formatter: percentageFormatter,
+          classes: 'd-md-none d-xl-table-cell',
+          headerClasses: 'd-md-none d-xl-table-cell'
+        },
+        {
+          dataField: 'card',
+          text: 'Card',
+          formatter: percentageFormatter,
+          classes: 'd-md-none d-xl-table-cell',
+          headerClasses: 'd-md-none d-xl-table-cell'
+        }]);
     }
 
-    if(this.isUser()) {
+    if (this.isUser()) {
       columns.push({
         dataField: 'actions',
         text: 'Actions',
@@ -147,7 +159,7 @@ class ArticlesTableContainer extends Component{
     console.log(this.state.codeFilter);
     this.props.getArticles(params, filters);
   }
-  
+
   confirmDelete(article) {
     this.articleAboutToDelete = article;
   }
@@ -158,7 +170,7 @@ class ArticlesTableContainer extends Component{
   }
 
   viewArticle(article) {
-    this.props.history.push(`/articles/${article._id}` );
+    this.props.history.push(`/articles/${article._id}`);
   }
 
   bulkEdit(values) {
@@ -168,63 +180,104 @@ class ArticlesTableContainer extends Component{
   }
 
   fileEdit(values) {
-    const file = values.bulk[0];
-    this.props.fileEditArticles(file);
+    this.setState({ waitingForProgressInfo: true });
+    const file = get(values, 'bulk', [])[0];
+    this.props.fileEditArticles(file).then(() => {
+      setTimeout(() => this.startLongPolling(), 3000)
+    });
   }
 
-  render(){
-    const { pagination, articles, isEmpty } = this.props;
-    return(
-        <div className="container-fluid">
-            <div className="card border mb-3">
-              <div className="card-header border">List of articles</div>
-              <div className="card-body text">
-                {
-                  this.isAdmin() &&
-                  <div className="mb-2">
-                    <Link to="/articles/create" className="btn btn-success mr-2">
+  startLongPolling() {
+    const intervalId = setInterval(() => {
+      console.log('Polling...')
+      if (!this.props.loadingUpdateStatus) {
+        this.props.getUpdateStatus().then(() => {
+          this.setState({ longPollingStarted: true, waitingForProgressInfo: false });
+        });
+      }
+    }, 1000);
+    this.setState({ intervalId });
+  }
+
+  handleLongPolling() {
+    if (this.state.longPollingStarted && !this.props.updateStatus.inProgress) {
+      clearInterval(this.state.intervalId);
+      this.setState({ intervalId: undefined, longPollingStarted: false });
+    }
+  }
+
+  render() {
+    const { pagination, articles, isEmpty, updateStatus, loadingUpdateStatus } = this.props;
+    return (
+      <div className="container-fluid">
+        <div className="card border mb-3">
+          <div className="card-header border">List of articles</div>
+          <div className="card-body text">
+            {
+              this.isAdmin() &&
+              <div>
+                <div className="mb-2 row">
+                  <div className="col d-md-flex">
+                    <Link to="/articles/create" className="btn btn-success mr-2 mt-2">
                       <i className="fas fa-plus pr-1"></i>
                       New Article
                     </Link>
-                    <button className="btn btn-info mr-2" onClick={() => this.setState({bulkEditOpen: true})}>
+                    <button className="btn btn-info mr-2 mt-2" onClick={() => this.setState({ bulkEditOpen: true })}>
                       <i className="fa fa-edit pr-1" ></i>
                       Bulk Edit
                     </button>
-                    <FileFormComponent fieldName="bulk"onSubmit={this.fileEdit}></FileFormComponent>
+                    {
+                      !updateStatus.inProgress && !this.state.waitingForProgressInfo &&
+                      <div className="mt-2">
+                        <FileFormComponent fieldName="bulk" onSubmit={this.fileEdit}></FileFormComponent>
+                      </div>
+                    }
+                    <div className="mt-2">
+                      <Spinner loading={this.state.waitingForProgressInfo} color="warning"></Spinner>
+                    </div>
+                  </div>
+                </div>
+                {updateStatus.inProgress &&
+                  <div className="row mb-2">
+                    <div className="col">
+                      <ProgressBarComponent currentValue={this.props.updateStatus.completed}></ProgressBarComponent>
+                    </div>
                   </div>
                 }
-                <TableComponent
-                  ref={ this.tableRef }
-                  columns={ this.state.columns }
-                  pagination={ pagination }
-                  data={ articles }
-                  onView= { this.viewArticle }
-                  onDelete={ this.confirmDelete }
-                  deleteConfirmModalName="delete-article"
-                  handleTableChange={ this.handleTableChange }
-                  isEmpty = { isEmpty }
-                >
-                </TableComponent>
               </div>
-            </div>
-            <ConfirmComponent 
-              name="delete-article"
-              title="Delete Article"
-              body="Are you sure you want to delete this article?"
-              onAccept={ this.deleteArticle }
-              onCancel={ () => console.log('cancel') }
-            />
-            <ModalComponent 
-              name="bulk-edit-modal"
-              title="Bulk Edit"
-              isOpen={this.state.bulkEditOpen}
+            }
+            <TableComponent
+              ref={this.tableRef}
+              columns={this.state.columns}
+              pagination={pagination}
+              data={articles}
+              onView={this.viewArticle}
+              onDelete={this.confirmDelete}
+              deleteConfirmModalName="delete-article"
+              handleTableChange={this.handleTableChange}
+              isEmpty={isEmpty}
             >
-              <ArticleBulkEditComponent
-                onSubmit={this.bulkEdit}
-                onCancel={() => this.setState({ bulkEditOpen: false })}
-              ></ArticleBulkEditComponent>
-            </ModalComponent>
+            </TableComponent>
+          </div>
         </div>
+        <ConfirmComponent
+          name="delete-article"
+          title="Delete Article"
+          body="Are you sure you want to delete this article?"
+          onAccept={this.deleteArticle}
+          onCancel={() => console.log('cancel')}
+        />
+        <ModalComponent
+          name="bulk-edit-modal"
+          title="Bulk Edit"
+          isOpen={this.state.bulkEditOpen}
+        >
+          <ArticleBulkEditComponent
+            onSubmit={this.bulkEdit}
+            onCancel={() => this.setState({ bulkEditOpen: false })}
+          ></ArticleBulkEditComponent>
+        </ModalComponent>
+      </div>
     );
   }
 }
@@ -236,6 +289,8 @@ export default connect(
     pagination: state.articlesReducer.pagination,
     isEmpty: state.articlesReducer.isEmpty,
     currentUser: state.userReducer.currentUser,
+    updateStatus: state.articlesReducer.updateStatus,
+    loadingUpdateStatus: state.articlesReducer.loadingUpdateStatus,
   }), // mapStateToProps
-  dispatch => bindActionCreators({ getArticles, deleteArticle, bulkEditArticles, fileEditArticles }, dispatch) // mapDispatchToProps
+  dispatch => bindActionCreators({ getArticles, deleteArticle, bulkEditArticles, fileEditArticles, getUpdateStatus }, dispatch) // mapDispatchToProps
 )(withRouter(ArticlesTableContainer))

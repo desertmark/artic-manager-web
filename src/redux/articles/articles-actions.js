@@ -6,7 +6,8 @@ import {
     GET_ARTICLE,
     CREATE_ARTICLE,
     EDIT_ARTICLE,
-    BULK_EDIT_ARTICLE
+    BULK_EDIT_ARTICLE,
+    LONG_POLLING_ARTICLE
 } from './articles-constants';
 
 export function getArticle(articleId) {
@@ -133,4 +134,14 @@ export function deleteArticle(article) {
             }
         });
     }
+}
+
+export function getUpdateStatus() {
+    return (dispatch, getState) => {
+        const promise = articlesService.getUpdateStatus();
+        return dispatch({
+            type: LONG_POLLING_ARTICLE,
+            payload: promise,
+        })
+    };
 }

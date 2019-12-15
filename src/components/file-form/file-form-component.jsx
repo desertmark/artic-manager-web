@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector, change, submit, FieldArray } from 'redux-form';
 import { FileField } from '../inputs/inputs';
 
@@ -7,16 +8,24 @@ class FileFormComponent extends React.Component {
         super();
     }
 
+    get isDisabled() {
+        return !(this.props.formData && this.props.formData.length)
+    }
+
     render() {
         return (
-        <form onSubmit={this.props.handleSubmit}>
-            <FileField name={this.props.fieldName || 'file'}></FileField>
-            <button className="btn btn-primary mt-2" type="submit"> upload</button>
-        </form>
+            <form className="d-flex" onSubmit={this.props.handleSubmit}>
+                <FileField name={this.props.fieldName || 'file'}></FileField>
+                <button disabled={this.isDisabled} className="btn btn-primary ml-2" type="submit"> upload</button>
+            </form>
         )
     }
 }
-
-export default reduxForm({
-    form: 'fileForm',
-})(FileFormComponent)
+const selector = formValueSelector('fileForm');
+const form = reduxForm({ form: 'fileForm' })(FileFormComponent)
+export default connect(
+    (state, ownProps) => ({
+        formData: selector(state, ownProps.fieldName || 'file')
+    }),
+    null
+)(form);

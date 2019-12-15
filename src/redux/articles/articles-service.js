@@ -89,6 +89,17 @@ function deleteArticle(articleId) {
     });
 }
 
+function getUpdateStatus() {
+    return axios({
+        url: `${API_URL}/articles/status`,
+        method: 'GET'
+    }).then(res => res.data)
+    .catch(error => {
+        console.error(error);
+        throw error;
+    })
+}
+
 export default {
     getArticle,
     getArticles,
@@ -96,5 +107,6 @@ export default {
     editArticle,
     bulkEditArticles,
     deleteArticle,
-    fileEditArticles
+    fileEditArticles,
+    getUpdateStatus,
 }
