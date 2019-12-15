@@ -35,6 +35,7 @@ const defaultState = {
     loading: false,
     isEmpty: false,
     error: null,
+    loadingUpdateStatus: false,
     updateStatus: {
         inProgress: false, // is the update process running
         completed: 0, // percentage of articles completed

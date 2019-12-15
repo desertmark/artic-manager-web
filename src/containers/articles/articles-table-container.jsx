@@ -14,6 +14,7 @@ import { withRouter } from "react-router";
 import ArticleBulkEditComponent from '../../components/article/article-bulk-edit-component';
 import FileFormComponent from '../../components/file-form/file-form-component';
 import ProgressBarComponent from '../../components/progress-bar/progress-bar-component';
+import { Spinner } from '../../components/spinner/spinner';
 class ArticlesTableContainer extends Component {
   constructor() {
     super();
@@ -21,7 +22,8 @@ class ArticlesTableContainer extends Component {
       bulkEditOpen: false,
       columns: null,
       intervalId: undefined,
-      longPollingStarted: false
+      longPollingStarted: false,
+      waitingForProgressInfo: false,
     }
     this.getColumns = this.getColumns.bind(this);
     this.handleTableChange = this.handleTableChange.bind(this);
@@ -177,6 +179,7 @@ class ArticlesTableContainer extends Component {
   }
 
   fileEdit(values) {
+    this.setState({ waitingForProgressInfo: true });
     const file = get(values, 'bulk', [])[0];
     this.props.fileEditArticles(file).then(() => {
       setTimeout(() => this.startLongPolling(), 3000)
@@ -188,7 +191,7 @@ class ArticlesTableContainer extends Component {
       console.log('Polling...')
       if (!this.props.loadingUpdateStatus) {
         this.props.getUpdateStatus().then(() => {
-          this.setState({ longPollingStarted: true });
+          this.setState({ longPollingStarted: true, waitingForProgressInfo: false });
         });
       }
     }, 1000);
@@ -203,7 +206,7 @@ class ArticlesTableContainer extends Component {
   }
 
   render() {
-    const { pagination, articles, isEmpty } = this.props;
+    const { pagination, articles, isEmpty, updateStatus, loadingUpdateStatus } = this.props;
     return (
       <div className="container-fluid">
         <div className="card border mb-3">
@@ -223,14 +226,17 @@ class ArticlesTableContainer extends Component {
                       Bulk Edit
                     </button>
                     {
-                      !this.props.updateStatus.inProgress &&
+                      !updateStatus.inProgress && !this.state.waitingForProgressInfo &&
                       <div className="mt-2">
                         <FileFormComponent fieldName="bulk" onSubmit={this.fileEdit}></FileFormComponent>
                       </div>
                     }
+                    <div className="mt-2">
+                      <Spinner loading={this.state.waitingForProgressInfo} color="warning"></Spinner>
+                    </div>
                   </div>
                 </div>
-                {this.props.updateStatus.inProgress &&
+                {updateStatus.inProgress &&
                   <div className="row mb-2">
                     <div className="col">
                       <ProgressBarComponent currentValue={this.props.updateStatus.completed}></ProgressBarComponent>
