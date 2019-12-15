@@ -52,6 +52,7 @@ class ArticlesTableContainer extends Component {
     const columns = this.getColumns();
     this.setState({ columns });
     this.props.getArticles();
+    this.startLongPolling();
   }
 
   componentDidUpdate() {
