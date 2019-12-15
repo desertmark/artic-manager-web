@@ -35,6 +35,7 @@ class ArticlesTableContainer extends Component {
     this.viewArticle = this.viewArticle.bind(this);
     this.startLongPolling = this.startLongPolling.bind(this);
     this.handleLongPolling = this.handleLongPolling.bind(this);
+    this.stopLongPolling = this.stopLongPolling.bind(this);
     this.tableRef = React.createRef();
   }
 
@@ -53,6 +54,10 @@ class ArticlesTableContainer extends Component {
     this.setState({ columns });
     this.props.getArticles();
     this.startLongPolling();
+  }
+
+  componentWillUnmount() {
+    this.stopLongPolling();
   }
 
   componentDidUpdate() {
@@ -201,9 +206,13 @@ class ArticlesTableContainer extends Component {
 
   handleLongPolling() {
     if (this.state.longPollingStarted && !this.props.updateStatus.inProgress) {
-      clearInterval(this.state.intervalId);
-      this.setState({ intervalId: undefined, longPollingStarted: false });
+      this.stopLongPolling();
     }
+  }
+
+  stopLongPolling() {
+    clearInterval(this.state.intervalId);
+    this.setState({ intervalId: undefined, longPollingStarted: false });
   }
 
   render() {
