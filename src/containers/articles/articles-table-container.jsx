@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { getArticles, deleteArticle, bulkEditArticles, fileEditArticles, getUpdateStatus } from '../../redux/articles/articles-actions'
+import { getArticles, deleteArticle, bulkEditArticles, fileEditArticles, getUpdateStatus, stopLongPolling } from '../../redux/articles/articles-actions'
 import ModalComponent from '../../components/modal/modal-component';
 import { textFilter, customFilter } from 'react-bootstrap-table2-filter';
 import TableComponent from '../../components/table/table-component';
@@ -196,7 +196,8 @@ class ArticlesTableContainer extends Component {
     const intervalId = setInterval(() => {
       console.log('Polling...')
       if (!this.props.loadingUpdateStatus) {
-        this.props.getUpdateStatus().then(() => {
+        this.props.getUpdateStatus()
+        .then(() => {
           this.setState({ longPollingStarted: true, waitingForProgressInfo: false });
         });
       }
@@ -205,7 +206,10 @@ class ArticlesTableContainer extends Component {
   }
 
   handleLongPolling() {
-    if (this.state.longPollingStarted && !this.props.updateStatus.inProgress) {
+    if (
+      (this.state.longPollingStarted && !this.props.updateStatus.inProgress) ||
+      (this.props.updateStatus.error)
+    ) {
       this.stopLongPolling();
     }
   }
@@ -213,6 +217,7 @@ class ArticlesTableContainer extends Component {
   stopLongPolling() {
     clearInterval(this.state.intervalId);
     this.setState({ intervalId: undefined, longPollingStarted: false });
+    this.props.stopLongPolling();
   }
 
   render() {
@@ -300,6 +305,7 @@ export default connect(
     currentUser: state.userReducer.currentUser,
     updateStatus: state.articlesReducer.updateStatus,
     loadingUpdateStatus: state.articlesReducer.loadingUpdateStatus,
+    updateStatusError: state.articlesReducer.updateStatusError,
   }), // mapStateToProps
-  dispatch => bindActionCreators({ getArticles, deleteArticle, bulkEditArticles, fileEditArticles, getUpdateStatus }, dispatch) // mapDispatchToProps
+  dispatch => bindActionCreators({ getArticles, deleteArticle, bulkEditArticles, fileEditArticles, getUpdateStatus, stopLongPolling }, dispatch) // mapDispatchToProps
 )(withRouter(ArticlesTableContainer))

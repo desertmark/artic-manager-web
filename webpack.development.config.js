@@ -1,6 +1,7 @@
 const path = require("path");
 module.exports = {
     mode: "development",
+    devtool: 'source-map',
     /**
      * The output property tells Webpack where to put our bundled code. 
      * The publicPath property specifies what directory the bundle should go in, and also tells webpack-dev-server where to serve files from.

@@ -17,15 +17,17 @@ class CodeFilter extends Component {
     }
     render() {
       return [
-        <input
-          maxLength="11"
-          key="input"
-          className="form-control"
-          ref={ node => this.input = node }
-          type="text"
-          placeholder="Enter Code..."
-          onChange={this.filter}
-        />
+        <label className="filter-label">
+          <input
+            maxLength="11"
+            key="input"
+            className="filter text-filter form-control"
+            ref={ node => this.input = node }
+            type="text"
+            placeholder="Enter code..."
+            onChange={this.filter}
+          />
+        </label>
       ];
     }
   }

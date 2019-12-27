@@ -20,6 +20,7 @@ import {
     LONG_POLLING_ARTICLE_PENDING,
     LONG_POLLING_ARTICLE_FULFILLED,
     LONG_POLLING_ARTICLE_REJECTED,
+    LONG_POLLING_ARTICLE_STOP
 } from './articles-constants';
 
 import { findIndex } from 'lodash'
@@ -36,6 +37,7 @@ const defaultState = {
     isEmpty: false,
     error: null,
     loadingUpdateStatus: false,
+    updateStatusError: false,
     updateStatus: {
         inProgress: false, // is the update process running
         completed: 0, // percentage of articles completed
@@ -144,11 +146,17 @@ export function articlesReducer(currentState = defaultState, action) {
                 error: null,
             });
         case LONG_POLLING_ARTICLE_REJECTED:
+            const updateStatus = Object.assign({}, currentState.updateStatus, { error: true });
             return Object.assign({}, currentState, {
                 error: action.payload,
                 loadingUpdateStatus: false,
-                updateStatus: defaultState.updateStatus,
+                updateStatus,
             });
+        case LONG_POLLING_ARTICLE_STOP: 
+            return Object.assign({}, currentState, {
+                error: null,
+                updateStatus: defaultState.updateStatus,
+            })
         default:
             return currentState;
     }

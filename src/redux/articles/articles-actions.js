@@ -7,7 +7,8 @@ import {
     CREATE_ARTICLE,
     EDIT_ARTICLE,
     BULK_EDIT_ARTICLE,
-    LONG_POLLING_ARTICLE
+    LONG_POLLING_ARTICLE,
+    LONG_POLLING_ARTICLE_STOP,
 } from './articles-constants';
 
 export function getArticle(articleId) {
@@ -144,4 +145,10 @@ export function getUpdateStatus() {
             payload: promise,
         })
     };
+}
+
+export function stopLongPolling() {
+    return {
+        type: LONG_POLLING_ARTICLE_STOP,
+    }
 }

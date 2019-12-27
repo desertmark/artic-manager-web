@@ -9,3 +9,11 @@ $blue: #3b5998;
 .bg-facebook-color {
     background-color: $blue;
 }
+
+.filter-label {
+    display: block;
+}
+
+.react-bootstrap-table th {
+    vertical-align: top!important;
+}
