@@ -97,11 +97,11 @@ export function articleVmToApiArticle(article) {
     return {
         ...article,
         listPrice: parseInt(article.listPrice),
-        discounts: article.discounts.map(({ amount, description, ...rest }) => ({ amount: amount/100, description })),
-        vat: article.vat/100,
-        transport: article.transport/100,
-        card: article.card/100,
-        utility: article.utility/100,
+        discounts: get(article,'discounts',[]).map(({ amount, description, ...rest }) => ({ amount: amount/100, description })),
+        vat: get(article,'vat', 0)/100 || 0,
+        transport: get(article,'transport', 0)/100 || 0,
+        card: get(article,'card', 0)/100 || 0,
+        utility: get(article,'utility', 0)/100 || 0,
         categoryId: get(article,'category._id'),
         dolar: 1
     } 
@@ -111,11 +111,11 @@ export function apiArticleToVmArticle(article) {
     return {
         ...article,
         // listPrice: parseInt(article.listPrice),
-        discounts: article.discounts.map(({ amount, description, ...rest }) => ({ amount: amount*100, description })),
-        vat: article.vat*100,
-        transport: article.transport*100,
-        card: article.card*100,
-        utility: article.utility*100,
+        discounts: get(article,'discounts',[]).map(({ amount, description, ...rest }) => ({ amount: amount*100, description })),
+        vat: get(article, 'vat', 0) * 100,
+        transport: get(article, 'transport', 0) * 100,
+        card: get(article, 'card', 0) * 100,
+        utility: get(article, 'utility', 0) * 100,
         dolar: 1
     }
 }

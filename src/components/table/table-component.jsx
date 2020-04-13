@@ -14,22 +14,20 @@ class TableComponent extends Component {
         this.filter = this.filter.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
     }
+
     getDeleteBtn(onDelete, item) { 
-        return <button onClick={ () => onDelete(item) } key='delete' data-target={`#${this.props.deleteConfirmModalName}`} data-toggle="modal" className="btn btn-outline-danger mx-1">
-            <i className="fa fa-trash"></i>
-        </button>
+        return <i className="text-danger fa fa-trash" onClick={ () => onDelete(item) } key='delete' data-target={`#${this.props.deleteConfirmModalName}`} data-toggle="modal">
+        </i>
     }
 
     getViewBtn(onView, item) {
-        return <button onClick={ () => onView(item) } key='view' className="btn btn-outline-info mx-1">
-            <i className="fa fa-info-circle"></i>
-        </button>
+        return <i onClick={ () => onView(item) } key='view' className="mx-1 text-info fa fa-info-circle">
+        </i>
     }
 
     getEditBtn(onEdit, item) {
-        return <button onClick={ () => onEdit(item) } key='edit' className="btn btn-outline-info mx-1">
-            <i className="fa fa-edit"></i>
-        </button>
+        return <i onClick={ () => onEdit(item) } key='edit' className="fa-fa-edit text-info mx-1">
+        </i>
     }
 
     getData() {

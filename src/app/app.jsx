@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {hot} from 'react-hot-loader';
+import { get } from 'lodash';
 import './app.scss';
 
 import HeaderComponent from '../components/header/header-component';
@@ -39,6 +40,7 @@ class App extends Component{
     super();
     this.logEnv = this.logEnv.bind(this);
     this.logout = this.logout.bind(this);
+    this.isAdmin = this.isAdmin.bind(this);
   }
 
   logEnv() {
@@ -59,6 +61,11 @@ class App extends Component{
     this.props.logout();
   }
 
+  isAdmin() {
+    const { currentUser } = this.props;
+    return get(currentUser, 'role') === 'ADMIN';
+  }
+
   render(){
     const { showSpinner, isAuthenticated, isInitializing } = this.props;
     return(
@@ -73,10 +80,10 @@ class App extends Component{
               <Route exact path='/contact' component={ ContactPageComponent }/>
               <Route exact path='/articles' component={ ArticlesPageComponent }/>
               <AuthRoute exact path='/articles/create' show={ isAuthenticated } component={ ArticlesDetailsPageComponent }/>
-              <AuthRoute exact path='/articles/:id' show={ isAuthenticated } component={ ArticlesDetailsPageComponent }/>
+              <AuthRoute exact path='/articles/:id' show={ this.isAdmin() } component={ ArticlesDetailsPageComponent }/>
               <AuthRoute exact path='/profile' show={ isAuthenticated }component={ ProfilePageComponent }/>
               <AuthRoute exact path='/login' show={ !isAuthenticated } component={ LoginPageComponent }/>
-              <AuthRoute exact path='/manage' show={ isAuthenticated } component={ ManagePageComponent }/>
+              <AuthRoute exact path='/manage' show={ this.isAdmin() } component={ ManagePageComponent }/>
             </Switch>
           }
           <FooterComponent></FooterComponent>
@@ -90,6 +97,7 @@ const connectedApp = connect(
     showSpinner: state.appReducer.showSpinner,
     isAuthenticated: state.authReducer.isAuthenticated,
     isInitializing: state.appReducer.isInitializing,
+    currentUser: state.userReducer.currentUser,
   }),
   dispatch => bindActionCreators({getLocalStorageSession, appInit, logout}, dispatch)
 )(App)

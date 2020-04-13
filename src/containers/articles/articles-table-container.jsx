@@ -150,7 +150,7 @@ class ArticlesTableContainer extends Component {
         }]);
     }
 
-    if (this.isUser()) {
+    if (this.isAdmin()) {
       columns.push({
         dataField: 'actions',
         text: 'Actions',

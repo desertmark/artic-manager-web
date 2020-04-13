@@ -27,5 +27,5 @@ function updateCalculatedValues({ listPrice, vat, discounts, utility, transport,
 
 function isUpdateCalculatedValuesNeeded(field) {
     const trigerCalculationFields = ['listPrice', 'vat', 'discounts', 'cost', 'utility', 'price', 'card'];
-    return trigerCalculationFields.findIndex(fieldName => field.match(fieldName));
+    return trigerCalculationFields.includes(field);
 }
