@@ -1,3 +1,4 @@
+import { get } from 'lodash';
 import articlesService from './articles-service';
 import { articleVmToApiArticle, bulkEditVmToApiBulkEdit } from '../../util/util';
 import { 
@@ -25,14 +26,20 @@ export function getArticle(articleId) {
     }
 }
 
-export function getArticles(params, filters) {
+export function getArticles(pagination, filters) {
+    const params = { 
+        ...pagination,
+        description: get(filters, 'description'),
+        codeString: get(filters, 'codeString'),
+        ['category.description']: get(filters, 'category.description'),
+    };
     return dispatch => {
-        const promise = articlesService.getArticles(params, filters);
+        const promise = articlesService.getArticles(params);
         dispatch({
             type: GET_ARTICLES,
             payload: promise,
             meta: {
-                pagination: params,
+                pagination,
                 showSpinner: true,
                 promise
             }

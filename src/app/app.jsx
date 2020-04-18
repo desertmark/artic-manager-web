@@ -99,6 +99,6 @@ const connectedApp = connect(
     isInitializing: state.appReducer.isInitializing,
     currentUser: state.userReducer.currentUser,
   }),
-  dispatch => bindActionCreators({getLocalStorageSession, appInit, logout}, dispatch)
+  dispatch => bindActionCreators({getLocalStorageSession, appInit, logout }, dispatch)
 )(App)
 export default hot(module)(connectedApp);

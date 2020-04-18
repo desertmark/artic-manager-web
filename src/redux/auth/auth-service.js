@@ -33,15 +33,16 @@ function storeSession(session) {
 }
 
 function getLocalStorageSession() {
-    const session = JSON.parse(localStorage.getItem('session') || "{}");
+    const session = localStorage.getItem('session');
     if(session) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${session.token}`;
+        const parsedSession = JSON.parse(session);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${parsedSession.token}`;
+        return parsedSession;
     }
-    return session;
 }
 
 function clearLocalSession() {
-    localStorage.setItem('session', null);
+    localStorage.removeItem('session');
 }
 
 function passwordUpdate(values) {

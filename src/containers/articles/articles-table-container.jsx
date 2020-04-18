@@ -15,6 +15,7 @@ import ArticleBulkEditComponent from '../../components/article/article-bulk-edit
 import FileFormComponent from '../../components/file-form/file-form-component';
 import ProgressBarComponent from '../../components/progress-bar/progress-bar-component';
 import { Spinner } from '../../components/spinner/spinner';
+import { ARTICLES_FILTER_DELAY } from '../../redux/articles/articles-constants';
 class ArticlesTableContainer extends Component {
   constructor() {
     super();
@@ -73,8 +74,7 @@ class ArticlesTableContainer extends Component {
     {
       dataField: 'codeString',
       text: 'Code',
-      delay: 1000,
-      filter: customFilter(),
+      filter: customFilter({ delay: ARTICLES_FILTER_DELAY }),
       filterRenderer: (onFilter, column) =>
         <CodeFilter onFilter={onFilter} column={column} />,
       formatter: codeFormatter
@@ -82,12 +82,12 @@ class ArticlesTableContainer extends Component {
     {
       dataField: 'description',
       text: 'Description',
-      filter: textFilter()
+      filter: textFilter({ delay: ARTICLES_FILTER_DELAY })
     },
     {
       dataField: 'category.description',
       text: 'Category',
-      filter: textFilter()
+      filter: textFilter({ delay: ARTICLES_FILTER_DELAY })
     }];
 
     if (this.isUser()) {
