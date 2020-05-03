@@ -84,7 +84,7 @@ class ArticleFormComponent extends Component{
                 </div>
                 <div className="form-group col">
                   <label className="text-secondary font-weight-light">List Price</label>
-                  <SwitchableInputComponent edit={this.isEditOrCreate()} value={formData.listPrice} >
+                  <SwitchableInputComponent edit={this.isEditOrCreate()} value={'$ ' + formData.listPrice} >
                     <CurrencyInput name="listPrice" placeholder="0" validate={[required]} />
                   </SwitchableInputComponent>
                 </div>
@@ -100,7 +100,7 @@ class ArticleFormComponent extends Component{
               <div className="form-row">
                 <div className="form-group col">
                   <label className="text-secondary font-weight-light">Cost</label>
-                  <SwitchableInputComponent edit={this.isEditOrCreate()} value={formData.cost} >
+                  <SwitchableInputComponent edit={this.isEditOrCreate()} value={'$ ' + formData.cost} >
                     <CurrencyInput name="cost" placeholder="0" readOnly />
                   </SwitchableInputComponent>
                 </div>
@@ -121,7 +121,7 @@ class ArticleFormComponent extends Component{
               </div>
             
             {/* ROW 3 */}
-              <div className="form-row">
+              <div className="form-row justify-content-between">
                 <div className="form-group col-4">
                   <label className="text-secondary font-weight-light">Category</label>
                   <SwitchableInputComponent edit={this.isEditOrCreate()} value={get(formData,'category.description','')} >
@@ -132,6 +132,13 @@ class ArticleFormComponent extends Component{
                       onSelect={category => this.props.changeFieldValue('category', category)}
                       validate={required}
                     />
+                  </SwitchableInputComponent>
+                </div>
+
+                <div className="form-group col-4">
+                  <label className="text-secondary font-weight-light">Dolar Price</label>
+                  <SwitchableInputComponent edit={this.isEditOrCreate()} value={ '$ ' + get(formData,'dolar','')} >
+                    <CurrencyInput name="dolar" placeholder="0" />
                   </SwitchableInputComponent>
                 </div>
               </div>
@@ -212,7 +219,20 @@ export default connect(
         category: null,
         discounts: []
       },
-      formData: selector(state, 'codeString', 'listPrice', 'utility', 'price', 'description','transport', 'vat', 'card', 'cardPrice', 'cost', 'category', 'discounts'),
+      formData: selector(state,
+        'codeString',
+        'listPrice',
+        'utility',
+        'price',
+        'dolar',
+        'description','transport',
+        'vat',
+        'card',
+        'cardPrice',
+        'cost',
+        'category',
+        'discounts'
+      ),
     }
   },
   dispatch => ({
