@@ -77,17 +77,21 @@ class ArticlesTableContainer extends Component {
       filter: customFilter({ delay: ARTICLES_FILTER_DELAY }),
       filterRenderer: (onFilter, column) =>
         <CodeFilter onFilter={onFilter} column={column} />,
-      formatter: codeFormatter
+      formatter: codeFormatter,
+      sort: true,
+      onSort: this.sort.bind(this),
     },
     {
       dataField: 'description',
       text: 'Description',
-      filter: textFilter({ delay: ARTICLES_FILTER_DELAY })
+      filter: textFilter({ delay: ARTICLES_FILTER_DELAY }),
+      sort: true,
+      onSort: this.sort.bind(this),
     },
     {
       dataField: 'category.description',
       text: 'Category',
-      filter: textFilter({ delay: ARTICLES_FILTER_DELAY })
+      filter: textFilter({ delay: ARTICLES_FILTER_DELAY }),
     }];
 
     if (this.isUser()) {
@@ -96,12 +100,16 @@ class ArticlesTableContainer extends Component {
           dataField: 'price',
           text: 'Price',
           formatter: currencyFormatter,
-          classes: 'text-success'
+          classes: 'text-success',
+          sort: true,
+          onSort: this.sort.bind(this),
         }, {
           dataField: 'cardPrice',
           text: 'Card Price',
           formatter: currencyFormatter,
-          classes: 'text-danger'
+          classes: 'text-danger',
+          sort: true,
+          onSort: this.sort.bind(this),
         }
       ]);
     }
@@ -112,41 +120,53 @@ class ArticlesTableContainer extends Component {
           dataField: 'listPrice',
           text: 'List Price',
           formatter: currencyFormatter,
+          sort: true,
+          onSort: this.sort.bind(this),
         },
         {
           dataField: 'utility',
           text: 'Utility',
           formatter: percentageFormatter,
           classes: 'd-md-none d-lg-table-cell',
-          headerClasses: 'd-md-none d-lg-table-cell'
+          headerClasses: 'd-md-none d-lg-table-cell',
+          sort: true,
+          onSort: this.sort.bind(this),
         },
         {
           dataField: 'dolar',
           text: 'Dolar Price',
           formatter: currencyFormatter,
           classes: 'd-md-none d-lg-table-cell',
-          headerClasses: 'd-md-none d-lg-table-cell'
+          headerClasses: 'd-md-none d-lg-table-cell',
+          sort: true,
+          onSort: this.sort.bind(this),
         },
         {
           dataField: 'vat',
           text: 'V.A.T.',
           formatter: percentageFormatter,
           classes: 'd-md-none d-xl-table-cell',
-          headerClasses: 'd-md-none d-xl-table-cell'
+          headerClasses: 'd-md-none d-xl-table-cell',
+          sort: true,
+          onSort: this.sort.bind(this),
         },
         {
           dataField: 'transport',
           text: 'Transport',
           formatter: percentageFormatter,
           classes: 'd-md-none d-xl-table-cell',
-          headerClasses: 'd-md-none d-xl-table-cell'
+          headerClasses: 'd-md-none d-xl-table-cell',
+          sort: true,
+          onSort: this.sort.bind(this),
         },
         {
           dataField: 'card',
           text: 'Card',
           formatter: percentageFormatter,
           classes: 'd-md-none d-xl-table-cell',
-          headerClasses: 'd-md-none d-xl-table-cell'
+          headerClasses: 'd-md-none d-xl-table-cell',
+          sort: true,
+          onSort: this.sort.bind(this),
         }]);
     }
 
@@ -161,8 +181,9 @@ class ArticlesTableContainer extends Component {
   }
 
   handleTableChange(type, params, filters) {
-    console.log(this.state.codeFilter);
-    this.props.getArticles(params, filters);
+    if (type!== 'sort') {
+      this.props.getArticles(params, filters);
+    }
   }
 
   confirmDelete(article) {
@@ -220,10 +241,20 @@ class ArticlesTableContainer extends Component {
     this.props.stopLongPolling();
   }
 
+  sort(field, order) {
+    const { filters, pagination } = this.props;
+    const params = {
+      size: pagination.size,
+      page: pagination.page,
+      sort: `${field},${order}`,
+    };
+    this.props.getArticles(params, filters);
+  }
+
   render() {
     const { pagination, articles, isEmpty, updateStatus, loadingUpdateStatus } = this.props;
     return (
-      <div className="container-fluid">
+      <div className="articles-table-container container-fluid">
         <div className="card border mb-3">
           <div className="card-header border">List of articles</div>
           <div className="card-body text">
@@ -301,6 +332,7 @@ export default connect(
     isLoading: state.appReducer.showSpinner,
     articles: state.articlesReducer.articles,
     pagination: state.articlesReducer.pagination,
+    filters: state.articlesReducer.filters,
     isEmpty: state.articlesReducer.isEmpty,
     currentUser: state.userReducer.currentUser,
     updateStatus: state.articlesReducer.updateStatus,

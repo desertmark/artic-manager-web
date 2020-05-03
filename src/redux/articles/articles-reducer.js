@@ -23,8 +23,6 @@ import {
     LONG_POLLING_ARTICLE_STOP
 } from './articles-constants';
 
-import { findIndex } from 'lodash'
-
 const defaultState = {
     article: null,
     articles: [],
@@ -33,6 +31,7 @@ const defaultState = {
         sizePerPage: 20,
         totalSize: 0
     },
+    filters: {},
     loading: false,
     isEmpty: false,
     error: null,
@@ -66,6 +65,7 @@ export function articlesReducer(currentState = defaultState, action) {
             return Object.assign({}, currentState, {
                 articles: [],
                 pagination: { ...currentState.pagination, ...action.meta.pagination },
+                filters: action.meta.filters,
                 isEmpty: false,
                 loading: true,
             });

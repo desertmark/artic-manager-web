@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {hot} from 'react-hot-loader';
+import { hot } from 'react-hot-loader';
 import { get } from 'lodash';
 import './app.scss';
 

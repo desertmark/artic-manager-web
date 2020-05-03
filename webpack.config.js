@@ -46,7 +46,7 @@ const commonConfig = {
        * css-loader requires style-loader in order to work. loader is a shorthand for the use property, when only one loader is being utilized.
        */
       {
-        test: /\.scss$/,
+        test: /\.s?css$/,
         use: [ 'style-loader', 'css-loader', 'sass-loader' ]
       }]
   },
