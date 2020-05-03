@@ -40,6 +40,7 @@ export function getArticles(pagination, filters) {
             payload: promise,
             meta: {
                 pagination,
+                filters,
                 showSpinner: true,
                 promise
             }
